@@ -1,0 +1,24 @@
+2026-03-15 09:10:14.185 | INFO     | app.runner:scrape_today:54 - scrapeToday starting for 'enbridge'
+2026-03-15 09:10:15.005 | INFO     | app.pipelines.enbridge.scraper:scrape_metadata:198 - metaDump completed in 0.68s
+2026-03-15 09:10:15.006 | INFO     | app.pipelines.enbridge.runner:scrape_today:85 - scrapeToday - yesterday=datetime.datetime(2026, 3, 14, 9, 10, 15, 6208)
+2026-03-15 09:10:15.007 | INFO     | app.pipelines.enbridge.scraper:scrape:86 - MNUS → long-way (configured)
+2026-03-15 09:11:06.967 | INFO     | app.pipelines.enbridge.runner:scrape_today:92 - scrapeToday - today=datetime.datetime(2026, 3, 15, 9, 11, 6, 967871)
+2026-03-15 09:11:06.969 | INFO     | app.pipelines.enbridge.scraper:scrape:86 - MNUS → long-way (configured)
+2026-03-15 09:11:57.106 | INFO     | app.pipelines.enbridge.runner:scrape_today:98 - scrapeToday - NN today=datetime.datetime(2026, 3, 15, 9, 11, 6, 967871)
+2026-03-15 09:12:03.495 | INFO     | app.pipelines.enbridge.scraper:_scrape_nn_single_tracked:243 - AG - 6.39s ---------------
+2026-03-15 09:12:03.693 | INFO     | app.pipelines.enbridge.scraper:_scrape_nn_single_tracked:243 - TE - 6.59s ---------------
+2026-03-15 09:12:16.427 | INFO     | app.pipelines.enbridge.gold_munger:clean_directories:81 - Cleanup skipped (disabled for testing)
+2026-03-15 09:12:16.427 | INFO     | app.pipelines.enbridge.runner:scrape_today:107 - *************** completed in 122.24s ***************
+2026-03-15 09:12:16.430 | INFO     | app.reporter:generate_report:338 - Audit report written to /Users/saijagadeeshyadavalli/Coding/Particles/GasFundies/GFScrapePackage/reports/2026-03-15/audit_20260315_091216.html
+2026-03-15 09:16:18.922 | INFO     | app.runner:scrape_today:54 - scrapeToday starting for 'enbridge'
+2026-03-15 09:16:19.733 | INFO     | app.pipelines.enbridge.scraper:scrape_metadata:198 - metaDump completed in 0.77s
+2026-03-15 09:16:19.733 | INFO     | app.pipelines.enbridge.runner:scrape_today:85 - scrapeToday - yesterday=datetime.datetime(2026, 3, 14, 9, 16, 19, 733607)
+2026-03-15 09:16:19.734 | INFO     | app.pipelines.enbridge.scraper:scrape:86 - MNUS → long-way (configured)
+2026-03-15 09:17:11.389 | INFO     | app.pipelines.enbridge.runner:scrape_today:92 - scrapeToday - today=datetime.datetime(2026, 3, 15, 9, 17, 11, 389319)
+2026-03-15 09:17:11.392 | INFO     | app.pipelines.enbridge.scraper:scrape:86 - MNUS → long-way (configured)
+2026-03-15 09:18:03.992 | INFO     | app.pipelines.enbridge.runner:scrape_today:98 - scrapeToday - NN today=datetime.datetime(2026, 3, 15, 9, 17, 11, 389319)
+2026-03-15 09:18:09.853 | INFO     | app.pipelines.enbridge.scraper:_scrape_nn_single_tracked:243 - TE - 5.86s ---------------
+2026-03-15 09:18:10.033 | INFO     | app.pipelines.enbridge.scraper:_scrape_nn_single_tracked:243 - AG - 6.04s ---------------
+2026-03-15 09:18:23.465 | INFO     | app.pipelines.enbridge.gold_munger:clean_directories:81 - Cleanup skipped (disabled for testing)
+2026-03-15 09:18:23.466 | INFO     | app.pipelines.enbridge.runner:scrape_today:107 - *************** completed in 124.54s ***************
+2026-03-15 09:18:23.468 | INFO     | app.reporter:generate_report:338 - Audit report written to /Users/saijagadeeshyadavalli/Coding/Particles/GasFundies/GFScrapePackage/reports/2026-03-15/audit_20260315_091823.html

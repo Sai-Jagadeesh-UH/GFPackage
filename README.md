@@ -1,6 +1,6 @@
 # GFScrapePackage
 
-Async web scraper for Enbridge gas pipeline data — Operational Availability (OA), Operational Capacity (OC), and No-Notice (NN). Processes data through a medallion architecture (bronze → silver → gold) and pushes to Azure Blob Storage and Delta Lake.
+Async web scraper for Enbridge gas pipeline data across four dataset types: **OA** (Operational Capacity), **SG** (Segment Capacity), **ST** (Storage Capacity), and **NN** (No Notice Activity). Processes data through a medallion architecture (bronze → silver → gold) and pushes to Azure Blob Storage and Delta Lake.
 
 ## Quick Start
 

@@ -1,12 +1,12 @@
 """Enbridge scraper — implements BasePipeScraper.
 
-Handles OA, OC, NN, and metadata scraping using Playwright browser
+Handles OA, SG, ST, NN, and metadata scraping using Playwright browser
 automation against rtba.enbridge.com and infopost.enbridge.com.
 
 Scrape flow per pipe:
-  1. Try short-way (rtba) for OA + OC
-  2. On failure, fall back to long-way (infopost) for OA + OC
-  3. NN scraped separately (sequential, different URL pattern)
+  1. Try short-way (rtba) for OA + SG + ST
+  2. On failure, fall back to long-way (infopost) for OA + SG + ST
+  3. NN scraped separately (concurrent, different URL pattern)
   4. Metadata downloaded via direct HTTP (no browser needed)
 
 Retry strategy: tenacity with 3 attempts, exponential backoff (2s base).
@@ -75,7 +75,7 @@ class EnbridgeScraper(BasePipeScraper):
         scrape_date: datetime,
         headless: bool = True,
     ) -> list[ScrapeResult]:
-        """Scrape OA and OC for a single pipe on a single date."""
+        """Scrape OA, SG, ST, and NN for a single pipe on a single date."""
         target_date = min(scrape_date, datetime.today())
         results: list[ScrapeResult] = []
 
@@ -158,15 +158,15 @@ class EnbridgeScraper(BasePipeScraper):
         scrape_date: datetime,
         headless: bool = True,
     ) -> list[ScrapeResult]:
-        """Scrape OA/OC for all pipes concurrently using TaskGroup."""
+        """Scrape OA/SG/ST for all pipes concurrently using TaskGroup."""
         target_date = min(scrape_date, datetime.today())
         results: list[ScrapeResult] = []
 
         async with asyncio.TaskGroup() as group:
             tasks = []
             for pc in pipe_configs:
-                # Skip pipes without OA or OC
-                if not pc.has_oa and not pc.has_oc:
+                # Skip pipes without any capacity data
+                if not pc.has_oa and not pc.has_sg and not pc.has_st:
                     continue
                 # WE not available before cutoff
                 if pc.pipe_code == "WE" and scrape_date < datetime.strptime(
@@ -321,11 +321,23 @@ class EnbridgeScraper(BasePipeScraper):
             if pc.has_oa:
                 await self._download_oa(page)
 
-            # OC download
-            if pc.has_oc:
-                oc_maps = page.get_by_text(cfg.OC_MAPS_TEXT)
-                if oc_maps:
-                    await self._scrape_oc(
+            # ST (Storage Capacity) download — same structure as OA, different URL type
+            if pc.has_st:
+                await page.goto(cfg.rtba_url(pc.pipe_code, "ST"))
+                st_date_box = (
+                    page.get_by_text(cfg.DATE_BOX_LABEL)
+                    .locator("xpath=./following-sibling::div")
+                    .get_by_role("textbox")
+                    .nth(0)
+                )
+                await fill_date_box(page, st_date_box, target_date)
+                await self._download_st(page)
+
+            # SG (Segment Capacity) download
+            if pc.has_sg:
+                sg_maps = page.get_by_text(cfg.SG_MAPS_TEXT)
+                if sg_maps:
+                    await self._scrape_sg(
                         mainpage=page,
                         pipecode=pc.pipe_code,
                         scrape_date=target_date,
@@ -357,10 +369,13 @@ class EnbridgeScraper(BasePipeScraper):
             if pc.has_oa:
                 await self._download_oa(page, iframe)
 
-            if pc.has_oc:
-                oc_maps = iframe.get_by_text(cfg.OC_MAPS_TEXT)
-                if oc_maps:
-                    await self._scrape_oc(
+            if pc.has_st:
+                await self._download_st(page, iframe)
+
+            if pc.has_sg:
+                sg_maps = iframe.get_by_text(cfg.SG_MAPS_TEXT)
+                if sg_maps:
+                    await self._scrape_sg(
                         mainpage=page,
                         pipecode=pc.pipe_code,
                         scrape_date=target_date,
@@ -387,19 +402,34 @@ class EnbridgeScraper(BasePipeScraper):
             logger.error("OA download failed")
             raise ValueError("OA download failed")
 
+    async def _download_st(self, page, iframe=None) -> None:
+        """Download ST (Storage Capacity) CSV via the 'Downloadable Format' link."""
+        try:
+            frame = iframe or page
+            async with page.expect_download() as download_info:
+                await frame.get_by_role("link", name=cfg.DOWNLOAD_LINK_NAME).click()
+
+            download = await download_info.value
+            await download.save_as(
+                self._paths.st_raw / download.suggested_filename
+            )
+        except Exception:
+            logger.error("ST download failed")
+            raise ValueError("ST download failed")
+
     # ------------------------------------------------------------------
-    # Private: OC scrape (multiple segments)
+    # Private: SG scrape (multiple segments)
     # ------------------------------------------------------------------
 
-    async def _scrape_oc(
+    async def _scrape_sg(
         self, mainpage, pipecode: str, scrape_date: datetime, iframe=None
     ) -> None:
-        """Scrape all OC segments — short-way first, fallback to refresh per segment."""
+        """Scrape all SG segments — short-way first, fallback to refresh per segment."""
         try:
             frame = iframe or mainpage
 
             div_items = (
-                frame.get_by_text(cfg.OC_MAPS_TEXT)
+                frame.get_by_text(cfg.SG_MAPS_TEXT)
                 .locator("xpath=./following-sibling::div")
                 .get_by_role("link")
             )
@@ -424,20 +454,20 @@ class EnbridgeScraper(BasePipeScraper):
                         pipecode
                         + "_"
                         + download.suggested_filename.split("_", 1)[1]
-                    ).replace("_OA_", f"_OC{count}_")
+                    ).replace("_OA_", f"_SG{count}_")
 
-                    await download.save_as(self._paths.oc_raw / filename)
+                    await download.save_as(self._paths.sg_raw / filename)
                     await asyncio.sleep(1)
 
                     async with mainpage.expect_navigation():
                         await mainpage.go_back()
 
                 except Exception:
-                    if ele_text in cfg.OC_SKIP_SEGMENTS:
+                    if ele_text in cfg.SG_SKIP_SEGMENTS:
                         pass
                     else:
                         for remaining_text in text_list[max(0, count - 1):]:
-                            await self._oc_refresh_dump(
+                            await self._sg_refresh_dump(
                                 pipecode, mainpage, remaining_text, scrape_date
                             )
                             await asyncio.sleep(1)
@@ -446,14 +476,14 @@ class EnbridgeScraper(BasePipeScraper):
         except Exception as e:
             track_fail(
                 self._paths.fail_file,
-                f"{pipecode}|OC|{scrape_date:%Y/%m/%d}\n",
+                f"{pipecode}|SG|{scrape_date:%Y/%m/%d}\n",
             )
-            logger.error(f"{pipecode} | OC scrape failed: {e}")
+            logger.error(f"{pipecode} | SG scrape failed: {e}")
 
-    async def _oc_refresh_dump(
+    async def _sg_refresh_dump(
         self, pipecode: str, mainpage, get_by_text: str, scrape_date: datetime
     ) -> None:
-        """Long-way OC download: navigate from home, click segment, download CSV."""
+        """Long-way SG download: navigate from home, click segment, download CSV."""
         target_date = min(scrape_date, datetime.today())
 
         try:
@@ -484,18 +514,18 @@ class EnbridgeScraper(BasePipeScraper):
                 + download.suggested_filename.split("_", 1)[1]
             ).replace(
                 "_OA_",
-                f"_OC{get_by_text.replace('/', '').replace(' ', '')}_",
+                f"_SG{get_by_text.replace('/', '').replace(' ', '')}_",
             )
 
-            await download.save_as(self._paths.oc_raw / filename)
+            await download.save_as(self._paths.sg_raw / filename)
             await asyncio.sleep(1)
 
         except Exception as e:
             track_fail(
                 self._paths.fail_file,
-                f"{pipecode}|OC|{target_date:%Y/%m/%d}\n",
+                f"{pipecode}|SG|{target_date:%Y/%m/%d}\n",
             )
-            logger.error(f"{pipecode} | OC segment '{get_by_text}' failed: {e}")
+            logger.error(f"{pipecode} | SG segment '{get_by_text}' failed: {e}")
 
     # ------------------------------------------------------------------
     # Private: NN scrape

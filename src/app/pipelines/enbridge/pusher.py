@@ -44,16 +44,20 @@ class EnbridgePusher(BasePusher):
         name = file_path.name
 
         if dataset_type == RowType.OA:
-            pipe_code, _, eff_date, _ = name.split("_", 3)
-            return cfg.oa_bronze_blob_path(pipe_code, eff_date, name)
+            _, _, eff_date, _ = name.split("_", 3)
+            return cfg.oa_bronze_blob_path(eff_date, name)
 
-        elif dataset_type in (RowType.OC, RowType.SG):
-            pipe_code, _, eff_date, _ = name.split("_", 3)
-            return cfg.oc_bronze_blob_path(pipe_code, eff_date, name)
+        elif dataset_type == RowType.SG:
+            _, _, eff_date, _ = name.split("_", 3)
+            return cfg.sg_bronze_blob_path(eff_date, name)
+
+        elif dataset_type == RowType.ST:
+            _, _, eff_date, _ = name.split("_", 3)
+            return cfg.st_bronze_blob_path(eff_date, name)
 
         elif dataset_type == RowType.NN:
-            pipe_code, _, eff_date = name.split("_")
-            return cfg.nn_bronze_blob_path(pipe_code, eff_date, name)
+            _, _, eff_date = name.split("_")
+            return cfg.nn_bronze_blob_path(eff_date, name)
 
         elif dataset_type == RowType.META:
             return cfg.meta_bronze_blob_path(name)
@@ -66,16 +70,20 @@ class EnbridgePusher(BasePusher):
         name = file_path.name
 
         if dataset_type == RowType.OA:
-            pipe_code, _, eff_date, _ = name.split("_", 3)
-            return cfg.oa_silver_blob_path(pipe_code, eff_date, name)
+            _, _, eff_date, _ = name.split("_", 3)
+            return cfg.oa_silver_blob_path(eff_date, name)
 
-        elif dataset_type in (RowType.OC, RowType.SG):
-            pipe_code, _, eff_date, _ = name.split("_", 3)
-            return cfg.oc_silver_blob_path(pipe_code, eff_date, name)
+        elif dataset_type == RowType.SG:
+            _, _, eff_date, _ = name.split("_", 3)
+            return cfg.sg_silver_blob_path(eff_date, name)
+
+        elif dataset_type == RowType.ST:
+            _, _, eff_date, _ = name.split("_", 3)
+            return cfg.st_silver_blob_path(eff_date, name)
 
         elif dataset_type == RowType.NN:
-            pipe_code, _, eff_date = name.split("_")
-            return cfg.nn_silver_blob_path(pipe_code, eff_date, name)
+            _, _, eff_date = name.split("_")
+            return cfg.nn_silver_blob_path(eff_date, name)
 
         else:
             return f"Enbridge/other/{name}"
@@ -116,11 +124,10 @@ class EnbridgePusher(BasePusher):
     async def push_all(
         self, silver_munger, pipe_configs_df, stats: RunStats | None = None
     ) -> None:
-        """Full push pipeline: raw meta → (OA + OC + NN in parallel) → gold → cleanup.
+        """Full push pipeline: raw meta → (OA + SG + ST + NN in parallel) → gold → cleanup.
 
-        This replicates the original pushEnbridge() orchestration:
         1. Push raw metadata to bronze
-        2. In parallel: for each of OA, OC, NN:
+        2. In parallel: for each of OA, SG, ST, NN:
            a. Push raw to bronze
            b. Process silver (cleanse)
            c. Push silver
@@ -131,13 +138,16 @@ class EnbridgePusher(BasePusher):
         # Push raw metadata
         await self.push_bronze(self._paths.meta_raw, RowType.META)
 
-        # Process and push OA, OC, NN in parallel
+        # Process and push OA, SG, ST, NN in parallel
         async with asyncio.TaskGroup() as group:
             oa_task = group.create_task(
                 self._push_dataset(silver_munger, pipe_configs_df, RowType.OA)
             )
-            oc_task = group.create_task(
-                self._push_dataset(silver_munger, pipe_configs_df, RowType.OC)
+            sg_task = group.create_task(
+                self._push_dataset(silver_munger, pipe_configs_df, RowType.SG)
+            )
+            st_task = group.create_task(
+                self._push_dataset(silver_munger, pipe_configs_df, RowType.ST)
             )
             nn_task = group.create_task(
                 self._push_dataset(silver_munger, pipe_configs_df, RowType.NN)
@@ -145,7 +155,7 @@ class EnbridgePusher(BasePusher):
 
         # Collect dataset details into stats
         if stats is not None:
-            for task in (oa_task, oc_task, nn_task):
+            for task in (oa_task, sg_task, st_task, nn_task):
                 for detail in task.result():
                     stats.add_dataset_detail(detail)
 
@@ -153,7 +163,8 @@ class EnbridgePusher(BasePusher):
         gold_munger = EnbridgeGoldMunger(self._paths)
         gold_df = await gold_munger.merge({
             RowType.OA: self._paths.silver_dir(RowType.OA),
-            RowType.OC: self._paths.silver_dir(RowType.OC),
+            RowType.SG: self._paths.silver_dir(RowType.SG),
+            RowType.ST: self._paths.silver_dir(RowType.ST),
             RowType.NN: self._paths.silver_dir(RowType.NN),
         })
         await self.push_gold(gold_df)
@@ -222,7 +233,8 @@ class EnbridgePusher(BasePusher):
         enb_df = pipe_configs_df[pipe_configs_df["ParentPipe"] == cfg.PARENT_PIPE]
         code_col = {
             RowType.OA: "PointCapCode",
-            RowType.OC: "SegmentCapCode",
+            RowType.SG: "SegmentCapCode",
+            RowType.ST: "StorageCapCode",
             RowType.NN: "NoNoticeCode",
         }.get(dataset_type)
         expected_pipes: set[str] = set()
@@ -234,7 +246,7 @@ class EnbridgePusher(BasePusher):
         # Build details with actual ADLS file paths
         all_pipes = expected_pipes | set(raw_counts) | set(silver_counts)
         details: list[DatasetDetail] = []
-        new_locs = silver_munger.new_oc_locations if dataset_type == RowType.OC else 0
+        new_locs = silver_munger.new_sg_locations if dataset_type == RowType.SG else 0
         for pipe_code in sorted(all_pipes):
             is_missing = pipe_code in expected_pipes and pipe_code not in raw_counts
             details.append(DatasetDetail(
@@ -242,7 +254,7 @@ class EnbridgePusher(BasePusher):
                 pipe_code=pipe_code,
                 raw_records=raw_counts.get(pipe_code, 0),
                 silver_records=silver_counts.get(pipe_code, 0),
-                new_locations=new_locs if dataset_type == RowType.OC else 0,
+                new_locations=new_locs if dataset_type == RowType.SG else 0,
                 raw_paths=raw_blob_files.get(pipe_code, []),
                 silver_paths=silver_blob_files.get(pipe_code, []),
                 missing=is_missing,

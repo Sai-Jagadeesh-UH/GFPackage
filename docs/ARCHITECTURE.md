@@ -33,11 +33,13 @@
 │  downloads/          bronze container   silver container  Delta Lake │
 │  enbridge/           (Azure Blob)       (Azure Blob)     (ADLS)    │
 │  ├─ OA_raw/                                                        │
-│  ├─ OC_raw/          Enbridge/          Enbridge/        goldlayer/ │
-│  ├─ NN_raw/          ├─ PointCapacity/  ├─ PointCapacity/ GFundies │
-│  ├─ MetaData/        ├─ SegmentCapacity/├─ SegmentCapacity/        │
+│  ├─ SG_raw/          Enbridge/          Enbridge/        goldlayer/ │
+│  ├─ ST_raw/          ├─ PointCapacity/  ├─ PointCapacity/ GFundies │
+│  ├─ NN_raw/          ├─ SegmentCapacity/├─ SegmentCapacity/        │
+│  ├─ MetaData/        ├─ StorageCapacity/├─ StorageCapacity/        │
 │  ├─ OA/ (silver)     ├─ NoNotice/       └─ NoNotice/              │
-│  ├─ OC/ (silver)     └─ Metadata/                                  │
+│  ├─ SG/ (silver)     └─ Metadata/                                  │
+│  ├─ ST/ (silver)                                                   │
 │  └─ NN/ (silver)                                                   │
 │                                                                     │
 │  ┌──────────┐    ┌──────────────┐    ┌──────────────────────────┐  │
@@ -141,6 +143,7 @@ EnbridgeGoldMunger ──▶ (Polars merge only, no external deps)
 │  │    └─▶ dump_pipe_configs()     ──▶ Azure Table "PipeConfigs"         │    │
 │  │         └─▶ PipeConfigs.parquet (cached with mtime)                  │    │
 │  │    └─▶ Build [PipeConfig] models from DataFrame rows                 │    │
+│  │         Fields loaded: oa_code, sg_code, st_code, nn_code, meta_code │    │
 │  └──────────────────────────────────────────────────────────────────────┘    │
 │                        │                                                     │
 │                        ▼                                                     │
@@ -152,7 +155,8 @@ EnbridgeGoldMunger ──▶ (Polars merge only, no external deps)
 │  │                                                                      │    │
 │  │  2b. scraper.scrape_all(configs, yesterday)                          │    │
 │  │      └─▶ TaskGroup: scrape(pc, yesterday) for each pipe              │    │
-│  │          └─▶ Playwright: short-way → long-way fallback               │    │
+│  │          └─▶ Playwright: OA + SG + ST per pipe                      │    │
+│  │          └─▶ short-way → long-way fallback                          │    │
 │  │          └─▶ Returns [ScrapeResult]                                  │    │
 │  │                                                                      │    │
 │  │  2c. scraper.scrape_all(configs, today)                              │    │
@@ -172,10 +176,11 @@ EnbridgeGoldMunger ──▶ (Polars merge only, no external deps)
 │  │                                                                      │    │
 │  │  3b. TaskGroup (PARALLEL):                                           │    │
 │  │      ├─ _push_dataset(OA)  ──▶ bronze push → silver munge → silver  │    │
-│  │      ├─ _push_dataset(OC)      push → collect DatasetDetail          │    │
+│  │      ├─ _push_dataset(SG)      push → collect DatasetDetail          │    │
+│  │      ├─ _push_dataset(ST)                                           │    │
 │  │      └─ _push_dataset(NN)                                           │    │
 │  │                                                                      │    │
-│  │  3c. gold_munger.merge(OA + OC + NN silver dirs)                     │    │
+│  │  3c. gold_munger.merge(OA + SG + ST + NN silver dirs)               │    │
 │  │      └─▶ Polars concat + dedup → gold DataFrame                     │    │
 │  │                                                                      │    │
 │  │  3d. push_gold(gold_df)                                              │    │
@@ -216,14 +221,16 @@ EnbridgeGoldMunger ──▶ (Polars merge only, no external deps)
 │                  │               │                   │
 │ infopost.        │               │ rtba.enbridge.com │
 │ enbridge.com     │               │                   │
-│ ├─ Navigate home │               │ ├─ goto rtba_url  │
+│ ├─ Navigate home │               │ ├─ goto OA URL    │
 │ ├─ Click Capacity│               │ ├─ fill_date_box  │
 │ ├─ Click OA link │               │ ├─ _download_oa() │
-│ ├─ Access iframe │               │ └─ _scrape_oc()   │
-│ ├─ fill_date_box │               └────────┬──────────┘
-│ ├─ _download_oa()│                        │
-│ └─ _scrape_oc()  │                  FAILS │ (timeout, etc.)
+│ ├─ Access iframe │               │ ├─ goto ST URL    │
+│ ├─ fill_date_box │               │ ├─ fill_date_box  │
+│ ├─ _download_oa()│               │ ├─ _download_st() │
+│ ├─ _download_st()│               │ └─ _scrape_sg()   │
+│ └─ _scrape_sg()  │               └────────┬──────────┘
 └────────┬─────────┘                        │
+         │                                  │ FAILS (timeout, etc.)
          │                                  ▼
          │                       ┌──────────────────┐
          │                       │ _scrape_long_way  │
@@ -259,14 +266,14 @@ EnbridgeGoldMunger ──▶ (Polars merge only, no external deps)
     └─────────────────────────────────────────────────┘
 ```
 
-### OC Segment Scraping Detail
+### SG Segment Scraping Detail
 
 ```
-_scrape_oc(mainpage, pipecode, date, iframe?)
+_scrape_sg(mainpage, pipecode, date, iframe?)
                     │
                     ▼
          ┌────────────────────┐
-         │ Get OC segment     │
+         │ Get SG segment     │
          │ links from page    │
          │ (text_list)        │
          └─────────┬──────────┘
@@ -294,13 +301,13 @@ _scrape_oc(mainpage, pipecode, date, iframe?)
          ▼
   ┌────────────────────────┐
   │ Skip if in             │
-  │ OC_SKIP_SEGMENTS?      │
+  │ SG_SKIP_SEGMENTS?      │
   └──┬──────────┬──────────┘
   YES│          │ NO
      │          │
      ▼          ▼
   (skip)  ┌─────────────────────┐
-          │ _oc_refresh_dump()  │
+          │ _sg_refresh_dump()  │
           │ for remaining segs  │
           │                     │
           │ ├─ Re-navigate home │
@@ -317,42 +324,41 @@ _scrape_oc(mainpage, pipecode, date, iframe?)
 ```
 pusher.push_all(silver_munger, pipe_configs_df, stats)
                     │
-    ┌───────────────┼────────────────────────────────────────┐
-    │               │                                        │
-    ▼               ▼                                        ▼
- ┌────────┐   ┌─────────────────────────────────────┐   ┌──────────┐
- │ BRONZE │   │          TaskGroup (PARALLEL)        │   │   GOLD   │
- │ META   │   │                                     │   │          │
- │        │   │  ┌─────────┐ ┌─────────┐ ┌────────┐│   │          │
- │push_   │   │  │_push_   │ │_push_   │ │_push_  ││   │          │
- │bronze( │   │  │dataset( │ │dataset( │ │dataset(││   │          │
- │meta_raw│   │  │  OA)    │ │  OC)    │ │  NN)   ││   │          │
- │ META)  │   │  └────┬────┘ └────┬────┘ └───┬────┘│   │          │
- └────────┘   │       │          │           │      │   │          │
-              └───────┼──────────┼───────────┼──────┘   │          │
-                      │          │           │          │          │
-                      └──────────┼───────────┘          │          │
-                                 │                      │          │
-                      ┌──────────▼──────────┐           │          │
-                      │  Collect            │           │          │
-                      │  DatasetDetail      │           │          │
-                      │  into stats         │           │          │
-                      └──────────┬──────────┘           │          │
-                                 │                      │          │
-                                 ▼                      │          │
-                      ┌──────────────────────┐          │          │
-                      │ gold_munger.merge()  │──────────┘          │
-                      │ OA + OC + NN silver  │                     │
-                      │ → gold DataFrame     │                     │
-                      └──────────┬───────────┘                     │
-                                 │                                 │
-                                 ▼                                 │
-                      ┌──────────────────────┐                     │
-                      │ push_gold(gold_df)   │◀────────────────────┘
-                      │ └─ LakeMerge()       │
-                      │    └─ Delta Lake     │
-                      │       upsert         │
-                      └──────────────────────┘
+    ┌───────────────┼──────────────────────────────────────────────┐
+    │               │                                              │
+    ▼               ▼                                              ▼
+ ┌────────┐   ┌──────────────────────────────────────────┐   ┌──────────┐
+ │ BRONZE │   │          TaskGroup (PARALLEL)             │   │   GOLD   │
+ │ META   │   │                                          │   │          │
+ │        │   │  ┌──────┐ ┌──────┐ ┌──────┐ ┌────────┐  │   │          │
+ │push_   │   │  │_push_│ │_push_│ │_push_│ │_push_  │  │   │          │
+ │bronze( │   │  │data( │ │data( │ │data( │ │data(   │  │   │          │
+ │meta_raw│   │  │ OA)  │ │ SG)  │ │ ST)  │ │ NN)    │  │   │          │
+ │ META)  │   │  └──┬───┘ └──┬───┘ └──┬───┘ └───┬────┘  │   │          │
+ └────────┘   │     │        │        │          │       │   │          │
+              └─────┼────────┼────────┼──────────┼───────┘   │          │
+                    └────────┴────────┴──────────┘           │          │
+                                      │                      │          │
+                           ┌──────────▼──────────┐           │          │
+                           │  Collect            │           │          │
+                           │  DatasetDetail      │           │          │
+                           │  into stats         │           │          │
+                           └──────────┬──────────┘           │          │
+                                      │                      │          │
+                                      ▼                      │          │
+                           ┌──────────────────────┐          │          │
+                           │ gold_munger.merge()  │──────────┘          │
+                           │ OA + SG + ST + NN    │                     │
+                           │ silver → gold df     │                     │
+                           └──────────┬───────────┘                     │
+                                      │                                 │
+                                      ▼                                 │
+                           ┌──────────────────────┐                     │
+                           │ push_gold(gold_df)   │◀────────────────────┘
+                           │ └─ LakeMerge()       │
+                           │    └─ Delta Lake     │
+                           │       upsert         │
+                           └──────────────────────┘
 
 
 _push_dataset(dataset_type) — Internal Detail:
@@ -388,11 +394,14 @@ _push_dataset(dataset_type) — Internal Detail:
 
 ### Blob Path Patterns
 
+> Note: Paths do **not** include `PipeCode` — files are stored flat within the month folder.
+
 | Type | Bronze Path | Silver Path |
 |------|-------------|-------------|
-| OA | `Enbridge/PointCapacity/{YYYYMM}/{PipeCode}/{filename}.csv` | `Enbridge/PointCapacity/{YYYYMM}/{PipeCode}/{filename}.parquet` |
-| OC | `Enbridge/SegmentCapacity/{YYYYMM}/{PipeCode}/{filename}.csv` | `Enbridge/SegmentCapacity/{YYYYMM}/{PipeCode}/{filename}.parquet` |
-| NN | `Enbridge/NoNotice/{YYYY}/{PipeCode}/{filename}.csv` | `Enbridge/NoNotice/{YYYY}/{PipeCode}/{filename}.parquet` |
+| OA | `Enbridge/PointCapacity/{YYYYMM}/{filename}.csv` | `Enbridge/PointCapacity/{YYYYMM}/{filename}.parquet` |
+| SG | `Enbridge/SegmentCapacity/{YYYYMM}/{filename}.csv` | `Enbridge/SegmentCapacity/{YYYYMM}/{filename}.parquet` |
+| ST | `Enbridge/StorageCapacity/{YYYYMM}/{filename}.csv` | `Enbridge/StorageCapacity/{YYYYMM}/{filename}.parquet` |
+| NN | `Enbridge/NoNotice/{YYYY}/{filename}.csv` | `Enbridge/NoNotice/{YYYY}/{filename}.parquet` |
 | META | `Enbridge/Metadata/{filename}.csv` | *(not pushed to silver)* |
 
 ---
@@ -402,66 +411,67 @@ _push_dataset(dataset_type) — Internal Detail:
 ```
 silver_munger.process(raw_dir, silver_dir, dataset_type, pipe_configs_df)
                               │
-                ┌─────────────┼─────────────┬───────────────┐
-                │             │             │               │
-                ▼             ▼             ▼               ▼
-           ┌────────┐   ┌────────┐   ┌────────┐     ┌──────────┐
-           │   OA   │   │   OC   │   │   NN   │     │   META   │
-           └────┬───┘   └────┬───┘   └────┬───┘     └────┬─────┘
-                │            │            │               │
-                ▼            ▼            ▼               ▼
-        ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌───────────┐
-        │CSV → PQ  │  │CSV → PQ  │  │CSV → PQ  │  │CSV → PQ   │
-        │(add      │  │(extract  │  │(add      │  │(combine   │
-        │PipeCode) │  │date from │  │PipeCode) │  │all pipes) │
-        └────┬─────┘  │filename) │  └────┬─────┘  └────┬──────┘
-             │        └────┬─────┘       │              │
-             ▼             │             ▼              ▼
-        ┌──────────┐       │        ┌──────────┐  ┌───────────┐
-        │TaskGroup │       │        │TaskGroup │  │Query Azure│
-        │_cleanse_ │       ▼        │_cleanse_ │  │Metadata   │
-        │oa()      │  ┌──────────┐  │nn()      │  │Table      │
-        │          │  │dump_     │  │          │  │Upsert new │
-        │          │  │segment_  │  │          │  │rows       │
-        │          │  │configs() │  │          │  └───────────┘
-        │          │  └────┬─────┘  │          │
-        │          │       │        │          │
-        └────┬─────┘       ▼        └────┬─────┘
-             │     ┌───────────────┐     │
-             │     │_discover_new_ │     │
-             │     │oc_segments() │     │
-             │     │→ upsert Azure│     │
-             │     │  Table       │     │
-             │     └──────┬───────┘     │
-             │            │             │
-             │            ▼             │
-             │     ┌──────────┐         │
-             │     │TaskGroup │         │
-             │     │_cleanse_ │         │
-             │     │oc()      │         │
-             │     └────┬─────┘         │
-             │          │               │
-             ▼          ▼               ▼
-        ┌───────────────────────────────────┐
-        │      CLEANSE PIPELINE             │
-        │                                   │
-        │  1. pl.scan_parquet(file)          │
-        │  2. Select raw columns            │
-        │  3. Filter null rows              │
-        │  4. Parse dates, floats           │
-        │  5. Map flow indicators           │
-        │  6. Pad location codes (6 chars)  │
-        │  7. Join pipe_configs (GFPipeID)  │
-        │  8. add_modeling_columns()        │
-        │     ├─ EffGasMonth (YYYYMM int)   │
-        │     ├─ GFLocID                    │
-        │     └─ RowType                    │
-        │  9. compose_gfloc()               │
-        │     └─ GFLOC = GFPipeID|RowType|  │
-        │               GFLocID|FlowInd     │
-        │ 10. Select GOLD_SCHEMA columns    │
-        │ 11. Write parquet (overwrite)     │
-        └───────────────────────────────────┘
+            ┌─────────────────┼──────────────────┬───────────────┐
+            │                 │                  │               │
+            ▼                 ▼                  ▼               ▼
+       ┌────────┐       ┌──────────┐       ┌────────┐     ┌──────────┐
+       │   OA   │       │  SG / ST │       │   NN   │     │   META   │
+       └────┬───┘       └────┬─────┘       └────┬───┘     └────┬─────┘
+            │                │                  │               │
+            ▼                ▼                  ▼               ▼
+    ┌──────────┐     ┌──────────────┐    ┌──────────┐  ┌───────────┐
+    │CSV → PQ  │     │ SG: CSV → PQ │    │CSV → PQ  │  │CSV → PQ   │
+    │(add      │     │ (extract     │    │(add      │  │(combine   │
+    │PipeCode) │     │ date from    │    │PipeCode) │  │all pipes) │
+    └────┬─────┘     │ filename)    │    └────┬─────┘  └────┬──────┘
+         │           │              │         │              │
+         ▼           │ ST: CSV → PQ │         ▼              ▼
+    ┌──────────┐     │ (add PipeCode│    ┌──────────┐  ┌───────────┐
+    │TaskGroup │     │ like OA)     │    │TaskGroup │  │Query Azure│
+    │_cleanse_ │     └──────┬───────┘    │_cleanse_ │  │Metadata   │
+    │oa()      │            │            │nn()      │  │Table      │
+    │          │            ▼            │          │  │Upsert new │
+    │          │    ┌──────────────┐     │          │  │rows       │
+    │          │    │dump_segment_ │     │          │  └───────────┘
+    │          │    │configs()     │     │          │
+    │          │    └──────┬───────┘     │          │
+    └────┬─────┘           │             └────┬─────┘
+         │                 ▼                  │
+         │        ┌────────────────┐          │
+         │        │_discover_new_  │          │
+         │        │sg_segments()   │          │
+         │        │→ upsert Azure  │          │
+         │        │  Table         │          │
+         │        └──────┬─────────┘          │
+         │               │                    │
+         │               ▼                    │
+         │        ┌──────────┐                │
+         │        │TaskGroup │                │
+         │        │_cleanse_ │                │
+         │        │sg()      │                │
+         │        └────┬─────┘                │
+         │             │                      │
+         ▼             ▼                      ▼
+    ┌───────────────────────────────────────────┐
+    │           CLEANSE PIPELINE                │
+    │                                           │
+    │  1. pl.scan_parquet(file)                 │
+    │  2. Select raw columns                    │
+    │  3. Filter null rows                      │
+    │  4. Parse dates, floats                   │
+    │  5. Map flow indicators                   │
+    │  6. Pad location codes (6 chars)          │
+    │  7. Join pipe_configs (GFPipeID)          │
+    │  8. add_modeling_columns(row_type)        │
+    │     ├─ EffGasMonth (YYYYMM int)           │
+    │     ├─ GFLocID                            │
+    │     └─ RowType → "OA" | "SG" | "ST" | "NN"│
+    │  9. compose_gfloc()                       │
+    │     └─ GFLOC = GFPipeID|RowType|          │
+    │               GFLocID|FlowInd             │
+    │ 10. Select GOLD_SCHEMA columns            │
+    │ 11. Write parquet (overwrite)             │
+    └───────────────────────────────────────────┘
 ```
 
 ### Gold Schema
@@ -471,24 +481,24 @@ GOLD_SCHEMA = [
     "EffGasMonth",                    # int: YYYYMM (partition key)
     "GFPipeID",                       # int: 100–999
     "GFLocID",                        # str: padded location ID
-    "RowType",                        # str: OA | STA | NN
+    "RowType",                        # str: OA | SG | ST | NN
     "ParentPipe",                     # str: "Enbridge"
     "PipelineName",                   # str: e.g., "Alliance Pipeline"
     "GFLOC",                          # str: composite key (GFPipeID|RowType|GFLocID|FlowInd)
     "EffGasDay",                      # date: effective gas day
-    "CycleDesc",                      # str: cycle description (OA)
-    "LocPurpDesc",                    # str: location purpose (OA)
+    "CycleDesc",                      # str: cycle description (OA/ST)
+    "LocPurpDesc",                    # str: location purpose (OA/ST)
     "Loc",                            # str: location code (padded 6 chars)
     "LocName",                        # str: location name
-    "LocZn",                          # str: location zone (OA)
-    "LocSegment",                     # str: segment name (OC)
-    "DesignCapacity",                 # float: design capacity (OA)
+    "LocZn",                          # str: location zone (OA/ST)
+    "LocSegment",                     # str: segment name (SG)
+    "DesignCapacity",                 # float: design capacity (OA/ST)
     "OperatingCapacity",              # float: operating capacity
     "TotalScheduledQuantity",         # float: scheduled quantity
-    "OperationallyAvailableCapacity", # float: OA capacity
-    "IT",                             # str: interruptible transport (OA)
+    "OperationallyAvailableCapacity", # float: available capacity
+    "IT",                             # str: interruptible transport (OA/ST)
     "FlowInd",                        # str: D|R|F|B (flow direction)
-    "AllQtyAvail",                    # str: all quantity available (OA)
+    "AllQtyAvail",                    # str: all quantity available (OA/ST)
     "QtyReason",                      # str: accounting indicator (NN)
     "Timestamp",                      # datetime: processing timestamp
 ]
@@ -594,10 +604,10 @@ LakeMerge(df=gold_df, parent_pipe="Enbridge")
 │                                                                      │
 │  LAYER 5: Async Concurrency                                         │
 │  ┌────────────────────────────────────────────────────────────────┐  │
-│  │ • All OA/OC pipes scraped concurrently (asyncio.TaskGroup)    │  │
+│  │ • All OA/SG/ST pipes scraped concurrently (asyncio.TaskGroup) │  │
 │  │ • All NN pipes scraped concurrently (asyncio.TaskGroup)       │  │
 │  │ • Metadata downloads concurrent (asyncio.TaskGroup)           │  │
-│  │ • Push OA/OC/NN in parallel (asyncio.TaskGroup)              │  │
+│  │ • Push OA/SG/ST/NN in parallel (asyncio.TaskGroup)           │  │
 │  │ • Individual pipe failure doesn't block other pipes           │  │
 │  └────────────────────────────────────────────────────────────────┘  │
 │                                                                      │
@@ -644,27 +654,28 @@ LakeMerge(df=gold_df, parent_pipe="Enbridge")
 | `scrape_someday` | `(scrape_day) → RunStats` | Single date + push |
 | `scrape_historic` | `(start?, end?) → RunStats` | Parallel backfill + push |
 | `scrape_failed_dates` | `() → RunStats` | Re-scrape from fails CSV |
-| `_load_pipe_configs` | `() → (DataFrame, [PipeConfig])` | Load from Azure Table |
+| `_load_pipe_configs` | `() → (DataFrame, [PipeConfig])` | Load from Azure Table; maps PointCapCode→oa_code, SegmentCapCode→sg_code, StorageCapCode→st_code |
 
 ### 9.4 EnbridgeScraper — `src/app/pipelines/enbridge/scraper.py`
 
 | Method | Signature | Description |
 |--------|-----------|-------------|
-| `scrape` | `(pipe_config, date, headless) → [ScrapeResult]` | Single pipe OA+OC with retry |
-| `scrape_all` | `(configs, date, headless) → [ScrapeResult]` | All pipes concurrent |
+| `scrape` | `(pipe_config, date, headless) → [ScrapeResult]` | Single pipe OA+SG+ST with retry |
+| `scrape_all` | `(configs, date, headless) → [ScrapeResult]` | All pipes concurrent (TaskGroup) |
 | `scrape_metadata` | `(configs) → None` | HTTP download metadata CSVs |
-| `scrape_nn` | `(configs, date, headless) → [ScrapeResult]` | All NN pipes concurrent |
-| `_scrape_short_way_with_retry` | `(pc, date, headless) → None` | Retry wrapper (3x) |
-| `_scrape_long_way_with_retry` | `(pc, date, headless) → None` | Retry wrapper (3x) |
-| `_scrape_nn_with_retry` | `(nn_code, date, headless) → None` | Retry wrapper (3x) |
-| `_scrape_short_way` | `(pc, date, headless) → None` | rtba.enbridge.com scrape |
-| `_scrape_long_way` | `(pc, date, headless) → None` | infopost.enbridge.com scrape |
-| `_download_oa` | `(page, iframe?) → None` | Click download link, save CSV |
-| `_scrape_oc` | `(page, pipecode, date, iframe?) → None` | Iterate OC segments |
-| `_oc_refresh_dump` | `(pipecode, page, text, date) → None` | Long-way OC fallback |
+| `scrape_nn` | `(configs, date, headless) → [ScrapeResult]` | All NN pipes concurrent (TaskGroup) |
+| `_scrape_short_way_with_retry` | `(pc, date, headless) → None` | Retry wrapper (3x, exponential) |
+| `_scrape_long_way_with_retry` | `(pc, date, headless) → None` | Retry wrapper (3x, exponential) |
+| `_scrape_nn_with_retry` | `(nn_code, date, headless) → None` | Retry wrapper (3x, exponential) |
+| `_scrape_short_way` | `(pc, date, headless) → None` | rtba.enbridge.com: OA + ST + SG |
+| `_scrape_long_way` | `(pc, date, headless) → None` | infopost.enbridge.com: OA + ST + SG |
+| `_download_oa` | `(page, iframe?) → None` | Click download link, save to OA_raw/ |
+| `_download_st` | `(page, iframe?) → None` | Click download link, save to ST_raw/ |
+| `_scrape_sg` | `(page, pipecode, date, iframe?) → None` | Iterate SG segments, save to SG_raw/ |
+| `_sg_refresh_dump` | `(pipecode, page, text, date) → None` | Long-way SG segment fallback |
 | `_scrape_nn_single` | `(nn_code, date, headless) → None` | Single NN pipe scrape |
-| `_download_file_with_retry` | `(url, path) → None` | HTTP download with retry |
-| `_download_file` | `(url, path) → None` | Raw HTTP GET to file |
+| `_download_file_with_retry` | `(url, path) → None` | HTTP download with retry (3x) |
+| `_download_file` | `(url, path) → None` | Raw HTTP GET to file (aiohttp) |
 
 ### 9.5 EnbridgeSilverMunger — `src/app/pipelines/enbridge/silver_munger.py`
 
@@ -672,32 +683,37 @@ LakeMerge(df=gold_df, parent_pipe="Enbridge")
 |--------|-----------|-------------|
 | `process` | `(raw_dir, silver_dir, type, df) → [str]` | Route to type-specific processor |
 | `cleanse` | `(file_path, type, **kwargs) → None` | Route to type-specific cleanser |
-| `_process_oa` | `(raw_dir, silver_dir, df) → [str]` | CSV→PQ, then cleanse OA |
-| `_cleanse_oa` | `(file, df) → None` | Parse dates/floats, map flows, GFLOC |
-| `_process_oc` | `(raw_dir, silver_dir, df) → [str]` | CSV→PQ, discover segments, cleanse |
-| `_cleanse_oc` | `(file, seg_df, pipe_df) → None` | TD1/TD2 split, capacity calc |
-| `_process_nn` | `(raw_dir, silver_dir, df) → [str]` | CSV→PQ, then cleanse NN |
-| `_cleanse_nn` | `(file, df) → None` | Parse dates, map flows, GFLOC |
+| `_process_oa` | `(raw_dir, silver_dir, df) → [str]` | CSV→PQ (add PipeCode), then TaskGroup _cleanse_oa |
+| `_cleanse_oa` | `(file, df) → None` | Parse dates/floats, map flows, RowType="OA", GFLOC |
+| `_process_sg` | `(raw_dir, silver_dir, df) → [str]` | CSV→PQ (extract date from filename), discover segments, cleanse |
+| `_cleanse_sg` | `(file, seg_df, pipe_df) → None` | TD1/TD2 split, capacity calc, RowType="SG" |
+| `_process_st` | `(raw_dir, silver_dir, df) → [str]` | CSV→PQ (add PipeCode), then TaskGroup _cleanse_st |
+| `_cleanse_st` | `(file, df) → None` | Same pipeline as OA, RowType="ST" |
+| `_process_nn` | `(raw_dir, silver_dir, df) → [str]` | CSV→PQ (add PipeCode), then TaskGroup _cleanse_nn |
+| `_cleanse_nn` | `(file, df) → None` | Parse dates, map flows, RowType="NN", GFLOC |
 | `_process_meta` | `(raw_dir, df) → None` | Combine, dedupe, upsert Azure Table |
+| `_sg_csv_to_parquet` | `(raw_dir, silver_dir) → [str]` | Extract pipe_code/eff_date/cycle from filename |
+| `_discover_new_sg_segments` | `(sg_df, cfg_df, pipe_df) → [dict]` | Find station names not in SegmentConfigs |
 
 ### 9.6 EnbridgeGoldMunger — `src/app/pipelines/enbridge/gold_munger.py`
 
 | Method | Signature | Description |
 |--------|-----------|-------------|
-| `merge` | `(silver_dirs: dict) → DataFrame` | Concat OA+OC+NN, dedupe, timestamp |
+| `merge` | `(silver_dirs: dict[RowType, Path]) → DataFrame` | Concat OA+SG+ST+NN, dedupe, fresh Timestamp |
+| `discover_locations` | `(gold_df, seg_df, pipe_df) → None` | No-op — SG location discovery done in silver_munger |
 | `clean_directories` | `() → None` | Cleanup downloads (disabled for testing) |
 
 ### 9.7 EnbridgePusher — `src/app/pipelines/enbridge/pusher.py`
 
 | Method | Signature | Description |
 |--------|-----------|-------------|
-| `bronze_blob_path` | `(type, file) → str` | Construct bronze blob path |
-| `silver_blob_path` | `(type, file) → str` | Construct silver blob path |
-| `push_bronze` | `(dir, type) → None` | Upload to bronze container |
-| `push_silver` | `(dir, type) → None` | Upload to silver container |
-| `push_gold` | `(df) → None` | LakeMerge to Delta Lake |
-| `push_all` | `(munger, df, stats?) → None` | Full orchestration |
-| `_push_dataset` | `(munger, df, type) → [DatasetDetail]` | Per-type push with stats |
+| `bronze_blob_path` | `(type, file) → str` | Construct bronze blob path (no pipe_code in path) |
+| `silver_blob_path` | `(type, file) → str` | Construct silver blob path (no pipe_code in path) |
+| `push_bronze` | `(dir, type) → None` | Upload all files in dir to bronze container |
+| `push_silver` | `(dir, type) → None` | Upload all files in dir to silver container |
+| `push_gold` | `(df) → None` | LakeMerge to Delta Lake (offloaded to thread) |
+| `push_all` | `(munger, df, stats?) → None` | META bronze → parallel OA/SG/ST/NN push → gold merge → cleanup |
+| `_push_dataset` | `(munger, df, type) → [DatasetDetail]` | Per-type bronze→silver→count, returns ADLS paths |
 
 ### 9.8 Core Modules
 
@@ -752,10 +768,10 @@ LakeMerge(df=gold_df, parent_pipe="Enbridge")
 
 | Type | Fields | Description |
 |------|--------|-------------|
-| `RowType` | `OA, OC, ST, SG, NN, META` | StrEnum of dataset types |
-| `PipeConfig` | `pipe_code, parent_pipe, pipe_name, gf_pipe_id, *_code` | Pipeline config with computed `has_*` |
+| `RowType` | `OA, SG, ST, NN, META` | StrEnum: OA=Operational Capacity, SG=Segment Capacity, ST=Storage Capacity, NN=No Notice Activity |
+| `PipeConfig` | `pipe_code, parent_pipe, pipe_name, gf_pipe_id, oa_code, sg_code, st_code, nn_code, meta_code` | Pipeline config with computed `has_oa`, `has_sg`, `has_st`, `has_nn`, `has_meta` |
 | `ScrapeResult` | `pipe_code, dataset_type, date, success, duration_s, error` | Single scrape outcome |
-| `DatasetDetail` | `dataset_type, pipe_code, raw_records, silver_records, raw_paths, silver_paths, missing` | Push statistics |
+| `DatasetDetail` | `dataset_type, pipe_code, raw_records, silver_records, raw_paths, silver_paths, missing` | Push statistics with ADLS file URLs |
 | `RunStats` | `pipeline, start_time, end_time, results, dataset_details` | Aggregated run stats with computed totals |
 
 ---

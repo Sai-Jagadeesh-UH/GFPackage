@@ -5,7 +5,8 @@ parquets conforming to the gold schema. Uses shared batch transforms
 from core.transforms and Enbridge-specific column mappings from config.
 
 OA: CSV → parquet with PipeCode → cleanse (date parse, float parse, rename)
-OC: CSV → parquet with PipeCode/EffGasDate/CycleDesc → cleanse (TD1/TD2 split)
+SG: CSV → parquet with PipeCode/EffGasDate/CycleDesc → cleanse (TD1/TD2 split)
+ST: CSV → parquet with PipeCode → cleanse (date parse, float parse, rename)
 NN: CSV → parquet with PipeCode → cleanse (date parse, flow map)
 META: CSV processing and Azure Table upsert
 """
@@ -48,7 +49,7 @@ class EnbridgeSilverMunger(BaseSilverMunger):
             paths: PipelinePaths instance.
         """
         self._paths = paths
-        self.new_oc_locations: int = 0
+        self.new_sg_locations: int = 0
 
     @property
     def parent_pipe(self) -> str:
@@ -68,12 +69,14 @@ class EnbridgeSilverMunger(BaseSilverMunger):
     ) -> list[str]:
         """Convert raw files → silver parquets.
 
-        Dispatches to OA/OC/NN-specific processing logic.
+        Dispatches to OA/SG/ST/NN-specific processing logic.
         """
         if dataset_type == RowType.OA:
             return await self._process_oa(raw_dir, silver_dir, pipe_configs_df)
-        elif dataset_type in (RowType.OC, RowType.SG):
-            return await self._process_oc(raw_dir, silver_dir, pipe_configs_df)
+        elif dataset_type == RowType.SG:
+            return await self._process_sg(raw_dir, silver_dir, pipe_configs_df)
+        elif dataset_type == RowType.ST:
+            return await self._process_st(raw_dir, silver_dir, pipe_configs_df)
         elif dataset_type == RowType.NN:
             return await self._process_nn(raw_dir, silver_dir, pipe_configs_df)
         elif dataset_type == RowType.META:
@@ -90,8 +93,10 @@ class EnbridgeSilverMunger(BaseSilverMunger):
 
         if dataset_type == RowType.OA:
             await self._cleanse_oa(file_path, pipe_configs_df)
-        elif dataset_type in (RowType.OC, RowType.SG):
-            await self._cleanse_oc(file_path, segment_configs_df, pipe_configs_df)
+        elif dataset_type == RowType.SG:
+            await self._cleanse_sg(file_path, segment_configs_df, pipe_configs_df)
+        elif dataset_type == RowType.ST:
+            await self._cleanse_st(file_path, pipe_configs_df)
         elif dataset_type == RowType.NN:
             await self._cleanse_nn(file_path, pipe_configs_df)
 
@@ -201,16 +206,120 @@ class EnbridgeSilverMunger(BaseSilverMunger):
             logger.error(f"cleanseOA failed: {file_path.name} — {e}")
 
     # ------------------------------------------------------------------
-    # OC processing
+    # ST (Storage Capacity) processing — same structure as OA
     # ------------------------------------------------------------------
 
-    async def _process_oc(
+    async def _process_st(
+        self, raw_dir: Path, silver_dir: Path, pipe_configs_df: pd.DataFrame
+    ) -> list[str]:
+        empty_list: list[str] = []
+        try:
+            def _convert_csvs():
+                empties = []
+                for file_path in raw_dir.iterdir():
+                    try:
+                        pipe_code = file_path.name.split("_", 2)[0]
+                        df = pd.read_csv(file_path, header=0)
+                        if len(df) < 1:
+                            empties.append(file_path.name.replace(".csv", ".parquet"))
+                        df.assign(PipeCode=pipe_code).to_parquet(
+                            silver_dir / file_path.name.replace(".csv", ".parquet"),
+                            index=False,
+                        )
+                    except Exception as e:
+                        logger.error(f"ST CSV read failed: {file_path.name} — {e}")
+                return empties
+
+            empty_list = await asyncio.to_thread(_convert_csvs)
+
+            async with asyncio.TaskGroup() as group:
+                for fp in silver_dir.iterdir():
+                    if fp.name not in empty_list:
+                        group.create_task(
+                            self._cleanse_st(fp, pipe_configs_df)
+                        )
+        except Exception as e:
+            logger.error(f"processST failed: {e}")
+
+        return empty_list
+
+    async def _cleanse_st(self, file_path: Path, pipe_configs_df: pd.DataFrame) -> None:
+        try:
+            enb_configs = pipe_configs_df.loc[
+                pipe_configs_df["ParentPipe"] == cfg.PARENT_PIPE,
+                ["GFPipeID", "PipeCode", "PipeName"],
+            ]
+
+            df = (
+                pl.scan_parquet(file_path)
+                .select([*cfg.OA_RAW_COLUMNS, "PipeCode"])
+            )
+            df = filter_all_null(df, cfg.OA_RAW_COLUMNS)
+
+            df = df.with_columns(
+                pl.col("Eff_Gas_Day")
+                .map_batches(
+                    lambda s: batch_date_parse(s, cfg.ST_DATE_FORMAT),
+                    return_dtype=pl.Date,
+                )
+                .alias("EffGasDay"),
+                pl.col("Total_Design_Capacity")
+                .map_batches(batch_float_parse, return_dtype=pl.Float64)
+                .alias("DesignCapacity"),
+                pl.col("Operating_Capacity")
+                .map_batches(batch_float_parse, return_dtype=pl.Float64)
+                .alias("OperatingCapacity"),
+                pl.col("Total_Scheduled_Quantity")
+                .map_batches(batch_float_parse, return_dtype=pl.Float64)
+                .alias("TotalScheduledQuantity"),
+                pl.col("Operationally_Available_Capacity")
+                .map_batches(batch_float_parse, return_dtype=pl.Float64)
+                .alias("OperationallyAvailableCapacity"),
+                pl.col("Flow_Ind_Desc")
+                .map_batches(
+                    lambda s: batch_fi_mapper(s, cfg.ST_FLOW_MAP),
+                    return_dtype=pl.String,
+                )
+                .alias("FlowInd"),
+                pl.lit(datetime.now()).cast(pl.Datetime).alias("Timestamp"),
+                pl.col("Loc")
+                .cast(pl.String)
+                .map_batches(padded_string, return_dtype=pl.String),
+                pl.lit(cfg.PARENT_PIPE).cast(pl.String).alias("ParentPipe"),
+                pl.lit(None).cast(pl.String).alias("QtyReason"),
+                pl.lit(None).cast(pl.String).alias("LocSegment"),
+            ).rename(cfg.OA_RENAME_MAP)
+
+            result = (
+                df.join(
+                    pl.LazyFrame(enb_configs),
+                    on="PipeCode",
+                    how="inner",
+                )
+            )
+            result = add_modeling_columns(result, "ST", cfg.PARENT_PIPE)
+            result = result.with_columns(
+                pl.col("LocZn").cast(pl.String),
+                pl.col("PipeName").cast(pl.String).alias("PipelineName"),
+            )
+            result = compose_gfloc(result)
+            final = result.select(GOLD_SCHEMA)
+            await asyncio.to_thread(lambda: final.collect().write_parquet(file_path))
+
+        except Exception as e:
+            logger.error(f"cleanseST failed: {file_path.name} — {e}")
+
+    # ------------------------------------------------------------------
+    # SG (Segment Capacity) processing
+    # ------------------------------------------------------------------
+
+    async def _process_sg(
         self, raw_dir: Path, silver_dir: Path, pipe_configs_df: pd.DataFrame
     ) -> list[str]:
         await asyncio.to_thread(dump_segment_configs, self._paths.config_files)
 
         try:
-            empty_list = await asyncio.to_thread(self._oc_csv_to_parquet, raw_dir, silver_dir)
+            empty_list = await asyncio.to_thread(self._sg_csv_to_parquet, raw_dir, silver_dir)
 
             configs_df_full = await asyncio.to_thread(
                 pd.read_parquet, self._paths.config_files / "SegmentConfigs.parquet"
@@ -230,10 +339,10 @@ class EnbridgeSilverMunger(BaseSilverMunger):
                 .drop_duplicates(keep="first")
             )
 
-            records_list = self._discover_new_oc_segments(
+            records_list = self._discover_new_sg_segments(
                 oc_df, configs_df, pipe_configs_df
             )
-            self.new_oc_locations = len(records_list)
+            self.new_sg_locations = len(records_list)
 
             if records_list:
                 new_df = pd.DataFrame(records_list)
@@ -265,15 +374,15 @@ class EnbridgeSilverMunger(BaseSilverMunger):
                 for fp in silver_dir.iterdir():
                     if fp.name not in empty_list:
                         group.create_task(
-                            self._cleanse_oc(fp, enb_configs_df, pipe_configs_df)
+                            self._cleanse_sg(fp, enb_configs_df, pipe_configs_df)
                         )
         except Exception as e:
-            logger.error(f"processOC failed: {e}")
+            logger.error(f"processSG failed: {e}")
 
         return empty_list if "empty_list" in dir() else []
 
-    def _oc_csv_to_parquet(self, raw_dir: Path, silver_dir: Path) -> list[str]:
-        """Read raw OC CSVs, convert to parquet with metadata columns."""
+    def _sg_csv_to_parquet(self, raw_dir: Path, silver_dir: Path) -> list[str]:
+        """Read raw SG CSVs, convert to parquet with metadata columns."""
         empty_list: list[str] = []
 
         for file_path in raw_dir.iterdir():
@@ -287,12 +396,12 @@ class EnbridgeSilverMunger(BaseSilverMunger):
                     df = pd.read_csv(
                         file_path,
                         skiprows=1,
-                        usecols=cfg.OC_RAW_COLUMNS,
+                        usecols=cfg.SG_RAW_COLUMNS,
                     )
                     if len(df) < 1:
                         empty_list.append(file_path.name.replace(".csv", ".parquet"))
                 except Exception as e:
-                    logger.error(f"OC CSV read failed: {file_path.name} — {e}")
+                    logger.error(f"SG CSV read failed: {file_path.name} — {e}")
                     continue
 
                 (
@@ -311,17 +420,17 @@ class EnbridgeSilverMunger(BaseSilverMunger):
                     )
                 )
             except Exception as e:
-                logger.error(f"OC file processing failed: {file_path.name} — {e}")
+                logger.error(f"SG file processing failed: {file_path.name} — {e}")
 
         return empty_list
 
-    def _discover_new_oc_segments(
+    def _discover_new_sg_segments(
         self,
         oc_df: pd.DataFrame,
         configs_df: pd.DataFrame,
         pipe_configs_df: pd.DataFrame,
     ) -> list[dict]:
-        """Find new OC station names not yet in SegmentConfigs."""
+        """Find new SG station names not yet in SegmentConfigs."""
         records_list: list[dict] = []
 
         for pipe_code in oc_df["PipeCode"].unique():
@@ -353,7 +462,7 @@ class EnbridgeSilverMunger(BaseSilverMunger):
 
         return records_list
 
-    async def _cleanse_oc(
+    async def _cleanse_sg(
         self,
         file_path: Path,
         segment_configs: pd.DataFrame,
@@ -470,13 +579,13 @@ class EnbridgeSilverMunger(BaseSilverMunger):
                 pl.col("Nom").map_batches(batch_absolute, return_dtype=pl.Float64),
                 pl.col("EffGasDate")
                 .map_batches(
-                    lambda s: batch_date_parse(s, cfg.OC_DATE_FORMAT),
+                    lambda s: batch_date_parse(s, cfg.SG_DATE_FORMAT),
                     return_dtype=pl.Date,
                 )
                 .alias("EffGasDay"),
                 pl.col("FlowInd")
                 .map_batches(
-                    lambda s: batch_fi_mapper(s, cfg.OC_FLOW_MAP),
+                    lambda s: batch_fi_mapper(s, cfg.SG_FLOW_MAP),
                     return_dtype=pl.String,
                 ),
                 pl.lit(None).cast(pl.String).alias("LocZn"),
@@ -490,7 +599,7 @@ class EnbridgeSilverMunger(BaseSilverMunger):
                     how="inner",
                 )
             )
-            result = add_modeling_columns(result, "STA", cfg.PARENT_PIPE)
+            result = add_modeling_columns(result, "SG", cfg.PARENT_PIPE)
             result = result.with_columns(
                 (pl.col("OpCap") - pl.col("Nom")).alias(
                     "OperationallyAvailableCapacity"
@@ -525,7 +634,7 @@ class EnbridgeSilverMunger(BaseSilverMunger):
             await asyncio.to_thread(lambda: final.collect().write_parquet(file_path))
 
         except Exception as e:
-            logger.error(f"cleanseOC failed: {file_path.name} — {e}")
+            logger.error(f"cleanseSG failed: {file_path.name} — {e}")
 
     # ------------------------------------------------------------------
     # NN processing

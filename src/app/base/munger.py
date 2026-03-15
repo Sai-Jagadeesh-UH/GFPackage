@@ -33,7 +33,7 @@ class BaseSilverMunger(ABC):
         Args:
             raw_dir: directory containing raw CSVs from scraper
             silver_dir: output directory for normalized parquets
-            dataset_type: dataset type being processed (OA, OC, SG, ST, NN)
+            dataset_type: dataset type being processed (OA, SG, ST, NN)
             pipe_configs_df: pipeline configuration DataFrame
 
         Returns:

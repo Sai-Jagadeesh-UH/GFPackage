@@ -61,7 +61,8 @@ class EnbridgeRunner:
                 pipe_name=row["PipeName"],
                 gf_pipe_id=int(row["GFPipeID"]),
                 oa_code=_nan_to_none(row.get("PointCapCode")),
-                oc_code=_nan_to_none(row.get("SegmentCapCode")),
+                sg_code=_nan_to_none(row.get("SegmentCapCode")),
+                st_code=_nan_to_none(row.get("StorageCapCode")),
                 nn_code=_nan_to_none(row.get("NoNoticeCode")),
                 meta_code=_nan_to_none(row.get("MetaCode")),
             ))
@@ -72,7 +73,7 @@ class EnbridgeRunner:
     # ------------------------------------------------------------------
 
     async def scrape_today(self) -> RunStats:
-        """Scrape yesterday + today's OA/OC, today's NN, metadata, then push."""
+        """Scrape yesterday + today's OA/SG/ST, today's NN, metadata, then push."""
         stats = RunStats(pipeline="Enbridge", start_time=datetime.now())
         pipe_df, configs = await self._load_pipe_configs()
 

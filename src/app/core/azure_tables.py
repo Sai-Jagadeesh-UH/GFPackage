@@ -75,7 +75,7 @@ def dump_pipe_configs(config_dir: Path, force: bool = False) -> pd.DataFrame | N
     unless force=True.
 
     Columns: ParentPipe, PipeName, GFPipeID, PipeCode, MetaCode,
-             PointCapCode, SegmentCapCode, NoNoticeCode
+             PointCapCode, SegmentCapCode, StorageCapCode, NoNoticeCode
     """
     parquet_path = config_dir / "PipeConfigs.parquet"
 
@@ -97,7 +97,7 @@ def dump_pipe_configs(config_dir: Path, force: bool = False) -> pd.DataFrame | N
                 "",
                 select=[
                     "ParentPipe", "PipeName", "GFPipeID", "PipeCode",
-                    "MetaCode", "PointCapCode", "SegmentCapCode", "NoNoticeCode",
+                    "MetaCode", "PointCapCode", "SegmentCapCode", "StorageCapCode", "NoNoticeCode",
                 ],
             )
         )
@@ -136,7 +136,7 @@ def dump_segment_configs(config_dir: Path, force: bool = False) -> pd.DataFrame 
     _cache.invalidate(parquet_path)
     logger.info("Dumping SegmentConfigs from Azure Table Storage")
     with get_table(settings.segment_configs_table) as table_client:
-        df = pd.DataFrame(table_client.query_entities(""))
+        df = pd.DataFrame(table_client.query_entities("")) 
     df.to_parquet(parquet_path, index=False)
     _cache.put(parquet_path, df)
     return df

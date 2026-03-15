@@ -41,7 +41,7 @@ CAPACITY_MENU_SELECTOR = "li#Capacity.dropdown.sidebar-menu-item"
 OA_LINK_NAME = "Operationally Available"
 DOWNLOAD_LINK_NAME = "Downloadable Format"
 DOWNLOAD_CSV_TEXT = "Download Csv"
-OC_MAPS_TEXT = "Operational Capacity Maps"
+SG_MAPS_TEXT = "Operational Capacity Maps"
 
 # ---------------------------------------------------------------------------
 # Pipe codes with special handling
@@ -53,8 +53,8 @@ LONG_WAY_ONLY_CODES: set[str] = {"MNUS"}
 # WE not available before this date
 WE_AVAILABILITY_DATE = "2025-10-01"
 
-# TETLP Lease NJ/NY is a known OC segment to skip
-OC_SKIP_SEGMENTS: set[str] = {"TETLP Lease NJ/NY"}
+# TETLP Lease NJ/NY is a known SG segment to skip
+SG_SKIP_SEGMENTS: set[str] = {"TETLP Lease NJ/NY"}
 
 
 # ---------------------------------------------------------------------------
@@ -87,17 +87,24 @@ OA_FLOW_MAP: dict[str, str] = {
 }
 
 # ---------------------------------------------------------------------------
-# OC column mapping
+# SG (Segment Capacity) column mapping
 # ---------------------------------------------------------------------------
 
-OC_RAW_COLUMNS = ["Station Name", "Cap", "Nom", "Cap2"]
+SG_RAW_COLUMNS = ["Station Name", "Cap", "Nom", "Cap2"]
 
-OC_DATE_FORMAT = "%Y%m%d"
+SG_DATE_FORMAT = "%Y%m%d"
 
-OC_FLOW_MAP: dict[str, str] = {
+SG_FLOW_MAP: dict[str, str] = {
     "TD1": "F",
     "TD2": "B",
 }
+
+# ---------------------------------------------------------------------------
+# ST (Storage Capacity) column mapping — same format as OA
+# ---------------------------------------------------------------------------
+
+ST_DATE_FORMAT = OA_DATE_FORMAT
+ST_FLOW_MAP: dict[str, str] = OA_FLOW_MAP
 
 # ---------------------------------------------------------------------------
 # NN column mapping
@@ -131,34 +138,43 @@ NN_DATE_LAG_DAYS = 4
 # ---------------------------------------------------------------------------
 # File naming patterns:
 #   OA: {PipeCode}_OA_{YYYYMMDD}_INTRDY_{YYYY-MM-DD}_{HHMM}.csv
-#   OC: {PipeCode}_OC{n}_{YYYYMMDD}_INTRDY_{YYYY-MM-DD}_{HHMM}.csv
+#   SG: {PipeCode}_SG{n}_{YYYYMMDD}_INTRDY_{YYYY-MM-DD}_{HHMM}.csv
+#   ST: {PipeCode}_ST_{YYYYMMDD}_INTRDY_{YYYY-MM-DD}_{HHMM}.csv
 #   NN: {PipeCode}_NN_{YYYYMMDD}.csv
 #   META: {PipeCode}_AllPoints.csv
 
 
-def oa_bronze_blob_path(pipe_code: str, eff_date: str, filename: str) -> str:
-    return f"Enbridge/PointCapacity/{eff_date[:-2]}/{pipe_code}/{filename}"
+def oa_bronze_blob_path(eff_date: str, filename: str) -> str:
+    return f"Enbridge/PointCapacity/{eff_date[:-2]}/{filename}"
 
 
-def oc_bronze_blob_path(pipe_code: str, eff_date: str, filename: str) -> str:
-    return f"Enbridge/SegmentCapacity/{eff_date[:-2]}/{pipe_code}/{filename}"
+def sg_bronze_blob_path(eff_date: str, filename: str) -> str:
+    return f"Enbridge/SegmentCapacity/{eff_date[:-2]}/{filename}"
 
 
-def nn_bronze_blob_path(pipe_code: str, eff_date: str, filename: str) -> str:
-    return f"Enbridge/NoNotice/{eff_date[:-4]}/{pipe_code}/{filename}"
+def st_bronze_blob_path(eff_date: str, filename: str) -> str:
+    return f"Enbridge/StorageCapacity/{eff_date[:-2]}/{filename}"
+
+
+def nn_bronze_blob_path(eff_date: str, filename: str) -> str:
+    return f"Enbridge/NoNotice/{eff_date[:-4]}/{filename}"
 
 
 def meta_bronze_blob_path(filename: str) -> str:
     return f"Enbridge/Metadata/{filename}"
 
 
-def oa_silver_blob_path(pipe_code: str, eff_date: str, filename: str) -> str:
-    return f"Enbridge/PointCapacity/{eff_date[:-2]}/{pipe_code}/{filename}"
+def oa_silver_blob_path(eff_date: str, filename: str) -> str:
+    return f"Enbridge/PointCapacity/{eff_date[:-2]}/{filename}"
 
 
-def oc_silver_blob_path(pipe_code: str, eff_date: str, filename: str) -> str:
-    return f"Enbridge/SegmentCapacity/{eff_date[:-2]}/{pipe_code}/{filename}"
+def sg_silver_blob_path(eff_date: str, filename: str) -> str:
+    return f"Enbridge/SegmentCapacity/{eff_date[:-2]}/{filename}"
 
 
-def nn_silver_blob_path(pipe_code: str, eff_date: str, filename: str) -> str:
-    return f"Enbridge/NoNotice/{eff_date[:-10]}/{pipe_code}/{filename}"
+def st_silver_blob_path(eff_date: str, filename: str) -> str:
+    return f"Enbridge/StorageCapacity/{eff_date[:-2]}/{filename}"
+
+
+def nn_silver_blob_path(eff_date: str, filename: str) -> str:
+    return f"Enbridge/NoNotice/{eff_date[:-10]}/{filename}"

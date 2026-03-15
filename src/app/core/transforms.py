@@ -18,7 +18,7 @@ def batch_date_parse(series: pl.Series, fmt: str) -> pl.Series:
 
     Common formats across pipelines:
       OA:  "%m-%d-%Y"
-      OC:  "%Y%m%d"
+      SG:  "%Y%m%d"
       NN:  "%m/%d/%Y %H:%M"
     """
     return pl.Series(
@@ -60,7 +60,7 @@ def batch_fi_mapper(series: pl.Series, flow_map: dict[str, str]) -> pl.Series:
 
     Each pipeline provides its own flow_map. Common examples:
       OA:  {"Delivery": "D", "Receipt": "R", "Storage Injection": "D", "Storage Withdrawal": "R"}
-      OC:  {"TD1": "F", "TD2": "B"}
+      SG:  {"TD1": "F", "TD2": "B"}
       NN:  {"D": "D", "R": "R", "B": "B", "Delivery": "D", "Receipt": "R", ...}
     """
     return pl.Series(

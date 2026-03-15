@@ -1,7 +1,7 @@
 """Enbridge gold munger — implements BaseGoldMunger.
 
-Merges silver OA, OC, and NN parquets into a single gold DataFrame,
-discovers new OC locations, and updates segment configs.
+Merges silver OA, SG, ST, and NN parquets into a single gold DataFrame.
+SG location discovery happens in silver_munger during SG processing.
 """
 
 import asyncio
@@ -34,7 +34,7 @@ class EnbridgeGoldMunger(BaseGoldMunger):
         return cfg.PARENT_PIPE
 
     async def merge(self, silver_dirs: dict[RowType, Path]) -> pl.DataFrame:
-        """Merge OA, OC, NN silver parquets into one gold DataFrame.
+        """Merge OA, SG, ST, NN silver parquets into one gold DataFrame.
 
         Removes Timestamp (will be re-added fresh), deduplicates,
         and adds a new Timestamp column.
@@ -67,9 +67,9 @@ class EnbridgeGoldMunger(BaseGoldMunger):
         segment_configs_df: pd.DataFrame,
         pipe_configs_df: pd.DataFrame,
     ) -> pd.DataFrame | None:
-        """Not used for gold layer — OC location discovery happens in silver_munger.
+        """Not used for gold layer — SG location discovery happens in silver_munger.
 
-        Returns None as all location discovery is done during OC silver processing.
+        Returns None as all location discovery is done during SG silver processing.
         """
         return None
 

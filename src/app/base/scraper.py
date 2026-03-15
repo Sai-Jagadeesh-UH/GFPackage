@@ -29,7 +29,7 @@ class BasePipeScraper(ABC):
         scrape_date: datetime,
         headless: bool = True,
     ) -> list[ScrapeResult]:
-        """Scrape all available dataset types (OA, OC, SG, ST, NN) for one pipe on one date.
+        """Scrape all available dataset types (OA, SG, ST, NN) for one pipe on one date.
 
         Returns a ScrapeResult per dataset type attempted.
         """

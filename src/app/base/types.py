@@ -6,11 +6,10 @@ from pydantic import BaseModel, Field, field_validator, computed_field
 
 class RowType(StrEnum):
     """Data types available for pipeline scraping."""
-    OA = "OA"     # Operational Availability
-    OC = "OC"     # Operational Capacity
-    ST = "ST"     # Storage Capacity
+    OA = "OA"     # Operational Capacity
     SG = "SG"     # Segment Capacity
-    NN = "NN"     # No-Notice Activity
+    ST = "ST"     # Storage Capacity
+    NN = "NN"     # No Notice Activity
     META = "META" # Metadata (e.g. pipeline name, locs, etc.)
 
 
@@ -34,7 +33,6 @@ class PipeConfig(BaseModel, frozen=True):
     pipe_name: str = Field(min_length=2)
     gf_pipe_id: int = Field(ge=100, le=999)
     oa_code: str | None = None
-    oc_code: str | None = None
     sg_code: str | None = None
     st_code: str | None = None
     nn_code: str | None = None
@@ -49,11 +47,6 @@ class PipeConfig(BaseModel, frozen=True):
     @property
     def has_oa(self) -> bool:
         return self.oa_code is not None
-
-    @computed_field
-    @property
-    def has_oc(self) -> bool:
-        return self.oc_code is not None
 
     @computed_field
     @property

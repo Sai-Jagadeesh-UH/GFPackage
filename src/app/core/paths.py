@@ -21,7 +21,6 @@ class PipelinePaths(BaseModel, frozen=True):
 
     # Raw download subdirectories per dataset type
     oa_raw: Path
-    oc_raw: Path
     sg_raw: Path
     st_raw: Path
     nn_raw: Path
@@ -29,7 +28,6 @@ class PipelinePaths(BaseModel, frozen=True):
 
     # Silver (normalized) subdirectories
     oa_silver: Path
-    oc_silver: Path
     sg_silver: Path
     st_silver: Path
     nn_silver: Path
@@ -56,13 +54,11 @@ class PipelinePaths(BaseModel, frozen=True):
             config_files=config_files,
             reports=reports,
             oa_raw=downloads / "OA_raw",
-            oc_raw=downloads / "OC_raw",
             sg_raw=downloads / "SG_raw",
             st_raw=downloads / "ST_raw",
             nn_raw=downloads / "NN_raw",
             meta_raw=downloads / "MetaData",
             oa_silver=downloads / "OA",
-            oc_silver=downloads / "OC",
             sg_silver=downloads / "SG",
             st_silver=downloads / "ST",
             nn_silver=downloads / "NN",
@@ -72,9 +68,9 @@ class PipelinePaths(BaseModel, frozen=True):
         for d in [
             paths.logs, paths.downloads, paths.config_files,
             paths.reports,
-            paths.oa_raw, paths.oc_raw, paths.sg_raw, paths.st_raw,
+            paths.oa_raw, paths.sg_raw, paths.st_raw,
             paths.nn_raw, paths.meta_raw,
-            paths.oa_silver, paths.oc_silver, paths.sg_silver,
+            paths.oa_silver, paths.sg_silver,
             paths.st_silver, paths.nn_silver,
         ]:
             d.mkdir(parents=True, exist_ok=True)
@@ -85,7 +81,6 @@ class PipelinePaths(BaseModel, frozen=True):
         """Get raw download directory for a dataset type."""
         mapping: dict[RowType, Path] = {
             RowType.OA: self.oa_raw,
-            RowType.OC: self.oc_raw,
             RowType.SG: self.sg_raw,
             RowType.ST: self.st_raw,
             RowType.NN: self.nn_raw,
@@ -97,7 +92,6 @@ class PipelinePaths(BaseModel, frozen=True):
         """Get silver directory for a dataset type."""
         mapping: dict[RowType, Path] = {
             RowType.OA: self.oa_silver,
-            RowType.OC: self.oc_silver,
             RowType.SG: self.sg_silver,
             RowType.ST: self.st_silver,
             RowType.NN: self.nn_silver,
