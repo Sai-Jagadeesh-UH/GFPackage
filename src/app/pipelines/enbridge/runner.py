@@ -5,15 +5,12 @@ entry points. Replaces the old Runner/ directory.
 """
 
 import asyncio
-import shutil
-import time
-import concurrent.futures
 from datetime import datetime, timedelta
 from pathlib import Path
 
 import pandas as pd
 
-from app.base.types import PipeConfig, RunStats, ScrapeResult, RowType
+from app.base.types import PipeConfig, RunStats, ScrapeResult
 from app.core.logging import logger
 from app.core.paths import PipelinePaths
 from app.core.settings import settings
@@ -139,9 +136,9 @@ class EnbridgeRunner:
         start_date: datetime | None = None,
         end_date: datetime | None = None,
     ) -> RunStats:
-        """Backfill historical data using ProcessPoolExecutor for parallelism.
+        """Backfill historical data day-by-day: scrape → munge → push → clear → next.
 
-        Processes dates in batches of 100 using process-level parallelism.
+        Sequential processing keeps VM load bounded and maximises success rate.
         """
         start = start_date or (datetime.today() - timedelta(days=365 * 3 + 1))
         end = end_date or datetime.today()
@@ -149,33 +146,51 @@ class EnbridgeRunner:
         stats = RunStats(pipeline="Enbridge", start_time=datetime.now())
         pipe_df, configs = await self._load_pipe_configs()
 
-        # Metadata first
+        # Metadata once at the start
         await self._scraper.scrape_metadata(configs)
 
-        range_len = (end - start).days
-        loop = asyncio.get_running_loop()
+        current = start
+        while current <= end:
+            logger.info(f"scrapeHistoric - {current:%Y-%m-%d}")
 
-        for day_range in range(0, range_len, 100):
-            dates = [
-                start + timedelta(days=i)
-                for i in range(day_range, day_range + 100)
-                if start + timedelta(days=i) <= datetime.today()
-            ]
-            # Run ProcessPoolExecutor without blocking the event loop
-            with concurrent.futures.ProcessPoolExecutor(max_workers=None) as executor:
-                await loop.run_in_executor(
-                    None,
-                    lambda d=dates: list(executor.map(_run_date_sync, d)),
-                )
+            results = await self._scraper.scrape_all(configs, current, self._headless)
+            for r in results:
+                stats.add(r)
 
-        # Push all accumulated data
-        await self._pusher.push_all(self._silver_munger, pipe_df, stats=stats)
+            nn_results = await self._scraper.scrape_nn(configs, current, self._headless)
+            for r in nn_results:
+                stats.add(r)
+
+            await self._pusher.push_all(self._silver_munger, pipe_df, stats=stats)
+            await self._clear_downloads()
+
+            current += timedelta(days=1)
 
         stats.end_time = datetime.now()
         logger.info(
             f"{'*' * 15} historic completed in {stats.duration_s:.2f}s {'*' * 15}"
         )
         return stats
+
+    async def _clear_downloads(self) -> None:
+        """Delete all files in raw and silver directories between historic days."""
+        dirs_to_clear = [
+            self._paths.oa_raw, self._paths.sg_raw,
+            self._paths.st_raw, self._paths.nn_raw,
+            self._paths.oa_silver, self._paths.sg_silver,
+            self._paths.st_silver, self._paths.nn_silver,
+        ]
+
+        def _do_clear():
+            for d in dirs_to_clear:
+                for f in d.iterdir():
+                    if f.is_file():
+                        try:
+                            f.unlink()
+                        except OSError as e:
+                            logger.error(f"Clear failed: {f.name} — {e}")
+
+        await asyncio.to_thread(_do_clear)
 
     async def scrape_failed_dates(self) -> RunStats:
         """Re-scrape dates from the fails CSV, then push."""
@@ -230,28 +245,3 @@ class EnbridgeRunner:
         stats.end_time = datetime.now()
         return stats
 
-
-# ---------------------------------------------------------------------------
-# Module-level helper for ProcessPoolExecutor (must be picklable)
-# ---------------------------------------------------------------------------
-
-def _run_date_sync(target_date: datetime) -> None:
-    """Synchronous wrapper for running a date scrape in a subprocess."""
-    start = time.perf_counter()
-    logger.info(f"{target_date} Process kicking in!")
-
-    async def _date_runner():
-        runner = EnbridgeRunner()
-        pipe_df, configs = await runner._load_pipe_configs()
-        async with asyncio.TaskGroup() as group:
-            group.create_task(
-                runner._scraper.scrape_all(configs, target_date)
-            )
-            group.create_task(
-                runner._scraper.scrape_nn(configs, target_date)
-            )
-
-    asyncio.run(_date_runner())
-    logger.info(
-        f"{target_date} scrape completed in {time.perf_counter() - start:.2f}s"
-    )

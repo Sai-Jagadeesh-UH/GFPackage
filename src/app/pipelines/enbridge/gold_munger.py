@@ -45,7 +45,7 @@ class EnbridgeGoldMunger(BaseGoldMunger):
             for row_type, silver_dir in silver_dirs.items():
                 if not silver_dir.exists() or not any(silver_dir.iterdir()):
                     continue
-                lf = pl.scan_parquet(silver_dir).select(pl.exclude("Timestamp")).unique()
+                lf = pl.scan_parquet(silver_dir / "*.parquet").select(pl.exclude("Timestamp")).unique()
                 lazy_frames.append(lf)
 
             if not lazy_frames:

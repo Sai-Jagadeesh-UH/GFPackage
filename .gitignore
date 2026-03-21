@@ -5,6 +5,7 @@ downloads/
 .claude/
 CLAUDE.md
 .env
+OldArchives/
 
 # Python-generated files
 __pycache__/

@@ -50,7 +50,7 @@ class AppSettings(BaseSettings):
 
     # Azure Table Storage table names
     pipe_configs_table: str = Field(default="PipeConfigs")
-    segment_configs_table: str = Field(default="SegmentConfigs")
+    Loc_configs_table: str = Field(default="LocMetadata")
     enbridge_metadata_table: str = Field(default="EnbridgeMetadata")
 
 

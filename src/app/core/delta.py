@@ -72,11 +72,11 @@ class LakeMerge:
             self._prune_table()
 
     def _push_by_row_type(self) -> None:
-        """Write data partitioned by RowType with predicate-based overwrite."""
-        for row_type in self.df.select("RowType").unique().to_series():
-            chunk = self.df.filter(pl.col("RowType") == row_type)
+        """Write data partitioned by Dataset with predicate-based overwrite."""
+        for dataset in self.df.select("Dataset").unique().to_series():
+            chunk = self.df.filter(pl.col("Dataset") == dataset)
             dates_csv = ", ".join(
-                f"'{d}'" for d in chunk.select("EffGasDay").unique().to_series()
+                f"'{d}'" for d in chunk.select("GasDay").unique().to_series()
             )
             try:
                 if self.dt is None:
@@ -85,45 +85,43 @@ class LakeMerge:
                         table_or_uri=self.config.table_uri,
                         data=chunk.to_arrow(),
                         mode="overwrite",
-                        partition_by="EffGasMonth",
+                        partition_by="GasMonth",
                         storage_options=self.config.storage_options,
                     )
-                    logger.info(f"Delta table created with {row_type}")
-                    # Load the newly created table for subsequent writes
+                    logger.info(f"Delta table created with Dataset={dataset}")
                     self.dt = DeltaTable(
                         table_uri=self.config.table_uri,
                         storage_options=self.config.storage_options,
                     )
                 else:
                     predicate = (
-                        f"ParentPipe = '{self.parent_pipe}' "
-                        f"AND EffGasDay IN ({dates_csv}) "
-                        f"AND RowType = '{row_type}'"
+                        f"GasDay IN ({dates_csv}) "
+                        f"AND Dataset = '{dataset}'"
                     )
                     write_deltalake(
                         table_or_uri=self.config.table_uri,
                         data=chunk.to_arrow(),
                         mode="overwrite",
-                        partition_by="EffGasMonth",
+                        partition_by="GasMonth",
                         storage_options=self.config.storage_options,
                         predicate=predicate,
                     )
             except Exception as e:
-                logger.error(f"Delta push failed: {row_type} dates={dates_csv} — {e}")
+                logger.error(f"Delta push failed: Dataset={dataset} dates={dates_csv} — {e}")
 
     def _prune_table(self) -> None:
         """Z-order optimize and vacuum if data is recent."""
         if self.dt is None:
             return
-        max_date = self.df.select("EffGasDay").max().item(0, 0)
+        max_date = self.df.select("GasDay").max().item(0, 0)
         if max_date <= (date.today() - timedelta(days=self.config.prune_threshold_days)):
             return
 
-        for month in self.df.select("EffGasMonth").unique().to_series():
+        for month in self.df.select("GasMonth").unique().to_series():
             try:
                 self.dt.optimize.z_order(
-                    ["EffGasDay", "GFPipeID", "GFLocID"],
-                    partition_filters=[("EffGasMonth", "=", month)],
+                    ["GasDay", "GFLocID"],
+                    partition_filters=[("GasMonth", "=", month)],
                 )
                 self.dt.vacuum(
                     retention_hours=0,

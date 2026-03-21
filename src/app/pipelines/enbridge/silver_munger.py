@@ -1,20 +1,29 @@
 """Enbridge silver munger — implements BaseSilverMunger.
 
-Converts raw CSVs downloaded by EnbridgeScraper into normalized silver
-parquets conforming to the gold schema. Uses shared batch transforms
-from core.transforms and Enbridge-specific column mappings from config.
+Converts raw CSVs into a single normalized silver parquet per dataset type
+conforming to the gold schema. Uses shared batch transforms from core.transforms
+and Enbridge-specific column mappings from config.
 
-OA: CSV → parquet with PipeCode → cleanse (date parse, float parse, rename)
-SG: CSV → parquet with PipeCode/EffGasDate/CycleDesc → cleanse (TD1/TD2 split)
-ST: CSV → parquet with PipeCode → cleanse (date parse, float parse, rename)
-NN: CSV → parquet with PipeCode → cleanse (date parse, flow map)
-META: CSV processing and Azure Table upsert
+Key LocID rules:
+  OA / NN : Loc always present → LocID = zeroPadded7(Loc)
+  SG      : no raw Loc → LocID generated as "GF" + 5-digit sequence per pipeline
+  ST      : same as SG (generate GF-prefix) unless confirmed otherwise
+
+GFLocID = str(GFPipeID).zfill(3) + LocID  (10-char surrogate key)
+
+Gold schema columns:
+  GasMonth, GFLocID, Dataset, GasDay, LocName,
+  DesignCapacity, OperatingCapacity, TotalScheduledQuantity,
+  OperationallyAvailableCapacity, IT, FlowDirection, Timestamp
+
+Silver file naming: {DS}_Enbridge_{mmddyyyy}_{hhmmss}.parquet
 """
 
 import asyncio
+import functools
+import operator
 import re
 from datetime import datetime
-from functools import partial
 from pathlib import Path
 
 import pandas as pd
@@ -27,29 +36,35 @@ from app.core.transforms import (
     batch_date_parse,
     batch_ymonth_parse,
     padded_string,
+    gf_padded_loc,
     batch_float_parse,
     batch_absolute,
     batch_fi_mapper,
-    add_modeling_columns,
-    compose_gfloc,
-    filter_all_null,
 )
-from app.core.azure_tables import dump_segment_configs, update_segment_configs
+from app.core.azure_tables import dump_Loc_configs, update_Loc_configs
 from app.core.settings import settings
 
 from . import config as cfg
 
 
+def _silver_filename(dataset_type: str, run_dt: datetime) -> str:
+    """Generate silver parquet filename: {DS}_Enbridge_{mmddyyyy}_{hhmmss}.parquet"""
+    return f"{dataset_type}_Enbridge_{run_dt.strftime('%m%d%Y')}_{run_dt.strftime('%H%M%S')}.parquet"
+
+
 class EnbridgeSilverMunger(BaseSilverMunger):
-    """Raw → silver transformation for Enbridge pipeline data."""
+    """Raw → silver transformation for Enbridge pipeline data.
+
+    OA and NN are batch-processed: all CSVs concatenated into one silver parquet.
+    SG is batch-processed with LocMetaData lookup for generated LocIDs.
+    New locations are upserted to the LocMetaData Azure Table after each run.
+    """
 
     def __init__(self, paths):
-        """
-        Args:
-            paths: PipelinePaths instance.
-        """
         self._paths = paths
+        self.new_oa_locations: int = 0
         self.new_sg_locations: int = 0
+        self.new_nn_locations: int = 0
 
     @property
     def parent_pipe(self) -> str:
@@ -67,10 +82,7 @@ class EnbridgeSilverMunger(BaseSilverMunger):
         pipe_configs_df: pd.DataFrame,
         **kwargs,
     ) -> list[str]:
-        """Convert raw files → silver parquets.
-
-        Dispatches to OA/SG/ST/NN-specific processing logic.
-        """
+        """Convert raw CSVs → single silver parquet per dataset type."""
         if dataset_type == RowType.OA:
             return await self._process_oa(raw_dir, silver_dir, pipe_configs_df)
         elif dataset_type == RowType.SG:
@@ -87,78 +99,56 @@ class EnbridgeSilverMunger(BaseSilverMunger):
             return []
 
     async def cleanse(self, file_path: Path, dataset_type: RowType, **kwargs) -> None:
-        """Cleanse a single silver parquet in-place."""
-        pipe_configs_df = kwargs.get("pipe_configs_df")
-        segment_configs_df = kwargs.get("segment_configs_df")
-
-        if dataset_type == RowType.OA:
-            await self._cleanse_oa(file_path, pipe_configs_df)
-        elif dataset_type == RowType.SG:
-            await self._cleanse_sg(file_path, segment_configs_df, pipe_configs_df)
-        elif dataset_type == RowType.ST:
-            await self._cleanse_st(file_path, pipe_configs_df)
-        elif dataset_type == RowType.NN:
-            await self._cleanse_nn(file_path, pipe_configs_df)
+        """No-op — batch processing is handled entirely within process()."""
+        pass
 
     # ------------------------------------------------------------------
-    # OA processing
+    # OA processing — batch concat, LocID from raw Loc
     # ------------------------------------------------------------------
 
     async def _process_oa(
         self, raw_dir: Path, silver_dir: Path, pipe_configs_df: pd.DataFrame
     ) -> list[str]:
-        empty_list: list[str] = []
+        run_dt = datetime.now()
+        output_path = silver_dir / _silver_filename("OA", run_dt)
         try:
-            # Offload sync CSV reads + parquet writes to thread pool
-            def _convert_csvs():
-                empties = []
-                for file_path in raw_dir.iterdir():
-                    try:
-                        pipe_code = file_path.name.split("_", 2)[0]
-                        df = pd.read_csv(file_path, header=0)
-                        if len(df) < 1:
-                            empties.append(file_path.name.replace(".csv", ".parquet"))
-                        df.assign(PipeCode=pipe_code).to_parquet(
-                            silver_dir / file_path.name.replace(".csv", ".parquet"),
-                            index=False,
-                        )
-                    except Exception as e:
-                        logger.error(f"OA CSV read failed: {file_path.name} — {e}")
-                return empties
+            raw_df = await asyncio.to_thread(self._concat_point_csvs, raw_dir, "OA")
+            if raw_df.empty:
+                return []
 
-            empty_list = await asyncio.to_thread(_convert_csvs)
-
-            async with asyncio.TaskGroup() as group:
-                for fp in silver_dir.iterdir():
-                    if fp.name not in empty_list:
-                        group.create_task(
-                            self._cleanse_oa(fp, pipe_configs_df)
-                        )
-        except Exception as e:
-            logger.error(f"processOA failed: {e}")
-
-        return empty_list
-
-    async def _cleanse_oa(self, file_path: Path, pipe_configs_df: pd.DataFrame) -> None:
-        try:
             enb_configs = pipe_configs_df.loc[
                 pipe_configs_df["ParentPipe"] == cfg.PARENT_PIPE,
                 ["GFPipeID", "PipeCode", "PipeName"],
             ]
-
-            df = (
-                pl.scan_parquet(file_path)
-                .select([*cfg.OA_RAW_COLUMNS, "PipeCode"])
+            # _munge_oa returns intermediate (includes GFPipeID/LocID/Loc for sync)
+            intermediate = await asyncio.to_thread(
+                self._munge_oa, pl.from_pandas(raw_df.astype(str)), enb_configs
             )
-            df = filter_all_null(df, cfg.OA_RAW_COLUMNS)
+            await self._sync_point_locations(intermediate, RowType.OA)
+            await asyncio.to_thread(intermediate.select(GOLD_SCHEMA).write_parquet, output_path)
+        except Exception as e:
+            logger.error(f"processOA failed: {e}")
+        return []
 
-            df = df.with_columns(
+    def _munge_oa(self, df: pl.DataFrame, enb_configs: pd.DataFrame) -> pl.DataFrame:
+        """OA transform: filter → parse → LocID/GFLocID.
+
+        Returns intermediate DataFrame (superset of GOLD_SCHEMA) so that
+        _sync_point_locations can read GFPipeID/LocID/Loc before final select.
+        """
+        null_check = functools.reduce(
+            operator.and_, [pl.col(c).is_null() for c in cfg.OA_RAW_COLUMNS]
+        )
+        df = (
+            df.select([*cfg.OA_RAW_COLUMNS, "PipeCode"])
+            .filter(~null_check)
+            .with_columns(
                 pl.col("Eff_Gas_Day")
                 .map_batches(
                     lambda s: batch_date_parse(s, cfg.OA_DATE_FORMAT),
                     return_dtype=pl.Date,
                 )
-                .alias("EffGasDay"),
+                .alias("GasDay"),
                 pl.col("Total_Design_Capacity")
                 .map_batches(batch_float_parse, return_dtype=pl.Float64)
                 .alias("DesignCapacity"),
@@ -176,93 +166,75 @@ class EnbridgeSilverMunger(BaseSilverMunger):
                     lambda s: batch_fi_mapper(s, cfg.OA_FLOW_MAP),
                     return_dtype=pl.String,
                 )
-                .alias("FlowInd"),
-                pl.lit(datetime.now()).cast(pl.Datetime).alias("Timestamp"),
+                .alias("FlowDirection"),
+                pl.col("IT").cast(pl.String),
+                pl.col("Loc_Name").cast(pl.String).alias("LocName"),
+                # Loc = raw; LocID = 7-digit zero-padded
+                pl.col("Loc").cast(pl.String).alias("Loc"),
                 pl.col("Loc")
                 .cast(pl.String)
-                .map_batches(padded_string, return_dtype=pl.String),
-                pl.lit(cfg.PARENT_PIPE).cast(pl.String).alias("ParentPipe"),
-                pl.lit(None).cast(pl.String).alias("QtyReason"),
-                pl.lit(None).cast(pl.String).alias("LocSegment"),
-            ).rename(cfg.OA_RENAME_MAP)
-
-            result = (
-                df.join(
-                    pl.LazyFrame(enb_configs),
-                    on="PipeCode",
-                    how="inner",
-                )
+                .map_batches(lambda s: padded_string(s, 7), return_dtype=pl.String)
+                .alias("LocID"),
             )
-            result = add_modeling_columns(result, "OA", cfg.PARENT_PIPE)
-            result = result.with_columns(
-                pl.col("LocZn").cast(pl.String),
-                pl.col("PipeName").cast(pl.String).alias("PipelineName"),
+            .join(pl.from_pandas(enb_configs).lazy().collect(), on="PipeCode", how="inner")
+            .with_columns(
+                pl.col("GFPipeID").cast(pl.Int64),
+                pl.col("GasDay")
+                .map_batches(batch_ymonth_parse, return_dtype=pl.Int64)
+                .alias("GasMonth"),
+                pl.lit("OA").alias("Dataset"),
+                pl.lit(datetime.now()).cast(pl.Datetime).alias("Timestamp"),
             )
-            result = compose_gfloc(result)
-            final = result.select(GOLD_SCHEMA)
-            await asyncio.to_thread(lambda: final.collect().write_parquet(file_path))
-
-        except Exception as e:
-            logger.error(f"cleanseOA failed: {file_path.name} — {e}")
+        )
+        # GFLocID = 3-digit PipeID + 7-digit LocID = 10-char surrogate key
+        return df.with_columns(
+            pl.concat_str(
+                [pl.col("GFPipeID").cast(pl.String).str.zfill(3), pl.col("LocID")],
+                separator="",
+            ).alias("GFLocID")
+        )
 
     # ------------------------------------------------------------------
-    # ST (Storage Capacity) processing — same structure as OA
+    # ST (Storage Capacity) — same OA structure, may generate GF-prefix LocID
     # ------------------------------------------------------------------
 
     async def _process_st(
         self, raw_dir: Path, silver_dir: Path, pipe_configs_df: pd.DataFrame
     ) -> list[str]:
-        empty_list: list[str] = []
+        run_dt = datetime.now()
+        output_path = silver_dir / _silver_filename("ST", run_dt)
         try:
-            def _convert_csvs():
-                empties = []
-                for file_path in raw_dir.iterdir():
-                    try:
-                        pipe_code = file_path.name.split("_", 2)[0]
-                        df = pd.read_csv(file_path, header=0)
-                        if len(df) < 1:
-                            empties.append(file_path.name.replace(".csv", ".parquet"))
-                        df.assign(PipeCode=pipe_code).to_parquet(
-                            silver_dir / file_path.name.replace(".csv", ".parquet"),
-                            index=False,
-                        )
-                    except Exception as e:
-                        logger.error(f"ST CSV read failed: {file_path.name} — {e}")
-                return empties
+            raw_df = await asyncio.to_thread(self._concat_point_csvs, raw_dir, "ST")
+            if raw_df.empty:
+                return []
 
-            empty_list = await asyncio.to_thread(_convert_csvs)
-
-            async with asyncio.TaskGroup() as group:
-                for fp in silver_dir.iterdir():
-                    if fp.name not in empty_list:
-                        group.create_task(
-                            self._cleanse_st(fp, pipe_configs_df)
-                        )
-        except Exception as e:
-            logger.error(f"processST failed: {e}")
-
-        return empty_list
-
-    async def _cleanse_st(self, file_path: Path, pipe_configs_df: pd.DataFrame) -> None:
-        try:
             enb_configs = pipe_configs_df.loc[
                 pipe_configs_df["ParentPipe"] == cfg.PARENT_PIPE,
                 ["GFPipeID", "PipeCode", "PipeName"],
             ]
-
-            df = (
-                pl.scan_parquet(file_path)
-                .select([*cfg.OA_RAW_COLUMNS, "PipeCode"])
+            intermediate = await asyncio.to_thread(
+                self._munge_st, pl.from_pandas(raw_df.astype(str)), enb_configs
             )
-            df = filter_all_null(df, cfg.OA_RAW_COLUMNS)
+            await asyncio.to_thread(intermediate.select(GOLD_SCHEMA).write_parquet, output_path)
+        except Exception as e:
+            logger.error(f"processST failed: {e}")
+        return []
 
-            df = df.with_columns(
+    def _munge_st(self, df: pl.DataFrame, enb_configs: pd.DataFrame) -> pl.DataFrame:
+        """ST transform — same structure as OA but uses ST date/flow formats."""
+        null_check = functools.reduce(
+            operator.and_, [pl.col(c).is_null() for c in cfg.OA_RAW_COLUMNS]
+        )
+        df = (
+            df.select([*cfg.OA_RAW_COLUMNS, "PipeCode"])
+            .filter(~null_check)
+            .with_columns(
                 pl.col("Eff_Gas_Day")
                 .map_batches(
                     lambda s: batch_date_parse(s, cfg.ST_DATE_FORMAT),
                     return_dtype=pl.Date,
                 )
-                .alias("EffGasDay"),
+                .alias("GasDay"),
                 pl.col("Total_Design_Capacity")
                 .map_batches(batch_float_parse, return_dtype=pl.Float64)
                 .alias("DesignCapacity"),
@@ -280,301 +252,239 @@ class EnbridgeSilverMunger(BaseSilverMunger):
                     lambda s: batch_fi_mapper(s, cfg.ST_FLOW_MAP),
                     return_dtype=pl.String,
                 )
-                .alias("FlowInd"),
-                pl.lit(datetime.now()).cast(pl.Datetime).alias("Timestamp"),
+                .alias("FlowDirection"),
+                pl.col("IT").cast(pl.String),
+                pl.col("Loc_Name").cast(pl.String).alias("LocName"),
+                pl.col("Loc").cast(pl.String).alias("Loc"),
                 pl.col("Loc")
                 .cast(pl.String)
-                .map_batches(padded_string, return_dtype=pl.String),
-                pl.lit(cfg.PARENT_PIPE).cast(pl.String).alias("ParentPipe"),
-                pl.lit(None).cast(pl.String).alias("QtyReason"),
-                pl.lit(None).cast(pl.String).alias("LocSegment"),
-            ).rename(cfg.OA_RENAME_MAP)
-
-            result = (
-                df.join(
-                    pl.LazyFrame(enb_configs),
-                    on="PipeCode",
-                    how="inner",
-                )
+                .map_batches(lambda s: padded_string(s, 7), return_dtype=pl.String)
+                .alias("LocID"),
             )
-            result = add_modeling_columns(result, "ST", cfg.PARENT_PIPE)
-            result = result.with_columns(
-                pl.col("LocZn").cast(pl.String),
-                pl.col("PipeName").cast(pl.String).alias("PipelineName"),
+            .join(pl.from_pandas(enb_configs).lazy().collect(), on="PipeCode", how="inner")
+            .with_columns(
+                pl.col("GFPipeID").cast(pl.Int64),
+                pl.col("GasDay")
+                .map_batches(batch_ymonth_parse, return_dtype=pl.Int64)
+                .alias("GasMonth"),
+                pl.lit("ST").alias("Dataset"),
+                pl.lit(datetime.now()).cast(pl.Datetime).alias("Timestamp"),
             )
-            result = compose_gfloc(result)
-            final = result.select(GOLD_SCHEMA)
-            await asyncio.to_thread(lambda: final.collect().write_parquet(file_path))
-
-        except Exception as e:
-            logger.error(f"cleanseST failed: {file_path.name} — {e}")
+        )
+        return df.with_columns(
+            pl.concat_str(
+                [pl.col("GFPipeID").cast(pl.String).str.zfill(3), pl.col("LocID")],
+                separator="",
+            ).alias("GFLocID")
+        )
 
     # ------------------------------------------------------------------
-    # SG (Segment Capacity) processing
+    # SG (Segment Capacity) — no raw Loc, generate GF-prefix LocIDs
     # ------------------------------------------------------------------
 
     async def _process_sg(
         self, raw_dir: Path, silver_dir: Path, pipe_configs_df: pd.DataFrame
     ) -> list[str]:
-        await asyncio.to_thread(dump_segment_configs, self._paths.config_files)
+        run_dt = datetime.now()
+        output_path = silver_dir / _silver_filename("SG", run_dt)
+
+        # Ensure LocMetaData is cached locally
+        await asyncio.to_thread(dump_Loc_configs, self._paths.config_files)
 
         try:
-            empty_list = await asyncio.to_thread(self._sg_csv_to_parquet, raw_dir, silver_dir)
+            raw_df = await asyncio.to_thread(self._concat_sg_csvs, raw_dir)
+            if raw_df.empty:
+                return []
 
-            configs_df_full = await asyncio.to_thread(
-                pd.read_parquet, self._paths.config_files / "SegmentConfigs.parquet"
+            # Load LocMetaData, filter to Enbridge SG entries
+            loc_path = self._paths.config_files / "LocConfigs.parquet"
+            loc_df = await asyncio.to_thread(pd.read_parquet, loc_path)
+            enb_loc_df = loc_df[
+                (loc_df.get("PartitionKey", pd.Series(dtype=str)) == cfg.PARENT_PIPE)
+                & (loc_df.get("RowType", pd.Series(dtype=str)) == "SG")
+            ].copy() if "RowType" in loc_df.columns else loc_df[
+                loc_df.get("PartitionKey", pd.Series(dtype=str)) == cfg.PARENT_PIPE
+            ].copy()
+
+            # Discover new station names → generate new GF-prefix LocIDs
+            new_locs_df = await asyncio.to_thread(
+                self._discover_new_sg_locs, raw_df, enb_loc_df, pipe_configs_df
             )
-            try:
-                configs_df = configs_df_full[
-                    configs_df_full["ParentPipe"] == cfg.PARENT_PIPE
-                ]
-            except Exception:
-                configs_df = pd.DataFrame(
-                    columns=["ParentPipe", "PipeCode", "GFPipeID", "StationName"]
-                )
+            if not new_locs_df.empty:
+                await asyncio.to_thread(update_Loc_configs, new_locs_df)
+                self.new_sg_locations = len(new_locs_df)
+                enb_loc_df = pd.concat([enb_loc_df, new_locs_df], ignore_index=True)
 
-            oc_df = await asyncio.to_thread(
-                lambda: pd.read_parquet(silver_dir, columns=["PipeCode", "Station Name"])
-                .rename(columns={"Station Name": "StationName"})
-                .drop_duplicates(keep="first")
-            )
-
-            records_list = self._discover_new_sg_segments(
-                oc_df, configs_df, pipe_configs_df
-            )
-            self.new_sg_locations = len(records_list)
-
-            if records_list:
-                new_df = pd.DataFrame(records_list)
-                new_df["PartitionKey"] = cfg.PARENT_PIPE
-                new_df["RowKey"] = (
-                    new_df["ParentPipe"] + new_df["Loc"] + new_df["PipeCode"]
-                )
-
-                await asyncio.to_thread(update_segment_configs, new_df)
-                merged_configs = pd.concat([configs_df_full, new_df], ignore_index=True)
-                await asyncio.to_thread(
-                    merged_configs.to_parquet,
-                    self._paths.config_files / "SegmentConfigs.parquet",
-                    index=False,
-                )
-
-                enb_configs_df = (
-                    pd.concat([configs_df, new_df], ignore_index=True)
-                    .rename(columns={"StationName": "Station Name"})[
-                        ["PipeCode", "Loc", "Station Name"]
-                    ]
-                )
-            else:
-                enb_configs_df = configs_df.rename(
-                    columns={"StationName": "Station Name"}
-                )[["PipeCode", "Loc", "Station Name"]]
-
-            async with asyncio.TaskGroup() as group:
-                for fp in silver_dir.iterdir():
-                    if fp.name not in empty_list:
-                        group.create_task(
-                            self._cleanse_sg(fp, enb_configs_df, pipe_configs_df)
-                        )
-        except Exception as e:
-            logger.error(f"processSG failed: {e}")
-
-        return empty_list if "empty_list" in dir() else []
-
-    def _sg_csv_to_parquet(self, raw_dir: Path, silver_dir: Path) -> list[str]:
-        """Read raw SG CSVs, convert to parquet with metadata columns."""
-        empty_list: list[str] = []
-
-        for file_path in raw_dir.iterdir():
-            try:
-                pipe_code, _, eff_gas_day_time, cycle_desc = file_path.name.split(
-                    "_", 3
-                )
-                cycle_desc = cycle_desc[:-4]
-
-                try:
-                    df = pd.read_csv(
-                        file_path,
-                        skiprows=1,
-                        usecols=cfg.SG_RAW_COLUMNS,
-                    )
-                    if len(df) < 1:
-                        empty_list.append(file_path.name.replace(".csv", ".parquet"))
-                except Exception as e:
-                    logger.error(f"SG CSV read failed: {file_path.name} — {e}")
-                    continue
-
-                (
-                    df.assign(
-                        PipeCode=pipe_code,
-                        EffGasDate=eff_gas_day_time,
-                        CycleDesc=cycle_desc,
-                    )[
-                        [
-                            "PipeCode", "EffGasDate", "CycleDesc",
-                            "Station Name", "Cap", "Nom", "Cap2",
-                        ]
-                    ].to_parquet(
-                        silver_dir / file_path.name.replace(".csv", ".parquet"),
-                        index=False,
-                    )
-                )
-            except Exception as e:
-                logger.error(f"SG file processing failed: {file_path.name} — {e}")
-
-        return empty_list
-
-    def _discover_new_sg_segments(
-        self,
-        oc_df: pd.DataFrame,
-        configs_df: pd.DataFrame,
-        pipe_configs_df: pd.DataFrame,
-    ) -> list[dict]:
-        """Find new SG station names not yet in SegmentConfigs."""
-        records_list: list[dict] = []
-
-        for pipe_code in oc_df["PipeCode"].unique():
-            gf_pipe_id = pipe_configs_df.loc[
-                (pipe_configs_df["ParentPipe"] == cfg.PARENT_PIPE)
-                & (pipe_configs_df["PipeCode"] == pipe_code),
-                "GFPipeID",
-            ].item()
-
-            config_set = set(
-                configs_df[configs_df["PipeCode"] == pipe_code]["StationName"]
-            )
-            oc_set = set(oc_df[oc_df["PipeCode"] == pipe_code]["StationName"])
-
-            records_list.extend(
-                [
-                    {
-                        "Loc": f"{key:0>6}",
-                        "ParentPipe": cfg.PARENT_PIPE,
-                        "GFPipeID": gf_pipe_id,
-                        "PipeCode": pipe_code,
-                        "StationName": station_name,
-                    }
-                    for key, station_name in enumerate(
-                        oc_set - config_set, start=len(config_set) + 1
-                    )
-                ]
-            )
-
-        return records_list
-
-    async def _cleanse_sg(
-        self,
-        file_path: Path,
-        segment_configs: pd.DataFrame,
-        pipe_configs_df: pd.DataFrame,
-    ) -> None:
-        try:
             enb_configs = pipe_configs_df.loc[
                 pipe_configs_df["ParentPipe"] == cfg.PARENT_PIPE,
                 ["GFPipeID", "PipeCode", "PipeName"],
             ]
+            intermediate = await asyncio.to_thread(
+                self._munge_sg,
+                pl.from_pandas(raw_df),
+                pl.from_pandas(enb_loc_df),
+                pl.from_pandas(enb_configs),
+            )
+            await asyncio.to_thread(intermediate.select(GOLD_SCHEMA).write_parquet, output_path)
+        except Exception as e:
+            logger.error(f"processSG failed: {e}")
+        return []
 
-            lz = (
-                pl.scan_parquet(file_path)
-                .filter(
-                    ~(
-                        pl.col("Station Name").is_null()
-                        & pl.col("Cap").is_null()
-                        & pl.col("Nom").is_null()
-                        & pl.col("Cap2").is_null()
+    def _concat_sg_csvs(self, raw_dir: Path) -> pd.DataFrame:
+        """Read all SG raw CSVs (skip header row), return combined DataFrame."""
+        frames: list[pd.DataFrame] = []
+        for fp in sorted(raw_dir.iterdir()):
+            if fp.suffix != ".csv":
+                continue
+            try:
+                pipe_code, _, eff_gas_day, cycle_desc = fp.name.split("_", 3)
+                cycle_desc = cycle_desc[:-4]
+                df = pd.read_csv(fp, skiprows=1, usecols=cfg.SG_RAW_COLUMNS)
+                if not df.empty:
+                    frames.append(
+                        df.assign(
+                            PipeCode=pipe_code,
+                            EffGasDate=eff_gas_day,
+                            CycleDesc=cycle_desc,
+                        )
                     )
-                )
-                .with_columns(
-                    pl.col("Cap").cast(pl.Float64),
-                    pl.col("Cap2").cast(pl.Float64),
-                    pl.col("Nom").cast(pl.Float64),
-                    pl.col("CycleDesc").cast(pl.String),
-                )
-            )
+            except Exception as e:
+                logger.error(f"SG CSV read failed: {fp.name} — {e}")
+        return pd.concat(frames, ignore_index=True) if frames else pd.DataFrame()
 
-            lazy_list: list[pl.LazyFrame] = []
+    def _discover_new_sg_locs(
+        self,
+        raw_df: pd.DataFrame,
+        loc_df: pd.DataFrame,
+        pipe_configs_df: pd.DataFrame,
+    ) -> pd.DataFrame:
+        """Find SG station names not in LocMetaData, assign GF-prefix LocIDs."""
+        records: list[dict] = []
 
-            # Records with no Cap2 — single direction
-            df_td1 = (
-                lz.filter(pl.col("Cap2").is_null())
-                .with_columns(
-                    pl.col("Cap").alias("OpCap"),
-                    pl.col("Nom")
-                    .map_batches(
-                        lambda s: pl.Series(
-                            map(lambda v: "TD2" if v < 0 else "TD1", s)
-                        ),
-                        return_dtype=pl.String,
-                    )
-                    .alias("FlowInd"),
-                )
-                .select(
-                    ["PipeCode", "Station Name", "OpCap", "FlowInd", "Nom", "EffGasDate", "CycleDesc"]
-                )
-            )
-            lazy_list.append(df_td1)
+        for pipe_code in raw_df["PipeCode"].unique():
+            gf_pipe_id = pipe_configs_df.loc[
+                (pipe_configs_df["ParentPipe"] == cfg.PARENT_PIPE)
+                & (pipe_configs_df["PipeCode"] == pipe_code),
+                "GFPipeID",
+            ].squeeze()
+            if pd.isna(gf_pipe_id):
+                continue
+            gf_pipe_id = int(gf_pipe_id)
 
-            # Rows with both Cap & Cap2
-            df_td2 = lz.filter(~pl.col("Cap2").is_null())
+            known = set(
+                loc_df.loc[
+                    loc_df.get("GFPipeID", pd.Series(dtype=float)).apply(
+                        lambda x: int(x) if pd.notna(x) else -1
+                    ) == gf_pipe_id,
+                    "LocName",
+                ]
+                if "LocName" in loc_df.columns and "GFPipeID" in loc_df.columns
+                else []
+            )
+            seen = set(raw_df.loc[raw_df["PipeCode"] == pipe_code, "Station Name"].dropna())
+            new_stations = seen - known
 
-            # Cap1 + Nom<0 → Nom=0, TD1
-            lazy_list.append(
-                df_td2.filter(pl.col("Nom") < 0)
-                .with_columns(
-                    pl.col("Cap").alias("OpCap"),
-                    pl.lit(float(0)).alias("Nom"),
-                    pl.lit("TD1").alias("FlowInd"),
-                )
-                .select(["PipeCode", "Station Name", "OpCap", "FlowInd", "Nom", "EffGasDate", "CycleDesc"])
-            )
-            # Cap2 + Nom<0 → Nom unchanged, TD2
-            lazy_list.append(
-                df_td2.filter(pl.col("Nom") < 0)
-                .with_columns(
-                    pl.col("Cap2").alias("OpCap"),
-                    pl.lit("TD2").alias("FlowInd"),
-                )
-                .select(["PipeCode", "Station Name", "OpCap", "FlowInd", "Nom", "EffGasDate", "CycleDesc"])
-            )
-            # Cap1 + Nom>0 → Nom unchanged, TD1
-            lazy_list.append(
-                df_td2.filter(pl.col("Nom") > 0)
-                .with_columns(
-                    pl.col("Cap").alias("OpCap"),
-                    pl.lit("TD1").alias("FlowInd"),
-                )
-                .select(["PipeCode", "Station Name", "OpCap", "FlowInd", "Nom", "EffGasDate", "CycleDesc"])
-            )
-            # Cap2 + Nom>0 → Nom=0, TD2
-            lazy_list.append(
-                df_td2.filter(pl.col("Nom") > 0)
-                .with_columns(
-                    pl.col("Cap2").alias("OpCap"),
-                    pl.lit(float(0)).alias("Nom"),
-                    pl.lit("TD2").alias("FlowInd"),
-                )
-                .select(["PipeCode", "Station Name", "OpCap", "FlowInd", "Nom", "EffGasDate", "CycleDesc"])
-            )
-            # Cap1 + Nom==0 → TD1
-            lazy_list.append(
-                df_td2.filter(pl.col("Nom") == 0)
-                .with_columns(
-                    pl.col("Cap").alias("OpCap"),
-                    pl.lit("TD1").alias("FlowInd"),
-                )
-                .select(["PipeCode", "Station Name", "OpCap", "FlowInd", "Nom", "EffGasDate", "CycleDesc"])
-            )
-            # Cap2 + Nom==0 → TD2
-            lazy_list.append(
-                df_td2.filter(pl.col("Nom") == 0)
-                .with_columns(
-                    pl.col("Cap2").alias("OpCap"),
-                    pl.lit("TD2").alias("FlowInd"),
-                )
-                .select(["PipeCode", "Station Name", "OpCap", "FlowInd", "Nom", "EffGasDate", "CycleDesc"])
-            )
+            start_seq = len(known) + 1
+            for seq, station_name in enumerate(sorted(new_stations), start=start_seq):
+                loc_id = f"GF{seq:0>5}"
+                gf_loc_id = f"{gf_pipe_id:0>3}{loc_id}"
+                records.append({
+                    "PartitionKey": cfg.PARENT_PIPE,
+                    "RowKey": gf_loc_id,
+                    "GFPipeID": gf_pipe_id,
+                    "GFLocID": gf_loc_id,
+                    "LocID": loc_id,
+                    "Loc": None,
+                    "LocName": station_name,
+                    "PipeCode": pipe_code,
+                    "RowType": "SG",
+                    "UpdatedTime": datetime.now().strftime("%Y%m%d"),
+                })
 
-            df = pl.concat(lazy_list, how="vertical").with_columns(
+        return pd.DataFrame(records) if records else pd.DataFrame()
+
+    def _munge_sg(
+        self,
+        raw: pl.DataFrame,
+        loc_configs: pl.DataFrame,
+        enb_configs: pl.DataFrame,
+    ) -> pl.DataFrame:
+        """SG transform: TD1/TD2 split → join LocMetaData for LocID → gold schema."""
+        lz = (
+            raw.lazy()
+            .filter(
+                ~(
+                    pl.col("Station Name").is_null()
+                    & pl.col("Cap").is_null()
+                    & pl.col("Nom").is_null()
+                    & pl.col("Cap2").is_null()
+                )
+            )
+            .with_columns(
+                pl.col("Cap").cast(pl.Float64),
+                pl.col("Cap2").cast(pl.Float64),
+                pl.col("Nom").cast(pl.Float64),
+                pl.col("CycleDesc").cast(pl.String),
+            )
+        )
+
+        lazy_list: list[pl.LazyFrame] = []
+        df_td2 = lz.filter(~pl.col("Cap2").is_null())
+
+        # Single-direction rows (no Cap2)
+        lazy_list.append(
+            lz.filter(pl.col("Cap2").is_null())
+            .with_columns(
+                pl.col("Cap").alias("OpCap"),
+                pl.col("Nom")
+                .map_batches(
+                    lambda s: pl.Series(map(lambda v: "TD2" if v < 0 else "TD1", s)),
+                    return_dtype=pl.String,
+                )
+                .alias("FlowInd"),
+            )
+            .select(["PipeCode", "Station Name", "OpCap", "FlowInd", "Nom", "EffGasDate", "CycleDesc"])
+        )
+        # Cap1 + Nom<0 → Nom=0, TD1
+        lazy_list.append(
+            df_td2.filter(pl.col("Nom") < 0)
+            .with_columns(pl.col("Cap").alias("OpCap"), pl.lit(float(0)).alias("Nom"), pl.lit("TD1").alias("FlowInd"))
+            .select(["PipeCode", "Station Name", "OpCap", "FlowInd", "Nom", "EffGasDate", "CycleDesc"])
+        )
+        # Cap2 + Nom<0 → Nom unchanged, TD2
+        lazy_list.append(
+            df_td2.filter(pl.col("Nom") < 0)
+            .with_columns(pl.col("Cap2").alias("OpCap"), pl.lit("TD2").alias("FlowInd"))
+            .select(["PipeCode", "Station Name", "OpCap", "FlowInd", "Nom", "EffGasDate", "CycleDesc"])
+        )
+        # Cap1 + Nom>0 → Nom unchanged, TD1
+        lazy_list.append(
+            df_td2.filter(pl.col("Nom") > 0)
+            .with_columns(pl.col("Cap").alias("OpCap"), pl.lit("TD1").alias("FlowInd"))
+            .select(["PipeCode", "Station Name", "OpCap", "FlowInd", "Nom", "EffGasDate", "CycleDesc"])
+        )
+        # Cap2 + Nom>0 → Nom=0, TD2
+        lazy_list.append(
+            df_td2.filter(pl.col("Nom") > 0)
+            .with_columns(pl.col("Cap2").alias("OpCap"), pl.lit(float(0)).alias("Nom"), pl.lit("TD2").alias("FlowInd"))
+            .select(["PipeCode", "Station Name", "OpCap", "FlowInd", "Nom", "EffGasDate", "CycleDesc"])
+        )
+        # Cap1 + Nom==0 → TD1
+        lazy_list.append(
+            df_td2.filter(pl.col("Nom") == 0)
+            .with_columns(pl.col("Cap").alias("OpCap"), pl.lit("TD1").alias("FlowInd"))
+            .select(["PipeCode", "Station Name", "OpCap", "FlowInd", "Nom", "EffGasDate", "CycleDesc"])
+        )
+        # Cap2 + Nom==0 → TD2
+        lazy_list.append(
+            df_td2.filter(pl.col("Nom") == 0)
+            .with_columns(pl.col("Cap2").alias("OpCap"), pl.lit("TD2").alias("FlowInd"))
+            .select(["PipeCode", "Station Name", "OpCap", "FlowInd", "Nom", "EffGasDate", "CycleDesc"])
+        )
+
+        df = (
+            pl.concat(lazy_list, how="vertical")
+            .with_columns(
                 pl.col("OpCap").map_batches(batch_absolute, return_dtype=pl.Float64),
                 pl.col("Nom").map_batches(batch_absolute, return_dtype=pl.Float64),
                 pl.col("EffGasDate")
@@ -582,122 +492,94 @@ class EnbridgeSilverMunger(BaseSilverMunger):
                     lambda s: batch_date_parse(s, cfg.SG_DATE_FORMAT),
                     return_dtype=pl.Date,
                 )
-                .alias("EffGasDay"),
-                pl.col("FlowInd")
-                .map_batches(
+                .alias("GasDay"),
+                pl.col("FlowInd").map_batches(
                     lambda s: batch_fi_mapper(s, cfg.SG_FLOW_MAP),
                     return_dtype=pl.String,
-                ),
-                pl.lit(None).cast(pl.String).alias("LocZn"),
-            )
-
-            result = (
-                df.join(pl.LazyFrame(enb_configs), on="PipeCode", how="inner")
-                .join(
-                    pl.LazyFrame(segment_configs),
-                    on=["PipeCode", "Station Name"],
-                    how="inner",
                 )
+                .alias("FlowDirection"),
             )
-            result = add_modeling_columns(result, "SG", cfg.PARENT_PIPE)
-            result = result.with_columns(
-                (pl.col("OpCap") - pl.col("Nom")).alias(
-                    "OperationallyAvailableCapacity"
-                ),
+            # Join pipe configs for GFPipeID + PipeName
+            .join(enb_configs.lazy(), on="PipeCode", how="inner")
+            # Join LocMetaData by (GFPipeID, Station Name) → get LocID, GFLocID
+            .join(
+                loc_configs.lazy()
+                .with_columns(pl.col("GFPipeID").cast(pl.Int64))
+                .rename({"LocName": "Station Name"})
+                .select(["GFPipeID", "Station Name", "LocID", "GFLocID"]),
+                on=["GFPipeID", "Station Name"],
+                how="inner",
             )
-            result = result.with_columns(
-                pl.concat_str(
-                    [
-                        pl.col("GFPipeID"),
-                        pl.col("RowType"),
-                        pl.col("Loc"),
-                        pl.col("FlowInd"),
-                    ],
-                    separator="",
-                ).alias("GFLOC"),
-                pl.lit(cfg.PARENT_PIPE).cast(pl.String).alias("ParentPipe"),
-                pl.col("PipeName").alias("PipelineName"),
-                pl.lit(None).cast(pl.String).alias("LocPurpDesc"),
+            .with_columns(
+                pl.col("GFPipeID").cast(pl.Int64),
+                pl.col("GasDay")
+                .map_batches(batch_ymonth_parse, return_dtype=pl.Int64)
+                .alias("GasMonth"),
+                pl.lit("SG").alias("Dataset"),
                 pl.col("Station Name").alias("LocName"),
-                pl.lit(None).cast(pl.String).alias("LocZn"),
-                pl.lit(None).cast(pl.String).alias("LocSegment"),
-                pl.lit(None).alias("DesignCapacity"),
+                pl.lit(None).cast(pl.Float64).alias("DesignCapacity"),
                 pl.col("OpCap").alias("OperatingCapacity"),
                 pl.col("Nom").alias("TotalScheduledQuantity"),
+                (pl.col("OpCap") - pl.col("Nom")).alias("OperationallyAvailableCapacity"),
                 pl.lit(None).cast(pl.String).alias("IT"),
-                pl.lit(None).cast(pl.String).alias("AllQtyAvail"),
-                pl.lit(None).cast(pl.String).alias("QtyReason"),
                 pl.lit(datetime.now()).cast(pl.Datetime).alias("Timestamp"),
             )
-
-            final = result.select(GOLD_SCHEMA)
-            await asyncio.to_thread(lambda: final.collect().write_parquet(file_path))
-
-        except Exception as e:
-            logger.error(f"cleanseSG failed: {file_path.name} — {e}")
+        )
+        return df.collect()
 
     # ------------------------------------------------------------------
-    # NN processing
+    # NN processing — batch concat, LocID from raw Loc
     # ------------------------------------------------------------------
 
     async def _process_nn(
         self, raw_dir: Path, silver_dir: Path, pipe_configs_df: pd.DataFrame
     ) -> list[str]:
-        empty_list: list[str] = []
+        run_dt = datetime.now()
+        output_path = silver_dir / _silver_filename("NN", run_dt)
         try:
-            def _convert_csvs():
-                empties = []
-                for file_path in raw_dir.iterdir():
-                    try:
-                        pipe_code, _, _ = file_path.name.split("_")
-                        df = pd.read_csv(file_path, header=0)
-                        if len(df) < 1:
-                            empties.append(file_path.name.replace(".csv", ".parquet"))
-                        df.assign(PipeCode=pipe_code).to_parquet(
-                            silver_dir / file_path.name.replace(".csv", ".parquet"),
-                            index=False,
-                        )
-                    except Exception as e:
-                        logger.error(f"NN CSV read failed: {file_path.name} — {e}")
-                return empties
+            raw_df = await asyncio.to_thread(self._concat_point_csvs, raw_dir, "NN")
+            if raw_df.empty:
+                return []
 
-            empty_list = await asyncio.to_thread(_convert_csvs)
-
-            async with asyncio.TaskGroup() as group:
-                for fp in silver_dir.iterdir():
-                    if fp.name not in empty_list:
-                        group.create_task(self._cleanse_nn(fp, pipe_configs_df))
-
-        except Exception as e:
-            logger.error(f"processNN failed: {e}")
-
-        return empty_list
-
-    async def _cleanse_nn(self, file_path: Path, pipe_configs_df: pd.DataFrame) -> None:
-        try:
             enb_configs = pipe_configs_df.loc[
                 pipe_configs_df["ParentPipe"] == cfg.PARENT_PIPE,
                 ["GFPipeID", "PipeCode", "PipeName"],
             ]
-
-            df = (
-                pl.scan_parquet(file_path)
-                .select([*cfg.NN_RAW_COLUMNS, "PipeCode"])
+            intermediate = await asyncio.to_thread(
+                self._munge_nn, pl.from_pandas(raw_df.astype(str)), enb_configs
             )
-            df = filter_all_null(df, cfg.NN_RAW_COLUMNS)
+            await self._sync_point_locations(intermediate, RowType.NN)
+            await asyncio.to_thread(intermediate.select(GOLD_SCHEMA).write_parquet, output_path)
+        except Exception as e:
+            logger.error(f"processNN failed: {e}")
+        return []
 
-            df = df.with_columns(
+    def _munge_nn(self, df: pl.DataFrame, enb_configs: pd.DataFrame) -> pl.DataFrame:
+        """NN transform: filter → parse → LocID/GFLocID.
+
+        Returns intermediate DataFrame (superset of GOLD_SCHEMA) so that
+        _sync_point_locations can read GFPipeID/LocID/Loc before final select.
+        """
+        null_check = functools.reduce(
+            operator.and_, [pl.col(c).is_null() for c in cfg.NN_RAW_COLUMNS]
+        )
+        df = (
+            df.select([*cfg.NN_RAW_COLUMNS, "PipeCode"])
+            .filter(~null_check)
+            .with_columns(
                 pl.col("Effective_From_DateTime")
                 .map_batches(
                     lambda s: batch_date_parse(s, cfg.NN_DATE_FORMAT),
                     return_dtype=pl.Date,
                 )
-                .alias("EffGasDay"),
+                .alias("GasDay"),
+                # Loc = raw; LocID = 7-digit zero-padded
+                pl.col("Loc_Prop").cast(pl.String).alias("Loc"),
                 pl.col("Loc_Prop")
-                .map_batches(padded_string, return_dtype=pl.String)
-                .alias("Loc"),
+                .cast(pl.String)
+                .map_batches(lambda s: padded_string(s, 7), return_dtype=pl.String)
+                .alias("LocID"),
                 pl.col("Loc_Name").cast(pl.String).alias("LocName"),
-                pl.lit(cfg.PARENT_PIPE).cast(pl.String).alias("ParentPipe"),
                 pl.col("Allocated_Qty")
                 .map_batches(batch_float_parse, return_dtype=pl.Float64)
                 .alias("TotalScheduledQuantity"),
@@ -706,36 +588,85 @@ class EnbridgeSilverMunger(BaseSilverMunger):
                     lambda s: batch_fi_mapper(s, cfg.NN_FLOW_MAP),
                     return_dtype=pl.String,
                 )
-                .alias("FlowInd"),
-                pl.lit(None).cast(pl.String).alias("CycleDesc"),
-                pl.lit(None).cast(pl.String).alias("LocPurpDesc"),
-                pl.lit(None).cast(pl.String).alias("LocZn"),
-                pl.lit(None).cast(pl.String).alias("LocSegment"),
-                pl.lit(None).alias("DesignCapacity"),
-                pl.lit(None).alias("OperatingCapacity"),
-                pl.lit(None).alias("OperationallyAvailableCapacity"),
+                .alias("FlowDirection"),
+            )
+            .join(pl.from_pandas(enb_configs).lazy().collect(), on="PipeCode", how="inner")
+            .with_columns(
+                pl.col("GFPipeID").cast(pl.Int64),
+                pl.col("GasDay")
+                .map_batches(batch_ymonth_parse, return_dtype=pl.Int64)
+                .alias("GasMonth"),
+                pl.lit("NN").alias("Dataset"),
+                pl.lit(None).cast(pl.Float64).alias("DesignCapacity"),
+                pl.lit(None).cast(pl.Float64).alias("OperatingCapacity"),
+                pl.lit(None).cast(pl.Float64).alias("OperationallyAvailableCapacity"),
                 pl.lit(None).cast(pl.String).alias("IT"),
-                pl.lit(None).cast(pl.String).alias("AllQtyAvail"),
                 pl.lit(datetime.now()).cast(pl.Datetime).alias("Timestamp"),
-                pl.col("Accounting_Physincal_Indicator")
-                .cast(pl.String)
-                .alias("QtyReason"),
+            )
+        )
+        return df.with_columns(
+            pl.concat_str(
+                [pl.col("GFPipeID").cast(pl.String).str.zfill(3), pl.col("LocID")],
+                separator="",
+            ).alias("GFLocID")
+        )
+
+    # ------------------------------------------------------------------
+    # Shared helpers
+    # ------------------------------------------------------------------
+
+    def _concat_point_csvs(self, raw_dir: Path, label: str) -> pd.DataFrame:
+        """Read all CSVs in raw_dir, tag with PipeCode, return combined DataFrame."""
+        frames: list[pd.DataFrame] = []
+        for fp in sorted(raw_dir.iterdir()):
+            if fp.suffix != ".csv":
+                continue
+            pipe_code = fp.name.split("_", 1)[0]
+            try:
+                df = pd.read_csv(fp, header=0)
+                if not df.empty:
+                    frames.append(df.assign(PipeCode=pipe_code))
+            except Exception as e:
+                logger.error(f"{label} CSV read failed: {fp.name} — {e}")
+        return pd.concat(frames, ignore_index=True) if frames else pd.DataFrame()
+
+    async def _sync_point_locations(
+        self, silver_df: pl.DataFrame, row_type: RowType
+    ) -> None:
+        """Upsert any new GFLocIDs to the LocMetaData Azure Table."""
+        try:
+            loc_df = await asyncio.to_thread(dump_Loc_configs, self._paths.config_files)
+            if loc_df is None or loc_df.empty:
+                existing_ids: set[str] = set()
+            else:
+                existing_ids = set(loc_df.get("GFLocID", pd.Series(dtype=str)).dropna())
+
+            new_locs = (
+                silver_df.select(["GFPipeID", "GFLocID", "LocID", "Loc", "LocName"])
+                .unique(subset=["GFLocID"])
+                .filter(~pl.col("GFLocID").is_in(list(existing_ids)))
             )
 
-            result = df.join(
-                pl.LazyFrame(enb_configs), on="PipeCode", how="inner"
-            )
-            result = add_modeling_columns(result, "NN", cfg.PARENT_PIPE)
-            result = result.with_columns(
-                pl.col("Loc").map_batches(padded_string, return_dtype=pl.String),
-                pl.col("PipeName").alias("PipelineName"),
-            )
-            result = compose_gfloc(result)
-            final = result.select(GOLD_SCHEMA)
-            await asyncio.to_thread(lambda: final.collect().write_parquet(file_path))
+            if new_locs.is_empty():
+                return
+
+            count = len(new_locs)
+            if row_type == RowType.OA:
+                self.new_oa_locations = count
+            elif row_type == RowType.NN:
+                self.new_nn_locations = count
+
+            records = new_locs.to_pandas()
+            records["PartitionKey"] = cfg.PARENT_PIPE
+            records["RowKey"] = records["GFLocID"]
+            records["RowType"] = row_type.value
+            records["UpdatedTime"] = datetime.now().strftime("%Y%m%d")
+
+            await asyncio.to_thread(update_Loc_configs, records)
+            logger.info(f"{row_type} new locations upserted to LocMetaData: {count}")
 
         except Exception as e:
-            logger.error(f"cleanseNN failed: {file_path.name} — {e}")
+            logger.error(f"syncPointLocations failed ({row_type}): {e}")
 
     # ------------------------------------------------------------------
     # META processing

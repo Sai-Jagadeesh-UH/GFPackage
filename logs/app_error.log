@@ -1,0 +1,5 @@
+2026-03-21 15:19:18.454 | ERROR    | app.pipelines.enbridge.silver_munger:_sync_point_locations:669 - syncPointLocations failed (NN): ("Expected bytes, got a 'TablesEntityDatetime' object", 'Conversion failed for column UpdatedTime with type object')
+2026-03-21 17:58:20.667 | ERROR    | app.pipelines.enbridge.scraper:_download_oa:403 - OA download failed
+2026-03-21 17:58:20.717 | WARNING  | app.pipelines.enbridge.scraper:scrape:124 - GPL short-way failed (OA download failed), trying long way
+2026-03-21 17:59:14.448 | ERROR    | app.pipelines.enbridge.scraper:_download_oa:403 - OA download failed
+2026-03-21 17:59:14.473 | WARNING  | app.pipelines.enbridge.scraper:scrape:124 - AG short-way failed (OA download failed), trying long way

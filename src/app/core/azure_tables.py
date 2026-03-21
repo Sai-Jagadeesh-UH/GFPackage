@@ -1,4 +1,5 @@
 from contextlib import contextmanager
+from datetime import datetime
 from pathlib import Path
 
 import pandas as pd
@@ -113,15 +114,15 @@ def dump_pipe_configs(config_dir: Path, force: bool = False) -> pd.DataFrame | N
             return None
 
 
-def dump_segment_configs(config_dir: Path, force: bool = False) -> pd.DataFrame | None:
-    """Download SegmentConfigs from Azure Table Storage.
+def dump_Loc_configs(config_dir: Path, force: bool = False) -> pd.DataFrame | None:
+    """Download LocConfigs from Azure Table Storage.
 
     Cached in-memory with mtime tracking — re-reads from disk only if
     the parquet file was modified since the last load.
 
-    Writes to config_dir/SegmentConfigs.parquet.
+    Writes to config_dir/LocConfigs.parquet.
     """
-    parquet_path = config_dir / "SegmentConfigs.parquet"
+    parquet_path = config_dir / "LocConfigs.parquet"
 
     if not force:
         cached = _cache.get(parquet_path)
@@ -134,16 +135,28 @@ def dump_segment_configs(config_dir: Path, force: bool = False) -> pd.DataFrame 
 
     # Force download or file doesn't exist
     _cache.invalidate(parquet_path)
-    logger.info("Dumping SegmentConfigs from Azure Table Storage")
-    with get_table(settings.segment_configs_table) as table_client:
-        df = pd.DataFrame(table_client.query_entities("")) 
+    logger.info("Dumping LocConfigs from Azure Table Storage")
+    with get_table(settings.Loc_configs_table) as table_client:
+        df = pd.DataFrame(table_client.query_entities(""))
+
+    # Unwrap EdmType wrapper objects and datetime subclasses returned by the Azure SDK
+    def _unwrap(x):
+        if hasattr(x, "value"):
+            return x.value
+        if isinstance(x, datetime):
+            return x.isoformat()
+        return x
+
+    for col in df.columns:
+        df[col] = df[col].apply(_unwrap)
+
     df.to_parquet(parquet_path, index=False)
     _cache.put(parquet_path, df)
     return df
 
 
-def update_segment_configs(df: pd.DataFrame) -> None:
-    """Upsert new rows into the SegmentConfigs Azure Table.
+def update_Loc_configs(df: pd.DataFrame) -> None:
+    """Upsert new rows into the LocConfigs Azure Table.
 
     Batches in groups of 90 (Azure Table transaction limit is 100).
     Invalidates all cached configs since the backing data changed.
@@ -151,18 +164,18 @@ def update_segment_configs(df: pd.DataFrame) -> None:
     operations = [("upsert", row) for row in df.to_dict(orient="records")]
 
     for i in range(0, len(operations), 90):
-        with get_table(settings.segment_configs_table) as table_client:
+        with get_table(settings.Loc_configs_table) as table_client:
             try:
                 table_client.submit_transaction(
                     operations[i : min(i + 90, len(operations))] # type: ignore
                 )
             except Exception as e:
-                logger.error(f"SegmentConfigs upsert failed: {e}")
+                logger.error(f"LocConfigs upsert failed: {e}")
 
     # Invalidate all config caches — segment data changed, and any
     # downstream consumers holding references need fresh data
     _cache.clear()
-    logger.info("Config cache cleared after SegmentConfigs upsert")
+    logger.info("Config cache cleared after LocConfigs upsert")
 
 
 def invalidate_config_cache() -> None:

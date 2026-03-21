@@ -36,10 +36,21 @@ def batch_ymonth_parse(series: pl.Series) -> pl.Series:
     )
 
 
-def padded_string(series: pl.Series, width: int = 6) -> pl.Series:
-    """Left-pad values with zeros to a fixed width."""
+def padded_string(series: pl.Series, width: int = 7) -> pl.Series:
+    """Left-pad values with zeros to a fixed width (default 7 for LocID)."""
     return pl.Series(
         map(lambda s: str(s).rjust(width, "0"), series)
+    )
+
+
+def gf_padded_loc(series: pl.Series) -> pl.Series:
+    """Generate GF-prefixed 7-char LocID from a sequence number.
+
+    e.g. 1 → "GF00001", 42 → "GF00042"
+    Used for SG/ST where raw Loc is not available.
+    """
+    return pl.Series(
+        map(lambda v: f"GF{str(int(v)):0>5}", series)
     )
 
 
@@ -72,38 +83,19 @@ def batch_fi_mapper(series: pl.Series, flow_map: dict[str, str]) -> pl.Series:
 # Column composition helpers (used with .with_columns())
 # ---------------------------------------------------------------------------
 
-def compose_gfloc(df: pl.LazyFrame) -> pl.LazyFrame:
-    """Add GFLOC column = concat(GFPipeID, RowType, GFLocID, FlowInd)."""
-    return df.with_columns(
-        pl.concat_str(
-            [pl.col("GFPipeID"), pl.col("RowType"),
-             pl.col("GFLocID"), pl.col("FlowInd")],
-            separator="",
-        ).alias("GFLOC")
-    )
+def build_gfloc_id(df: pl.LazyFrame) -> pl.LazyFrame:
+    """Add GFLocID = 3-digit zero-padded GFPipeID + 7-char LocID (10 chars total).
 
-
-def add_modeling_columns(
-    df: pl.LazyFrame,
-    row_type: str,
-    parent_pipe: str,
-) -> pl.LazyFrame:
-    """Add the standard modeling columns: EffGasMonth, GFLocID, RowType.
-
-    Expects df already has: EffGasDay, Loc, GFPipeID.
+    Expects df already has: GFPipeID (Int64), LocID (7-char String).
     """
     return df.with_columns(
-        pl.col("EffGasDay")
-        .map_batches(batch_ymonth_parse, return_dtype=pl.Int64)
-        .alias("EffGasMonth"),
-
-        pl.col("GFPipeID").cast(pl.Int64),
-
-        pl.col("Loc")
-        .map_batches(lambda s: padded_string(s), return_dtype=pl.String)
-        .alias("GFLocID"),
-
-        pl.lit(row_type).alias("RowType"),
+        pl.concat_str(
+            [
+                pl.col("GFPipeID").cast(pl.String).str.zfill(3),
+                pl.col("LocID"),
+            ],
+            separator="",
+        ).alias("GFLocID")
     )
 
 

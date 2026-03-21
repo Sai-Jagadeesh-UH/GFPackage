@@ -66,27 +66,33 @@ class EnbridgePusher(BasePusher):
             return f"Enbridge/other/{name}"
 
     def silver_blob_path(self, dataset_type: RowType, file_path: Path) -> str:
-        """Construct silver blob path based on dataset type and filename."""
+        """Construct silver blob path for concatenated silver parquets.
+
+        Silver files are named: {DS}_Enbridge_{mmddyyyy}_{hhmmss}.parquet
+        Blob path: Enbridge/{DatasetFolder}/{YYYYMM}/{filename}
+        """
+        from datetime import datetime as _dt
+
         name = file_path.name
-
-        if dataset_type == RowType.OA:
-            _, _, eff_date, _ = name.split("_", 3)
-            return cfg.oa_silver_blob_path(eff_date, name)
-
-        elif dataset_type == RowType.SG:
-            _, _, eff_date, _ = name.split("_", 3)
-            return cfg.sg_silver_blob_path(eff_date, name)
-
-        elif dataset_type == RowType.ST:
-            _, _, eff_date, _ = name.split("_", 3)
-            return cfg.st_silver_blob_path(eff_date, name)
-
-        elif dataset_type == RowType.NN:
-            _, _, eff_date = name.split("_")
-            return cfg.nn_silver_blob_path(eff_date, name)
-
-        else:
+        folder_map = {
+            RowType.OA: "PointCapacity",
+            RowType.SG: "SegmentCapacity",
+            RowType.ST: "StorageCapacity",
+            RowType.NN: "NoNotice",
+        }
+        folder = folder_map.get(dataset_type)
+        if not folder:
             return f"Enbridge/other/{name}"
+
+        try:
+            # Name format: {DS}_Enbridge_{mmddyyyy}_{hhmmss}.parquet
+            parts = name.split("_")
+            run_dt = _dt.strptime(parts[2], "%m%d%Y")
+            yyyymm = run_dt.strftime("%Y%m")
+        except Exception:
+            yyyymm = "unknown"
+
+        return f"Enbridge/{folder}/{yyyymm}/{name}"
 
     # ------------------------------------------------------------------
     # Push operations
@@ -208,23 +214,25 @@ class EnbridgePusher(BasePusher):
             raw_dir, silver_dir, dataset_type, pipe_configs_df
         )
 
-        # Count silver records per pipe and collect actual file blob paths
+        # Count silver records per pipe from the concatenated parquet(s)
+        # Silver files now contain all pipes; group by PipeCode to get per-pipe counts
         silver_counts: dict[str, int] = {}
         silver_blob_files: dict[str, list[str]] = {}
         for f in silver_dir.iterdir():
-            if f.is_file() and f.suffix == ".parquet":
-                try:
-                    pipe_code = f.name.split("_", 1)[0]
-                    nrows = pl.scan_parquet(f).select(pl.len()).collect().item()
-                    silver_counts[pipe_code] = (
-                        silver_counts.get(pipe_code, 0) + nrows
-                    )
-                    blob_path = self.silver_blob_path(dataset_type, f)
-                    silver_blob_files.setdefault(pipe_code, []).append(
-                        f"{blob_base}/{settings.silver_container}/{blob_path}"
-                    )
-                except Exception:
-                    pass
+            if not (f.is_file() and f.suffix == ".parquet"):
+                continue
+            try:
+                blob_path = self.silver_blob_path(dataset_type, f)
+                blob_url = f"{blob_base}/{settings.silver_container}/{blob_path}"
+                # Silver parquets use GOLD_SCHEMA (no PipeCode column).
+                # Attribute total row count to a synthetic "all" key per file.
+                nrows = pl.scan_parquet(f).select(pl.len()).collect().item()
+                silver_counts["_all"] = silver_counts.get("_all", 0) + nrows
+                silver_blob_files.setdefault("_all", [])
+                if blob_url not in silver_blob_files["_all"]:
+                    silver_blob_files["_all"].append(blob_url)
+            except Exception:
+                pass
 
         # Push silver
         await self.push_silver(silver_dir, dataset_type)
@@ -243,20 +251,29 @@ class EnbridgePusher(BasePusher):
                 enb_df.loc[enb_df[code_col].notna(), "PipeCode"].str.upper()
             )
 
-        # Build details with actual ADLS file paths
-        all_pipes = expected_pipes | set(raw_counts) | set(silver_counts)
+        # Build details — silver is one combined file so silver_records are aggregate.
+        # Per-pipe entries get raw_records; silver_records summed on first pipe entry.
+        all_pipes = expected_pipes | set(raw_counts)
         details: list[DatasetDetail] = []
-        new_locs = silver_munger.new_sg_locations if dataset_type == RowType.SG else 0
-        for pipe_code in sorted(all_pipes):
+        new_locs_map = {
+            RowType.OA: getattr(silver_munger, "new_oa_locations", 0),
+            RowType.SG: getattr(silver_munger, "new_sg_locations", 0),
+            RowType.NN: getattr(silver_munger, "new_nn_locations", 0),
+        }
+        new_locs = new_locs_map.get(dataset_type, 0)
+        total_silver = silver_counts.get("_all", 0)
+        silver_file_urls = silver_blob_files.get("_all", [])
+        for i, pipe_code in enumerate(sorted(all_pipes)):
             is_missing = pipe_code in expected_pipes and pipe_code not in raw_counts
             details.append(DatasetDetail(
                 dataset_type=dataset_type,
                 pipe_code=pipe_code,
                 raw_records=raw_counts.get(pipe_code, 0),
-                silver_records=silver_counts.get(pipe_code, 0),
-                new_locations=new_locs if dataset_type == RowType.SG else 0,
+                # Assign aggregate silver count to the first pipe to avoid duplication
+                silver_records=total_silver if i == 0 else 0,
+                new_locations=new_locs if i == 0 else 0,
                 raw_paths=raw_blob_files.get(pipe_code, []),
-                silver_paths=silver_blob_files.get(pipe_code, []),
+                silver_paths=silver_file_urls if i == 0 else [],
                 missing=is_missing,
             ))
 

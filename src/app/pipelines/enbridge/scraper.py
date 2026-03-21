@@ -56,6 +56,7 @@ class EnbridgeScraper(BasePipeScraper):
             paths: PipelinePaths instance with download directories.
         """
         self._paths = paths
+        self._browser_sem = asyncio.Semaphore(4)
 
     @property
     def parent_pipe(self) -> str:
@@ -158,29 +159,29 @@ class EnbridgeScraper(BasePipeScraper):
         scrape_date: datetime,
         headless: bool = True,
     ) -> list[ScrapeResult]:
-        """Scrape OA/SG/ST for all pipes concurrently using TaskGroup."""
+        """Scrape OA/SG/ST for all pipes with at most 4 concurrent browsers."""
         target_date = min(scrape_date, datetime.today())
+
+        eligible = [
+            pc for pc in pipe_configs
+            if (pc.has_oa or pc.has_sg or pc.has_st)
+            and not (
+                pc.pipe_code == "WE"
+                and scrape_date < datetime.strptime(cfg.WE_AVAILABILITY_DATE, "%Y-%m-%d")
+            )
+        ]
+
+        async def _scrape_one(pc: PipeConfig) -> list[ScrapeResult]:
+            async with self._browser_sem:
+                return await self.scrape(pc, target_date, headless)
+
         results: list[ScrapeResult] = []
-
-        async with asyncio.TaskGroup() as group:
-            tasks = []
-            for pc in pipe_configs:
-                # Skip pipes without any capacity data
-                if not pc.has_oa and not pc.has_sg and not pc.has_st:
-                    continue
-                # WE not available before cutoff
-                if pc.pipe_code == "WE" and scrape_date < datetime.strptime(
-                    cfg.WE_AVAILABILITY_DATE, "%Y-%m-%d"
-                ):
-                    continue
-
-                task = group.create_task(
-                    self.scrape(pc, target_date, headless)
-                )
-                tasks.append(task)
-
-        for task in tasks:
-            results.extend(task.result())
+        raw = await asyncio.gather(*[_scrape_one(pc) for pc in eligible], return_exceptions=True)
+        for item in raw:
+            if isinstance(item, BaseException):
+                logger.error(f"scrape_all task failed: {item}")
+            else:
+                results.extend(item)
 
         return results
 
@@ -210,25 +211,25 @@ class EnbridgeScraper(BasePipeScraper):
         """Scrape NoNotice data for all pipes with nn_code.
 
         NN data lags by NN_DATE_LAG_DAYS days.
-        Uses async TaskGroup for concurrent NN scraping.
+        Bounded by the shared browser semaphore (max 4 concurrent browsers).
         """
         target_date = min(
             scrape_date,
             datetime.today() - timedelta(days=cfg.NN_DATE_LAG_DAYS),
         )
         nn_codes = [pc for pc in pipe_configs if pc.has_nn]
+
+        async def _scrape_one(pc: PipeConfig) -> ScrapeResult:
+            async with self._browser_sem:
+                return await self._scrape_nn_single_tracked(pc, target_date, headless)
+
+        raw = await asyncio.gather(*[_scrape_one(pc) for pc in nn_codes], return_exceptions=True)
         results: list[ScrapeResult] = []
-
-        async with asyncio.TaskGroup() as group:
-            tasks = {
-                pc.pipe_code: group.create_task(
-                    self._scrape_nn_single_tracked(pc, target_date, headless)
-                )
-                for pc in nn_codes
-            }
-
-        for pipe_code, task in tasks.items():
-            results.append(task.result())
+        for item in raw:
+            if isinstance(item, BaseException):
+                logger.error(f"scrape_nn task failed: {item}")
+            else:
+                results.append(item)
 
         return results
 

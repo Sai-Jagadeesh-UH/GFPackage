@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pipeline Audit Report — 2026-03-21</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f5f7fa;
+            color: #333;
+            padding: 24px;
+        }
+        .container { max-width: 960px; margin: 0 auto; }
+        h1 {
+            font-size: 1.5rem;
+            margin-bottom: 8px;
+            color: #1a1a2e;
+        }
+        .timestamp {
+            font-size: 0.85rem;
+            color: #666;
+            margin-bottom: 24px;
+        }
+        .summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 12px;
+            margin-bottom: 32px;
+        }
+        .card {
+            background: #fff;
+            border-radius: 8px;
+            padding: 16px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+            text-align: center;
+        }
+        .card .value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #1a1a2e;
+        }
+        .card .label {
+            font-size: 0.75rem;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 4px;
+        }
+        .card.green .value { color: #2e7d32; }
+        .card.red .value { color: #c62828; }
+        .card.blue .value { color: #1565c0; }
+        h2 {
+            font-size: 1.1rem;
+            margin: 24px 0 12px;
+            color: #1a1a2e;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+            margin-bottom: 24px;
+        }
+        th {
+            background: #1a1a2e;
+            color: #fff;
+            padding: 10px 12px;
+            text-align: left;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        td {
+            padding: 10px 12px;
+            border-bottom: 1px solid #eee;
+            font-size: 0.85rem;
+        }
+        tr:last-child td { border-bottom: none; }
+        tr.success { background: #e8f5e9; }
+        tr.warning { background: #fff3e0; }
+        .error-text {
+            color: #c62828;
+            font-family: monospace;
+            font-size: 0.8rem;
+            max-width: 300px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        a { color: #1565c0; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        .footer {
+            text-align: center;
+            font-size: 0.75rem;
+            color: #999;
+            margin-top: 32px;
+            padding-top: 16px;
+            border-top: 1px solid #ddd;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Pipeline Audit Report</h1>
+    <p class="timestamp">Generated: 2026-03-21 18:00:04 CT</p>
+
+    <div class="summary">
+        <div class="card blue">
+            <div class="value">1</div>
+            <div class="label">Pipelines</div>
+        </div>
+        <div class="card">
+            <div class="value">40</div>
+            <div class="label">Total Scrapes</div>
+        </div>
+        <div class="card green">
+            <div class="value">40</div>
+            <div class="label">Succeeded</div>
+        </div>
+        <div class="card red">
+            <div class="value">0</div>
+            <div class="label">Failed</div>
+        </div>
+        <div class="card">
+            <div class="value">100.0%</div>
+            <div class="label">Success Rate</div>
+        </div>
+        <div class="card">
+            <div class="value">139.2s</div>
+            <div class="label">Total Duration</div>
+        </div>
+    </div>
+
+    <h2>Pipeline Summary</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Pipeline</th>
+                <th>Start</th>
+                <th>End</th>
+                <th>Duration</th>
+                <th>Total</th>
+                <th>OK</th>
+                <th>Fail</th>
+                <th>Rate</th>
+            </tr>
+        </thead>
+        <tbody>
+        <tr class="success">
+            <td>Enbridge</td>
+            <td>2026-03-21 17:57:44</td>
+            <td>2026-03-21 18:00:04</td>
+            <td>139.2s</td>
+            <td>40</td>
+            <td>40</td>
+            <td>0</td>
+            <td>100.0%</td>
+        </tr>
+        </tbody>
+    </table>
+
+    
+
+    
+    <h2>Dataset Details (32)</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Type</th>
+                <th>Pipe Code</th>
+                <th>Raw Records</th>
+                <th>Silver Records</th>
+                <th>New Locations</th>
+                <th>Raw Files</th>
+                <th>Silver Files</th>
+            </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>OA</td>
+            <td>AG</td>
+            <td>591</td>
+            <td>8,208</td>
+            <td>—</td>
+            <td><a href="https://stgfpipelineprod.blob.core.windows.net/bronze-test/Enbridge/PointCapacity/202603/AG_OA_20260321_INTRDY_2026-03-21_1400.csv" target="_blank">AG_OA_20260321_INTRDY_2026-03-21_1400.csv</a>, <a href="https://stgfpipelineprod.blob.core.windows.net/bronze-test/Enbridge/PointCapacity/202603/AG_OA_20260320_INTRDY_2026-03-21_0900.csv" target="_blank">AG_OA_20260320_INTRDY_2026-03-21_0900.csv</a>, <a href="https://stgfpipelineprod.blob.core.windows.net/bronze-test/Enbridge/PointCapacity/202603/AG_OA_20260321_INTRDY_2026-03-21_1700.csv" target="_blank">AG_OA_20260321_INTRDY_2026-03-21_1700.csv</a></td>
+            <td><a href="https://stgfpipelineprod.blob.core.windows.net/silver-test/Enbridge/PointCapacity/202603/OA_Enbridge_03212026_175456.parquet" target="_blank">OA_Enbridge_03212026_175456.parquet</a>, <a href="https://stgfpipelineprod.blob.core.windows.net/silver-test/Enbridge/PointCapacity/202603/OA_Enbridge_03212026_175953.parquet" target="_blank">OA_Enbridge_03212026_175953.parquet</a></td>
+        </tr>
+        <tr>
+            <td>OA</td>
+            <td>BGS</td>
+            <td>33</td>
+            <td>0</td>
+            <td>—</td>
+            <td><a href="https://stgfpipelineprod.blob.core.windows.net/bronze-test/Enbridge/PointCapacity/202603/BGS_OA_20260321_INTRDY_2026-03-21_1700.csv" target="_blank">BGS_OA_20260321_INTRDY_2026-03-21_1700.csv</a>, <a href="https://stgfpipelineprod.blob.core.windows.net/bronze-test/Enbridge/PointCapacity/202603/BGS_OA_20260321_INTRDY_2026-03-21_1500.csv" target="_blank">BGS_OA_20260321_INTRDY_2026-03-21_1500.csv</a>, <a href="https://stgfpipelineprod.blob.core.windows.net/bronze-test/Enbridge/PointCapacity/202603/BGS_OA_20260320_INTRDY_2026-03-21_0900.csv" target="_blank">BGS_OA_20260320_INTRDY_2026-03-21_0900.csv</a></td>
+            <td>—</td>
+        </tr>
+        <tr>
+            <td>OA</td>
+            <td>BSP</td>
+            <td>9</td>
+            <td>0</td>
+            <td>—</td>
+            <td><a href="https://stgfpipelineprod.blob.core.windows.net/bronze-test/Enbridge/PointCapacity/202603/BSP_OA_20260320_INTRDY_2026-03-21_0901.csv" target="_blank">BSP_OA_20260320_INTRDY_2026-03-21_0901.csv</a>, <a href="https://stgfpipelineprod.blob.core.windows.net/bronze-test/Enbridge/PointCapacity/202603/BSP_OA_20260321_INTRDY_2026-03-21_1701.csv" target="_blank">BSP_OA_20260321_INTRDY_2026-03-21_1701.csv</a>, <a href="https://stgfpipelineprod.blob.core.windows.net/bronze-test/Enbridge/PointCapacity/202603/BSP_OA_20260321_INTRDY_2026-03-21_1400.csv" target="_blank">BSP_OA_20260321_INTRDY_2026-03-21_1400.csv</a></td>
+            <td>—</td>
+        </tr>
+        <tr>
+            <td>OA</td>
+            <td>EG</td>
+            <td>57</td>
+            <td>0</td>
+            <td>—</td>
+            <td><a href="https://stgfpipelineprod.blob.core.windows.net/bronze-test/Enbridge/PointCapacity/202603/EG_OA_20260321_INTRDY_2026-03-21_1700.csv" target="_blank">EG_OA_20260321_INTRDY_2026-03-21_1700.csv</a>, <a href="https://stgfpipelineprod.blob.core.windows.net/bronze-test/Enbridge/PointCapacity/202603/EG_OA_20260320_INTRDY_2026-03-21_0900.csv" target="_blank">EG_OA_20260320_INTRDY_2026-03-21_0900.csv</a>, <a href="https://stgfpipelineprod.blob.core.windows.net/bronze-test/Enbridge/PointCapacity/202603/EG_OA_20260321_INTRDY_2026-03-21_1400.csv" target="_blank">EG_OA_20260321_INTRDY_2026-03-21_1400.csv</a></td>
+            <td>—</td>
+        </tr>
+        <tr>
+            <td>OA</td>
+            <td>ET</td>
+            <td>618</td>
+            <td>0</td>
+            <td>—</td>
+            <td><a href="https://stgfpipelineprod.blob.core.windows.net/bronze-test/Enbridge/PointCapacity/202603/ET_OA_20260321_INTRDY_2026-03-21_1400.csv" target="_blank">ET_OA_20260321_INTRDY_2026-03-21_1400.csv</a>, <a href="https://stgfpipelineprod.blob.core.windows.net/bronze-test/Enbridge/PointCapacity/202603/ET_OA_20260321_INTRDY_2026-03-21_1701.csv" target="_blank">ET_OA_20260321_INTRDY_2026-03-21_1701.csv</a>, <a href="https://stgfpipelineprod.blob.core.windows.net/bronze-test/Enbridge/PointCapacity/202603/ET_OA_20260320_INTRDY_2026-03-21_0901.csv" target="_blank">ET_OA_20260320_INTRDY_2026-03-21_0901.csv</a></td>
+            <td>—</td>
+        </tr>
+        <tr>
+            <td>OA</td>
+            <td>GB</td>
+            <td>45</td>
+            <td>0</td>
+            <td>—</td>
+            <td><a href="https://stgfpipelineprod.blob.core.windows.net/bronze-test/Enbridge/PointCapacity/202603/GB_OA_20260320_INTRDY_2026-03-21_0900.csv" target="_blank">GB_OA_20260320_INTRDY_2026-03-21_0900.csv</a>, <a href="https://stgfpipelineprod.blob.core.windows.net/bronze-test/Enbridge/PointCapacity/202603/GB_OA_20260321_INTRDY_2026-03-21_1700.csv" target="_blank">GB_OA_20260321_INTRDY_2026-03-21_1700.csv</a>, <a href="https://stgfpipelineprod.blob.core.windows.net/bronze-test/Enbridge/PointCapacity/202603/GB_OA_20260321_INTRDY_2026-03-21_1400.csv" target="_blank">GB_OA_20260321_INTRDY_2026-03-21_1400.csv</a></td>
+            <td>—</td>
+        </tr>
+        <tr>
+            <td>OA</td>
+            <td>GPL</td>
+            <td>18</td>
+            <td>0</td>
+            <td>—</td>
+            <td><a href="https://stgfpipelineprod.blob.core.windows.net/bronze-test/Enbridge/PointCapacity/202603/GPL_OA_20260321_INTRDY_2026-03-21_1700.csv" target="_blank">GPL_OA_20260321_INTRDY_2026-03-21_1700.csv</a>, <a href="https://stgfpipelineprod.blob.core.windows.net/bronze-test/Enbridge/PointCapacity/202603/GPL_OA_20260320_INTRDY_2026-03-21_0900.csv" target="_blank">GPL_OA_20260320_INTRDY_2026-03-21_0900.csv</a>, <a href="https://stgfpipelineprod.blob.core.windows.net/bronze-test/Enbridge/PointCapacity/202603/GPL_OA_20260321_INTRDY_2026-03-21_1400.csv" target="_blank">GPL_OA_20260321_INTRDY_2026-03-21_1400.csv</a></td>
+            <td>—</td>
+        </tr>
+        <tr>
+            <td>OA</td>
+            <td>MCGP</td>
+            <td>27</td>
+            <td>0</td>
+            <td>—</td>
+            <td><a href="https://stgfpipelineprod.blob.core.windows.net/bronze-test/Enbridge/PointCapacity/202603/MCGP_OA_20260321_INTRDY_2026-03-21_1700.csv" target="_blank">MCGP_OA_20260321_INTRDY_2026-03-21_1700.csv</a>, <a href="https://stgfpipelineprod.blob.core.windows.net/bronze-test/Enbridge/PointCapacity/202603/MCGP_OA_20260320_INTRDY_2026-03-21_0900.csv" target="_blank">MCGP_OA_20260320_INTRDY_2026-03-21_0900.csv</a>, <a href="https://stgfpipelineprod.blob.core.windows.net/bronze-test/Enbridge/PointCapacity/202603/MCGP_OA_20260321_INTRDY_2026-03-21_1400.csv" target="_blank">MCGP_OA_20260321_INTRDY_2026-03-21_1400.csv</a></td>
+            <td>—</td>
+        </tr>
+        <tr>
+            <td>OA</td>
+            <td>MN</td>
+            <td>87</td>
+            <td>0</td>
+            <td>—</td>
+            <td><a href="https://stgfpipelineprod.blob.core.windows.net/bronze-test/Enbridge/PointCapacity/202603/MN_OA_20260321_INTRDY_2026-03-21_1700.csv" target="_blank">MN_OA_20260321_INTRDY_2026-03-21_1700.csv</a>, <a href="https://stgfpipelineprod.blob.core.windows.net/bronze-test/Enbridge/PointCapacity/202603/MN_OA_20260320_INTRDY_2026-03-21_0900.csv" target="_blank">MN_OA_20260320_INTRDY_2026-03-21_0900.csv</a>, <a href="https://stgfpipelineprod.blob.core.windows.net/bronze-test/Enbridge/PointCapacity/202603/MN_OA_20260321_INTRDY_2026-03-21_1400.csv" target="_blank">MN_OA_20260321_INTRDY_2026-03-21_1400.csv</a></td>
+            <td>—</td>
+        </tr>
+        <tr>
+            <td>OA</td>
+            <td>NPC</td>
+            <td>42</td>
+            <td>0</td>
+            <td>—</td>
+            <td><a href="https://stgfpipelineprod.blob.core.windows.net/bronze-test/Enbridge/PointCapacity/202603/NPC_OA_20260321_INTRDY_2026-03-21_1400.csv" target="_blank">NPC_OA_20260321_INTRDY_2026-03-21_1400.csv</a>, <a href="https://stgfpipelineprod.blob.core.windows.net/bronze-test/Enbridge/PointCapacity/202603/NPC_OA_20260320_INTRDY_2026-03-21_0900.csv" target="_blank">NPC_OA_20260320_INTRDY_2026-03-21_0900.csv</a>, <a href="https://stgfpipelineprod.blob.core.windows.net/bronze-test/Enbridge/PointCapacity/202603/NPC_OA_20260321_INTRDY_2026-03-21_1700.csv" target="_blank">NPC_OA_20260321_INTRDY_2026-03-21_1700.csv</a></td>
+            <td>—</td>
+        </tr>
+        <tr>
+            <td>OA</td>
+            <td>NXUS</td>
+            <td>249</td>
+            <td>0</td>
+            <td>—</td>
+            <td><a href="https://stgfpipelineprod.blob.core.windows.net/bronze-test/Enbridge/PointCapacity/202603/NXUS_OA_20260321_INTRDY_2026-03-21_1430.csv" target="_blank">NXUS_OA_20260321_INTRDY_2026-03-21_1430.csv</a>, <a href="https://stgfpipelineprod.blob.core.windows.net/bronze-test/Enbridge/PointCapacity/202603/NXUS_OA_20260320_INTRDY_2026-03-21_0900.csv" target="_blank">NXUS_OA_20260320_INTRDY_2026-03-21_0900.csv</a>, <a href="https://stgfpipelineprod.blob.core.windows.net/bronze-test/Enbridge/PointCapacity/202603/NXUS_OA_20260321_INTRDYC_2026-03-21_1730.csv" target="_blank">NXUS_OA_20260321_INTRDYC_2026-03-21_1730.csv</a></td>
+            <td>—</td>
+        </tr>
+        <tr>
+            <td>OA</td>
+            <td>SESH</td>
+            <td>96</td>
+            <td>0</td>
+            <td>—</td>
+            <td><a href="https://stgfpipelineprod.blob.core.windows.net/bronze-test/Enbridge/PointCapacity/202603/SESH_OA_20260321_INTRDY_2026-03-21_1400.csv" target="_blank">SESH_OA_20260321_INTRDY_2026-03-21_1400.csv</a>, <a href="https://stgfpipelineprod.blob.core.windows.net/bronze-test/Enbridge/PointCapacity/202603/SESH_OA_20260320_INTRDY_2026-03-21_0901.csv" target="_blank">SESH_OA_20260320_INTRDY_2026-03-21_0901.csv</a>, <a href="https://stgfpipelineprod.blob.core.windows.net/bronze-test/Enbridge/PointCapacity/202603/SESH_OA_20260321_INTRDY_2026-03-21_1700.csv" target="_blank">SESH_OA_20260321_INTRDY_2026-03-21_1700.csv</a></td>
+            <td>—</td>
+        </tr>
+        <tr>
+            <td>OA</td>
+            <td>SG</td>
+            <td>27</td>
+            <td>0</td>
+            <td>—</td>
+            <td><a href="https://stgfpipelineprod.blob.core.windows.net/bronze-test/Enbridge/PointCapacity/202603/SG_OA_20260321_INTRDY_2026-03-21_1400.csv" target="_blank">SG_OA_20260321_INTRDY_2026-03-21_1400.csv</a>, <a href="https://stgfpipelineprod.blob.core.windows.net/bronze-test/Enbridge/PointCapacity/202603/SG_OA_20260320_INTRDY_2026-03-21_0900.csv" target="_blank">SG_OA_20260320_INTRDY_2026-03-21_0900.csv</a>, <a href="https://stgfpipelineprod.blob.core.windows.net/bronze-test/Enbridge/PointCapacity/202603/SG_OA_20260321_INTRDY_2026-03-21_1700.csv" target="_blank">SG_OA_20260321_INTRDY_2026-03-21_1700.csv</a></td>
+            <td>—</td>
+        </tr>
+        <tr>
+            <td>OA</td>
+            <td>SR</td>
+            <td>15</td>
+            <td>0</td>
+            <td>—</td>
+            <td><a href="https://stgfpipelineprod.blob.core.windows.net/bronze-test/Enbridge/PointCapacity/202603/SR_OA_20260321_INTRDY_2026-03-21_1700.csv" target="_blank">SR_OA_20260321_INTRDY_2026-03-21_1700.csv</a>, <a href="https://stgfpipelineprod.blob.core.windows.net/bronze-test/Enbridge/PointCapacity/202603/SR_OA_20260320_INTRDY_2026-03-21_0900.csv" target="_blank">SR_OA_20260320_INTRDY_2026-03-21_0900.csv</a>, <a href="https://stgfpipelineprod.blob.core.windows.net/bronze-test/Enbridge/PointCapacity/202603/SR_OA_20260321_INTRDY_2026-03-21_1400.csv" target="_blank">SR_OA_20260321_INTRDY_2026-03-21_1400.csv</a></td>
+            <td>—</td>
+        </tr>
+        <tr>
+            <td>OA</td>
+            <td>STT</td>
+            <td>54</td>
+            <td>0</td>
+            <td>—</td>
+            <td><a href="https://stgfpipelineprod.blob.core.windows.net/bronze-test/Enbridge/PointCapacity/202603/STT_OA_20260321_INTRDY_2026-03-21_1400.csv" target="_blank">STT_OA_20260321_INTRDY_2026-03-21_1400.csv</a>, <a href="https://stgfpipelineprod.blob.core.windows.net/bronze-test/Enbridge/PointCapacity/202603/STT_OA_20260321_INTRDY_2026-03-21_1700.csv" target="_blank">STT_OA_20260321_INTRDY_2026-03-21_1700.csv</a>, <a href="https://stgfpipelineprod.blob.core.windows.net/bronze-test/Enbridge/PointCapacity/202603/STT_OA_20260320_INTRDY_2026-03-21_0900.csv" target="_blank">STT_OA_20260320_INTRDY_2026-03-21_0900.csv</a></td>
+            <td>—</td>
+        </tr>
+        <tr>
+            <td>OA</td>
+            <td>TE</td>
+            <td>2,190</td>
+            <td>0</td>
+            <td>—</td>
+            <td><a href="https://stgfpipelineprod.blob.core.windows.net/bronze-test/Enbridge/PointCapacity/202603/TE_OA_20260321_INTRDY_2026-03-21_1400.csv" target="_blank">TE_OA_20260321_INTRDY_2026-03-21_1400.csv</a>, <a href="https://stgfpipelineprod.blob.core.windows.net/bronze-test/Enbridge/PointCapacity/202603/TE_OA_20260321_INTRDY_2026-03-21_1700.csv" target="_blank">TE_OA_20260321_INTRDY_2026-03-21_1700.csv</a>, <a href="https://stgfpipelineprod.blob.core.windows.net/bronze-test/Enbridge/PointCapacity/202603/TE_OA_20260320_INTRDY_2026-03-21_0900.csv" target="_blank">TE_OA_20260320_INTRDY_2026-03-21_0900.csv</a></td>
+            <td>—</td>
+        </tr>
+        <tr>
+            <td>OA</td>
+            <td>TPGS</td>
+            <td>81</td>
+            <td>0</td>
+            <td>—</td>
+            <td><a href="https://stgfpipelineprod.blob.core.windows.net/bronze-test/Enbridge/PointCapacity/202603/TPGS_OA_20260321_INTRDY_2026-03-21_1700.csv" target="_blank">TPGS_OA_20260321_INTRDY_2026-03-21_1700.csv</a>, <a href="https://stgfpipelineprod.blob.core.windows.net/bronze-test/Enbridge/PointCapacity/202603/TPGS_OA_20260321_INTRDY_2026-03-21_1500.csv" target="_blank">TPGS_OA_20260321_INTRDY_2026-03-21_1500.csv</a>, <a href="https://stgfpipelineprod.blob.core.windows.net/bronze-test/Enbridge/PointCapacity/202603/TPGS_OA_20260320_INTRDY_2026-03-21_0900.csv" target="_blank">TPGS_OA_20260320_INTRDY_2026-03-21_0900.csv</a></td>
+            <td>—</td>
+        </tr>
+        <tr>
+            <td>OA</td>
+            <td>VCP</td>
+            <td>3</td>
+            <td>0</td>
+            <td>—</td>
+            <td><a href="https://stgfpipelineprod.blob.core.windows.net/bronze-test/Enbridge/PointCapacity/202603/VCP_OA_20260321_INTRDY_2026-03-21_1400.csv" target="_blank">VCP_OA_20260321_INTRDY_2026-03-21_1400.csv</a>, <a href="https://stgfpipelineprod.blob.core.windows.net/bronze-test/Enbridge/PointCapacity/202603/VCP_OA_20260320_INTRDY_2026-03-21_0900.csv" target="_blank">VCP_OA_20260320_INTRDY_2026-03-21_0900.csv</a>, <a href="https://stgfpipelineprod.blob.core.windows.net/bronze-test/Enbridge/PointCapacity/202603/VCP_OA_20260321_INTRDYC_2026-03-21_1700.csv" target="_blank">VCP_OA_20260321_INTRDYC_2026-03-21_1700.csv</a></td>
+            <td>—</td>
+        </tr>
+        <tr>
+            <td>SG</td>
+            <td>AG</td>
+            <td>89</td>
+            <td>1,506</td>
+            <td>—</td>
+            <td><a href="https://stgfpipelineprod.blob.core.windows.net/bronze-test/Enbridge/SegmentCapacity/202603/AG_SGOperationalCapacityMap_20260321_INTRDY_2026-03-21_1700.csv" target="_blank">AG_SGOperationalCapacityMap_20260321_INTRDY_2026-03-21_1700.csv</a>, <a href="https://stgfpipelineprod.blob.core.windows.net/bronze-test/Enbridge/SegmentCapacity/202603/AG_SG2_20260321_INTRDY_2026-03-21_1700.csv" target="_blank">AG_SG2_20260321_INTRDY_2026-03-21_1700.csv</a>, <a href="https://stgfpipelineprod.blob.core.windows.net/bronze-test/Enbridge/SegmentCapacity/202603/AG_SG1_20260320_INTRDY_2026-03-21_0900.csv" target="_blank">AG_SG1_20260320_INTRDY_2026-03-21_0900.csv</a>, <a href="https://stgfpipelineprod.blob.core.windows.net/bronze-test/Enbridge/SegmentCapacity/202603/AG_SG1_20260321_INTRDY_2026-03-21_1700.csv" target="_blank">AG_SG1_20260321_INTRDY_2026-03-21_1700.csv</a>, <a href="https://stgfpipelineprod.blob.core.windows.net/bronze-test/Enbridge/SegmentCapacity/202603/AG_SG2_20260321_INTRDY_2026-03-21_1400.csv" target="_blank">AG_SG2_20260321_INTRDY_2026-03-21_1400.csv</a>, <a href="https://stgfpipelineprod.blob.core.windows.net/bronze-test/Enbridge/SegmentCapacity/202603/AG_SGTETLPLeaseNJNY_20260321_INTRDY_2026-03-21_1700.csv" target="_blank">AG_SGTETLPLeaseNJNY_20260321_INTRDY_2026-03-21_1700.csv</a>, <a href="https://stgfpipelineprod.blob.core.windows.net/bronze-test/Enbridge/SegmentCapacity/202603/AG_SG1_20260321_INTRDY_2026-03-21_1400.csv" target="_blank">AG_SG1_20260321_INTRDY_2026-03-21_1400.csv</a></td>
+            <td><a href="https://stgfpipelineprod.blob.core.windows.net/silver-test/Enbridge/SegmentCapacity/202603/SG_Enbridge_03212026_175953.parquet" target="_blank">SG_Enbridge_03212026_175953.parquet</a>, <a href="https://stgfpipelineprod.blob.core.windows.net/silver-test/Enbridge/SegmentCapacity/202603/SG_Enbridge_03212026_175456.parquet" target="_blank">SG_Enbridge_03212026_175456.parquet</a></td>
+        </tr>
+        <tr>
+            <td>SG</td>
+            <td>BSP</td>
+            <td>6</td>
+            <td>0</td>
+            <td>—</td>
+            <td><a href="https://stgfpipelineprod.blob.core.windows.net/bronze-test/Enbridge/SegmentCapacity/202603/BSP_SG1_20260321_INTRDY_2026-03-21_1400.csv" target="_blank">BSP_SG1_20260321_INTRDY_2026-03-21_1400.csv</a>, <a href="https://stgfpipelineprod.blob.core.windows.net/bronze-test/Enbridge/SegmentCapacity/202603/BSP_SG1_20260321_INTRDY_2026-03-21_1701.csv" target="_blank">BSP_SG1_20260321_INTRDY_2026-03-21_1701.csv</a>, <a href="https://stgfpipelineprod.blob.core.windows.net/bronze-test/Enbridge/SegmentCapacity/202603/BSP_SG1_20260320_INTRDY_2026-03-21_0901.csv" target="_blank">BSP_SG1_20260320_INTRDY_2026-03-21_0901.csv</a></td>
+            <td>—</td>
+        </tr>
+        <tr>
+            <td>SG</td>
+            <td>ET</td>
+            <td>96</td>
+            <td>0</td>
+            <td>—</td>
+            <td><a href="https://stgfpipelineprod.blob.core.windows.net/bronze-test/Enbridge/SegmentCapacity/202603/ET_SG1_20260320_INTRDY_2026-03-21_0901.csv" target="_blank">ET_SG1_20260320_INTRDY_2026-03-21_0901.csv</a>, <a href="https://stgfpipelineprod.blob.core.windows.net/bronze-test/Enbridge/SegmentCapacity/202603/ET_SG1_20260321_INTRDY_2026-03-21_1701.csv" target="_blank">ET_SG1_20260321_INTRDY_2026-03-21_1701.csv</a>, <a href="https://stgfpipelineprod.blob.core.windows.net/bronze-test/Enbridge/SegmentCapacity/202603/ET_SG1_20260321_INTRDY_2026-03-21_1400.csv" target="_blank">ET_SG1_20260321_INTRDY_2026-03-21_1400.csv</a></td>
+            <td>—</td>
+        </tr>
+        <tr>
+            <td>SG</td>
+            <td>GB</td>
+            <td>9</td>
+            <td>0</td>
+            <td>—</td>
+            <td><a href="https://stgfpipelineprod.blob.core.windows.net/bronze-test/Enbridge/SegmentCapacity/202603/GB_SG1_20260320_INTRDY_2026-03-21_0900.csv" target="_blank">GB_SG1_20260320_INTRDY_2026-03-21_0900.csv</a>, <a href="https://stgfpipelineprod.blob.core.windows.net/bronze-test/Enbridge/SegmentCapacity/202603/GB_SG1_20260321_INTRDY_2026-03-21_1700.csv" target="_blank">GB_SG1_20260321_INTRDY_2026-03-21_1700.csv</a>, <a href="https://stgfpipelineprod.blob.core.windows.net/bronze-test/Enbridge/SegmentCapacity/202603/GB_SG1_20260321_INTRDY_2026-03-21_1400.csv" target="_blank">GB_SG1_20260321_INTRDY_2026-03-21_1400.csv</a></td>
+            <td>—</td>
+        </tr>
+        <tr>
+            <td>SG</td>
+            <td>MCGP</td>
+            <td>9</td>
+            <td>0</td>
+            <td>—</td>
+            <td><a href="https://stgfpipelineprod.blob.core.windows.net/bronze-test/Enbridge/SegmentCapacity/202603/MCGP_SG1_20260321_INTRDY_2026-03-21_1700.csv" target="_blank">MCGP_SG1_20260321_INTRDY_2026-03-21_1700.csv</a>, <a href="https://stgfpipelineprod.blob.core.windows.net/bronze-test/Enbridge/SegmentCapacity/202603/MCGP_SG1_20260320_INTRDY_2026-03-21_0900.csv" target="_blank">MCGP_SG1_20260320_INTRDY_2026-03-21_0900.csv</a>, <a href="https://stgfpipelineprod.blob.core.windows.net/bronze-test/Enbridge/SegmentCapacity/202603/MCGP_SG1_20260321_INTRDY_2026-03-21_1400.csv" target="_blank">MCGP_SG1_20260321_INTRDY_2026-03-21_1400.csv</a></td>
+            <td>—</td>
+        </tr>
+        <tr>
+            <td>SG</td>
+            <td>MNUS</td>
+            <td>24</td>
+            <td>0</td>
+            <td>—</td>
+            <td><a href="https://stgfpipelineprod.blob.core.windows.net/bronze-test/Enbridge/SegmentCapacity/202603/MNUS_SGOperationalCapacityMap_20260321_INTRDY_2026-03-21_1700.csv" target="_blank">MNUS_SGOperationalCapacityMap_20260321_INTRDY_2026-03-21_1700.csv</a>, <a href="https://stgfpipelineprod.blob.core.windows.net/bronze-test/Enbridge/SegmentCapacity/202603/MNUS_SGOperationalCapacityMap_20260320_INTRDY_2026-03-21_0900.csv" target="_blank">MNUS_SGOperationalCapacityMap_20260320_INTRDY_2026-03-21_0900.csv</a>, <a href="https://stgfpipelineprod.blob.core.windows.net/bronze-test/Enbridge/SegmentCapacity/202603/MNUS_SGOperationalCapacityMap_20260321_INTRDY_2026-03-21_1400.csv" target="_blank">MNUS_SGOperationalCapacityMap_20260321_INTRDY_2026-03-21_1400.csv</a></td>
+            <td>—</td>
+        </tr>
+        <tr>
+            <td>SG</td>
+            <td>NPC</td>
+            <td>6</td>
+            <td>0</td>
+            <td>—</td>
+            <td><a href="https://stgfpipelineprod.blob.core.windows.net/bronze-test/Enbridge/SegmentCapacity/202603/NPC_SG1_20260321_INTRDY_2026-03-21_1400.csv" target="_blank">NPC_SG1_20260321_INTRDY_2026-03-21_1400.csv</a>, <a href="https://stgfpipelineprod.blob.core.windows.net/bronze-test/Enbridge/SegmentCapacity/202603/NPC_SG1_20260321_INTRDY_2026-03-21_1700.csv" target="_blank">NPC_SG1_20260321_INTRDY_2026-03-21_1700.csv</a>, <a href="https://stgfpipelineprod.blob.core.windows.net/bronze-test/Enbridge/SegmentCapacity/202603/NPC_SG1_20260320_INTRDY_2026-03-21_0900.csv" target="_blank">NPC_SG1_20260320_INTRDY_2026-03-21_0900.csv</a></td>
+            <td>—</td>
+        </tr>
+        <tr>
+            <td>SG</td>
+            <td>NXUS</td>
+            <td>54</td>
+            <td>0</td>
+            <td>—</td>
+            <td><a href="https://stgfpipelineprod.blob.core.windows.net/bronze-test/Enbridge/SegmentCapacity/202603/NXUS_SG1_20260321_INTRDYC_2026-03-21_1730.csv" target="_blank">NXUS_SG1_20260321_INTRDYC_2026-03-21_1730.csv</a>, <a href="https://stgfpipelineprod.blob.core.windows.net/bronze-test/Enbridge/SegmentCapacity/202603/NXUS_SG1_20260320_INTRDY_2026-03-21_0900.csv" target="_blank">NXUS_SG1_20260320_INTRDY_2026-03-21_0900.csv</a>, <a href="https://stgfpipelineprod.blob.core.windows.net/bronze-test/Enbridge/SegmentCapacity/202603/NXUS_SG1_20260321_INTRDY_2026-03-21_1430.csv" target="_blank">NXUS_SG1_20260321_INTRDY_2026-03-21_1430.csv</a></td>
+            <td>—</td>
+        </tr>
+        <tr>
+            <td>SG</td>
+            <td>SESH</td>
+            <td>21</td>
+            <td>0</td>
+            <td>—</td>
+            <td><a href="https://stgfpipelineprod.blob.core.windows.net/bronze-test/Enbridge/SegmentCapacity/202603/SESH_SG1_20260321_INTRDY_2026-03-21_1400.csv" target="_blank">SESH_SG1_20260321_INTRDY_2026-03-21_1400.csv</a>, <a href="https://stgfpipelineprod.blob.core.windows.net/bronze-test/Enbridge/SegmentCapacity/202603/SESH_SG1_20260320_INTRDY_2026-03-21_0901.csv" target="_blank">SESH_SG1_20260320_INTRDY_2026-03-21_0901.csv</a>, <a href="https://stgfpipelineprod.blob.core.windows.net/bronze-test/Enbridge/SegmentCapacity/202603/SESH_SG1_20260321_INTRDY_2026-03-21_1700.csv" target="_blank">SESH_SG1_20260321_INTRDY_2026-03-21_1700.csv</a></td>
+            <td>—</td>
+        </tr>
+        <tr>
+            <td>SG</td>
+            <td>STT</td>
+            <td>21</td>
+            <td>0</td>
+            <td>—</td>
+            <td><a href="https://stgfpipelineprod.blob.core.windows.net/bronze-test/Enbridge/SegmentCapacity/202603/STT_SG1_20260320_INTRDY_2026-03-21_0900.csv" target="_blank">STT_SG1_20260320_INTRDY_2026-03-21_0900.csv</a>, <a href="https://stgfpipelineprod.blob.core.windows.net/bronze-test/Enbridge/SegmentCapacity/202603/STT_SG1_20260321_INTRDY_2026-03-21_1700.csv" target="_blank">STT_SG1_20260321_INTRDY_2026-03-21_1700.csv</a>, <a href="https://stgfpipelineprod.blob.core.windows.net/bronze-test/Enbridge/SegmentCapacity/202603/STT_SG1_20260321_INTRDY_2026-03-21_1400.csv" target="_blank">STT_SG1_20260321_INTRDY_2026-03-21_1400.csv</a></td>
+            <td>—</td>
+        </tr>
+        <tr>
+            <td>SG</td>
+            <td>TE</td>
+            <td>275</td>
+            <td>0</td>
+            <td>—</td>
+            <td><a href="https://stgfpipelineprod.blob.core.windows.net/bronze-test/Enbridge/SegmentCapacity/202603/TE_SG5_20260321_INTRDY_2026-03-21_1700.csv" target="_blank">TE_SG5_20260321_INTRDY_2026-03-21_1700.csv</a>, <a href="https://stgfpipelineprod.blob.core.windows.net/bronze-test/Enbridge/SegmentCapacity/202603/TE_SG3_20260321_INTRDY_2026-03-21_1400.csv" target="_blank">TE_SG3_20260321_INTRDY_2026-03-21_1400.csv</a>, <a href="https://stgfpipelineprod.blob.core.windows.net/bronze-test/Enbridge/SegmentCapacity/202603/TE_SG6_20260321_INTRDY_2026-03-21_1700.csv" target="_blank">TE_SG6_20260321_INTRDY_2026-03-21_1700.csv</a>, <a href="https://stgfpipelineprod.blob.core.windows.net/bronze-test/Enbridge/SegmentCapacity/202603/TE_SG9_20260321_INTRDY_2026-03-21_1700.csv" target="_blank">TE_SG9_20260321_INTRDY_2026-03-21_1700.csv</a>, <a href="https://stgfpipelineprod.blob.core.windows.net/bronze-test/Enbridge/SegmentCapacity/202603/TE_SG3_20260321_INTRDY_2026-03-21_1700.csv" target="_blank">TE_SG3_20260321_INTRDY_2026-03-21_1700.csv</a>, <a href="https://stgfpipelineprod.blob.core.windows.net/bronze-test/Enbridge/SegmentCapacity/202603/TE_SG5_20260321_INTRDY_2026-03-21_1400.csv" target="_blank">TE_SG5_20260321_INTRDY_2026-03-21_1400.csv</a>, <a href="https://stgfpipelineprod.blob.core.windows.net/bronze-test/Enbridge/SegmentCapacity/202603/TE_SG6_20260321_INTRDY_2026-03-21_1400.csv" target="_blank">TE_SG6_20260321_INTRDY_2026-03-21_1400.csv</a>, <a href="https://stgfpipelineprod.blob.core.windows.net/bronze-test/Enbridge/SegmentCapacity/202603/TE_SG9_20260321_INTRDY_2026-03-21_1400.csv" target="_blank">TE_SG9_20260321_INTRDY_2026-03-21_1400.csv</a>, <a href="https://stgfpipelineprod.blob.core.windows.net/bronze-test/Enbridge/SegmentCapacity/202603/TE_SG2_20260321_INTRDY_2026-03-21_1400.csv" target="_blank">TE_SG2_20260321_INTRDY_2026-03-21_1400.csv</a>, <a href="https://stgfpipelineprod.blob.core.windows.net/bronze-test/Enbridge/SegmentCapacity/202603/TE_SG4_20260321_INTRDY_2026-03-21_1700.csv" target="_blank">TE_SG4_20260321_INTRDY_2026-03-21_1700.csv</a>, <a href="https://stgfpipelineprod.blob.core.windows.net/bronze-test/Enbridge/SegmentCapacity/202603/TE_SG1_20260321_INTRDY_2026-03-21_1400.csv" target="_blank">TE_SG1_20260321_INTRDY_2026-03-21_1400.csv</a>, <a href="https://stgfpipelineprod.blob.core.windows.net/bronze-test/Enbridge/SegmentCapacity/202603/TE_SG7_20260321_INTRDY_2026-03-21_1700.csv" target="_blank">TE_SG7_20260321_INTRDY_2026-03-21_1700.csv</a>, <a href="https://stgfpipelineprod.blob.core.windows.net/bronze-test/Enbridge/SegmentCapacity/202603/TE_SG8_20260321_INTRDY_2026-03-21_1700.csv" target="_blank">TE_SG8_20260321_INTRDY_2026-03-21_1700.csv</a>, <a href="https://stgfpipelineprod.blob.core.windows.net/bronze-test/Enbridge/SegmentCapacity/202603/TE_SG4_20260321_INTRDY_2026-03-21_1400.csv" target="_blank">TE_SG4_20260321_INTRDY_2026-03-21_1400.csv</a>, <a href="https://stgfpipelineprod.blob.core.windows.net/bronze-test/Enbridge/SegmentCapacity/202603/TE_SG2_20260321_INTRDY_2026-03-21_1700.csv" target="_blank">TE_SG2_20260321_INTRDY_2026-03-21_1700.csv</a>, <a href="https://stgfpipelineprod.blob.core.windows.net/bronze-test/Enbridge/SegmentCapacity/202603/TE_SG7_20260321_INTRDY_2026-03-21_1400.csv" target="_blank">TE_SG7_20260321_INTRDY_2026-03-21_1400.csv</a>, <a href="https://stgfpipelineprod.blob.core.windows.net/bronze-test/Enbridge/SegmentCapacity/202603/TE_SG1_20260321_INTRDY_2026-03-21_1700.csv" target="_blank">TE_SG1_20260321_INTRDY_2026-03-21_1700.csv</a>, <a href="https://stgfpipelineprod.blob.core.windows.net/bronze-test/Enbridge/SegmentCapacity/202603/TE_SG1_20260320_INTRDY_2026-03-21_0900.csv" target="_blank">TE_SG1_20260320_INTRDY_2026-03-21_0900.csv</a>, <a href="https://stgfpipelineprod.blob.core.windows.net/bronze-test/Enbridge/SegmentCapacity/202603/TE_SG8_20260321_INTRDY_2026-03-21_1400.csv" target="_blank">TE_SG8_20260321_INTRDY_2026-03-21_1400.csv</a></td>
+            <td>—</td>
+        </tr>
+        <tr>
+            <td>SG</td>
+            <td>WE</td>
+            <td>27</td>
+            <td>0</td>
+            <td>—</td>
+            <td><a href="https://stgfpipelineprod.blob.core.windows.net/bronze-test/Enbridge/SegmentCapacity/202603/WE_SG1_20260321_INTRDYC_2026-03-21_1730.csv" target="_blank">WE_SG1_20260321_INTRDYC_2026-03-21_1730.csv</a>, <a href="https://stgfpipelineprod.blob.core.windows.net/bronze-test/Enbridge/SegmentCapacity/202603/WE_SG1_20260321_INTRDY_2026-03-21_1431.csv" target="_blank">WE_SG1_20260321_INTRDY_2026-03-21_1431.csv</a>, <a href="https://stgfpipelineprod.blob.core.windows.net/bronze-test/Enbridge/SegmentCapacity/202603/WE_SG1_20260320_INTRDY_2026-03-21_0901.csv" target="_blank">WE_SG1_20260320_INTRDY_2026-03-21_0901.csv</a></td>
+            <td>—</td>
+        </tr>
+        <tr>
+            <td>NN</td>
+            <td>AG</td>
+            <td>159</td>
+            <td>2,544</td>
+            <td>—</td>
+            <td><a href="https://stgfpipelineprod.blob.core.windows.net/bronze-test/Enbridge/NoNotice/20260317/AG_NN_20260317.csv" target="_blank">AG_NN_20260317.csv</a></td>
+            <td><a href="https://stgfpipelineprod.blob.core.windows.net/silver-test/Enbridge/NoNotice/202603/NN_Enbridge_03212026_175455.parquet" target="_blank">NN_Enbridge_03212026_175455.parquet</a>, <a href="https://stgfpipelineprod.blob.core.windows.net/silver-test/Enbridge/NoNotice/202603/NN_Enbridge_03212026_151917.parquet" target="_blank">NN_Enbridge_03212026_151917.parquet</a>, <a href="https://stgfpipelineprod.blob.core.windows.net/silver-test/Enbridge/NoNotice/202603/NN_Enbridge_03212026_175953.parquet" target="_blank">NN_Enbridge_03212026_175953.parquet</a></td>
+        </tr>
+        <tr>
+            <td>NN</td>
+            <td>TE</td>
+            <td>691</td>
+            <td>0</td>
+            <td>—</td>
+            <td><a href="https://stgfpipelineprod.blob.core.windows.net/bronze-test/Enbridge/NoNotice/20260317/TE_NN_20260317.csv" target="_blank">TE_NN_20260317.csv</a></td>
+            <td>—</td>
+        </tr>
+        </tbody>
+    </table>
+
+    
+    <h2>Missing Downloads (1)</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Type</th>
+                <th>Pipe Code</th>
+            </tr>
+        </thead>
+        <tbody>
+        <tr class="warning">
+            <td>OA</td>
+            <td>MNUS</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div class="footer">
+        GFScrapePackage Audit Report &mdash; Auto-generated
+    </div>
+</div>
+</body>
+</html>

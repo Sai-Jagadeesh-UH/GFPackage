@@ -16,13 +16,18 @@ class RowType(StrEnum):
 # The gold schema that all pipelines must produce.
 # Fields a pipe doesn't have get filled with None in silver munging.
 GOLD_SCHEMA: list[str] = [
-    "EffGasMonth", "GFPipeID", "GFLocID", "RowType",
-    "ParentPipe", "PipelineName", "GFLOC",
-    "EffGasDay", "CycleDesc", "LocPurpDesc",
-    "Loc", "LocName", "LocZn", "LocSegment",
-    "DesignCapacity", "OperatingCapacity", "TotalScheduledQuantity",
-    "OperationallyAvailableCapacity", "IT", "FlowInd", "AllQtyAvail",
-    "QtyReason", "Timestamp",
+    "GasMonth",    # YYYYMM — partition key
+    "GFLocID",     # 10-char surrogate key (3-digit PipeID + 7-digit LocID)
+    "Dataset",     # OA / SG / ST / NN
+    "GasDay",      # effective gas date
+    "LocName",
+    "DesignCapacity",
+    "OperatingCapacity",
+    "TotalScheduledQuantity",
+    "OperationallyAvailableCapacity",
+    "IT",
+    "FlowDirection",
+    "Timestamp",
 ]
 
 
