@@ -60,7 +60,10 @@ SG_SKIP_SEGMENTS: set[str] = {"TETLP Lease NJ/NY"}
 # ---------------------------------------------------------------------------
 # OA column mapping (raw CSV column → gold schema column)
 # ---------------------------------------------------------------------------
+"""
+Cycle_Desc,Post_Date,Eff_Gas_Day,Cap_Type_Desc,Post_Time,Eff_Time,Loc,Loc_Name,Loc_Zn,Flow_Ind_Desc,Loc_Purp_Desc,Loc_QTI_Desc,Meas_Basis_Desc,IT,All_Qty_Avail,Total_Design_Capacity,Operating_Capacity,Total_Scheduled_Quantity,Operationally_Available_Capacity,TSP_Name,TSP
 
+"""
 OA_RAW_COLUMNS = [
     "Cycle_Desc", "Eff_Gas_Day", "Loc", "Loc_Name", "Loc_Zn",
     "Flow_Ind_Desc", "Loc_Purp_Desc", "IT", "All_Qty_Avail",

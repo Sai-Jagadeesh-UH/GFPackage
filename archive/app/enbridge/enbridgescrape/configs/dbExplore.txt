@@ -1,0 +1,4 @@
+to view the existing duckdb_sequences
+        SELECT * FROM duckdb_sequences();
+
+        

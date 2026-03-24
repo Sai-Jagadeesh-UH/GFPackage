@@ -56,7 +56,7 @@ class EnbridgeRunner:
                 pipe_code=row["PipeCode"],
                 parent_pipe=row["ParentPipe"],
                 pipe_name=row["PipeName"],
-                gf_pipe_id=int(row["GFPipeID"]),
+                gf_pipe_id=str(row["GFPipeID"]),
                 oa_code=_nan_to_none(row.get("PointCapCode")),
                 sg_code=_nan_to_none(row.get("SegmentCapCode")),
                 st_code=_nan_to_none(row.get("StorageCapCode")),

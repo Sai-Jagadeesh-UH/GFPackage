@@ -41,10 +41,28 @@ from app.core.transforms import (
     batch_absolute,
     batch_fi_mapper,
 )
-from app.core.azure_tables import dump_Loc_configs, update_Loc_configs
+from app.core.azure_tables import dump_Loc_configs, update_Loc_configs, dump_pipe_configs
 from app.core.settings import settings
 
 from . import config as cfg
+
+
+# Columns for the LocMetaData Azure table — nothing else goes in
+META_COLS = [
+    "GF_PipeID", "PipeName", "GFLocID", "GF_LocID_Tag",
+    "LocID", "Loc", "GF_LocName", "LocName",
+    "GF_FacilityType", "GF_FacilityTypeGroup", "ReportedFacilityType",
+    "LocSegment", "LocZone", "State", "County",
+    "InterconnectingEntity", "UpdatedTime",
+]
+
+# Raw AllPoints CSV columns → MetaCols schema
+_META_RAW_RENAME = {
+    "Loc Zone": "LocZone",
+    "Loc Cnty": "County",
+    "Loc St Abbrev": "State",
+    "Loc Type Ind": "ReportedFacilityType",
+}
 
 
 def _silver_filename(dataset_type: str, run_dt: datetime) -> str:
@@ -143,55 +161,38 @@ class EnbridgeSilverMunger(BaseSilverMunger):
             df.select([*cfg.OA_RAW_COLUMNS, "PipeCode"])
             .filter(~null_check)
             .with_columns(
-                pl.col("Eff_Gas_Day")
-                .map_batches(
-                    lambda s: batch_date_parse(s, cfg.OA_DATE_FORMAT),
-                    return_dtype=pl.Date,
-                )
-                .alias("GasDay"),
-                pl.col("Total_Design_Capacity")
-                .map_batches(batch_float_parse, return_dtype=pl.Float64)
-                .alias("DesignCapacity"),
-                pl.col("Operating_Capacity")
-                .map_batches(batch_float_parse, return_dtype=pl.Float64)
-                .alias("OperatingCapacity"),
-                pl.col("Total_Scheduled_Quantity")
-                .map_batches(batch_float_parse, return_dtype=pl.Float64)
-                .alias("TotalScheduledQuantity"),
-                pl.col("Operationally_Available_Capacity")
-                .map_batches(batch_float_parse, return_dtype=pl.Float64)
-                .alias("OperationallyAvailableCapacity"),
-                pl.col("Flow_Ind_Desc")
-                .map_batches(
-                    lambda s: batch_fi_mapper(s, cfg.OA_FLOW_MAP),
-                    return_dtype=pl.String,
-                )
-                .alias("FlowDirection"),
-                pl.col("IT").cast(pl.String),
+                pl.col("Eff_Gas_Day").map_batches(batch_date_parse(cfg.OA_DATE_FORMAT), return_dtype=pl.Date).alias("GasDay"),
+                
+                pl.col("Total_Design_Capacity").map_batches(batch_float_parse, return_dtype=pl.Float64).alias("DesignCapacity"),
+                
+                pl.col("Operating_Capacity").map_batches(batch_float_parse, return_dtype=pl.Float64).alias("OperatingCapacity"),
+                
+                pl.col("Total_Scheduled_Quantity").map_batches(batch_float_parse, return_dtype=pl.Float64).alias("TotalScheduledQuantity"),
+                
+                pl.col("Operationally_Available_Capacity").map_batches(batch_float_parse, return_dtype=pl.Float64).alias("OperationallyAvailableCapacity"),
+                
+                pl.col("Flow_Ind_Desc").map_batches(batch_fi_mapper(cfg.OA_FLOW_MAP), return_dtype=pl.String).alias("FlowDirection"),
+                               pl.col("IT").cast(pl.String),
+                
                 pl.col("Loc_Name").cast(pl.String).alias("LocName"),
+                
                 # Loc = raw; LocID = 7-digit zero-padded
                 pl.col("Loc").cast(pl.String).alias("Loc"),
-                pl.col("Loc")
-                .cast(pl.String)
-                .map_batches(lambda s: padded_string(s, 7), return_dtype=pl.String)
-                .alias("LocID"),
+                
+                pl.col("Loc").cast(pl.String).map_batches(padded_string(7), return_dtype=pl.String).alias("LocID"),
             )
-            .join(pl.from_pandas(enb_configs).lazy().collect(), on="PipeCode", how="inner")
+            .join(pl.from_pandas(enb_configs), on="PipeCode", how="inner")
             .with_columns(
-                pl.col("GFPipeID").cast(pl.Int64),
-                pl.col("GasDay")
-                .map_batches(batch_ymonth_parse, return_dtype=pl.Int64)
-                .alias("GasMonth"),
+                pl.col("GasDay").map_batches(batch_ymonth_parse, return_dtype=pl.Int64).alias("GasMonth"),
+                
                 pl.lit("OA").alias("Dataset"),
+                
                 pl.lit(datetime.now()).cast(pl.Datetime).alias("Timestamp"),
             )
         )
         # GFLocID = 3-digit PipeID + 7-digit LocID = 10-char surrogate key
         return df.with_columns(
-            pl.concat_str(
-                [pl.col("GFPipeID").cast(pl.String).str.zfill(3), pl.col("LocID")],
-                separator="",
-            ).alias("GFLocID")
+            pl.concat_str([pl.col("GFPipeID"), pl.col("LocID")], separator="").alias("GFLocID")
         )
 
     # ------------------------------------------------------------------
@@ -230,10 +231,7 @@ class EnbridgeSilverMunger(BaseSilverMunger):
             .filter(~null_check)
             .with_columns(
                 pl.col("Eff_Gas_Day")
-                .map_batches(
-                    lambda s: batch_date_parse(s, cfg.ST_DATE_FORMAT),
-                    return_dtype=pl.Date,
-                )
+                .map_batches(batch_date_parse(cfg.ST_DATE_FORMAT), return_dtype=pl.Date)
                 .alias("GasDay"),
                 pl.col("Total_Design_Capacity")
                 .map_batches(batch_float_parse, return_dtype=pl.Float64)
@@ -248,22 +246,18 @@ class EnbridgeSilverMunger(BaseSilverMunger):
                 .map_batches(batch_float_parse, return_dtype=pl.Float64)
                 .alias("OperationallyAvailableCapacity"),
                 pl.col("Flow_Ind_Desc")
-                .map_batches(
-                    lambda s: batch_fi_mapper(s, cfg.ST_FLOW_MAP),
-                    return_dtype=pl.String,
-                )
+                .map_batches(batch_fi_mapper(cfg.ST_FLOW_MAP), return_dtype=pl.String)
                 .alias("FlowDirection"),
                 pl.col("IT").cast(pl.String),
                 pl.col("Loc_Name").cast(pl.String).alias("LocName"),
                 pl.col("Loc").cast(pl.String).alias("Loc"),
                 pl.col("Loc")
                 .cast(pl.String)
-                .map_batches(lambda s: padded_string(s, 7), return_dtype=pl.String)
+                .map_batches(padded_string(7), return_dtype=pl.String)
                 .alias("LocID"),
             )
             .join(pl.from_pandas(enb_configs).lazy().collect(), on="PipeCode", how="inner")
             .with_columns(
-                pl.col("GFPipeID").cast(pl.Int64),
                 pl.col("GasDay")
                 .map_batches(batch_ymonth_parse, return_dtype=pl.Int64)
                 .alias("GasMonth"),
@@ -272,14 +266,11 @@ class EnbridgeSilverMunger(BaseSilverMunger):
             )
         )
         return df.with_columns(
-            pl.concat_str(
-                [pl.col("GFPipeID").cast(pl.String).str.zfill(3), pl.col("LocID")],
-                separator="",
-            ).alias("GFLocID")
+            pl.concat_str([pl.col("GFPipeID"), pl.col("LocID")], separator="").alias("GFLocID")
         )
 
     # ------------------------------------------------------------------
-    # SG (Segment Capacity) — no raw Loc, generate GF-prefix LocIDs
+    # SG (Segment Capacity) — no raw Loc, GF-prefix LocIDs assigned per pipe
     # ------------------------------------------------------------------
 
     async def _process_sg(
@@ -292,124 +283,80 @@ class EnbridgeSilverMunger(BaseSilverMunger):
         await asyncio.to_thread(dump_Loc_configs, self._paths.config_files)
 
         try:
+            # Step 1: Read raw CSVs — gas date + cycle from first line
             raw_df = await asyncio.to_thread(self._concat_sg_csvs, raw_dir)
             if raw_df.empty:
                 return []
 
-            # Load LocMetaData, filter to Enbridge SG entries
-            loc_path = self._paths.config_files / "LocConfigs.parquet"
-            loc_df = await asyncio.to_thread(pd.read_parquet, loc_path)
-            enb_loc_df = loc_df[
-                (loc_df.get("PartitionKey", pd.Series(dtype=str)) == cfg.PARENT_PIPE)
-                & (loc_df.get("RowType", pd.Series(dtype=str)) == "SG")
-            ].copy() if "RowType" in loc_df.columns else loc_df[
-                loc_df.get("PartitionKey", pd.Series(dtype=str)) == cfg.PARENT_PIPE
-            ].copy()
-
-            # Discover new station names → generate new GF-prefix LocIDs
-            new_locs_df = await asyncio.to_thread(
-                self._discover_new_sg_locs, raw_df, enb_loc_df, pipe_configs_df
-            )
-            if not new_locs_df.empty:
-                await asyncio.to_thread(update_Loc_configs, new_locs_df)
-                self.new_sg_locations = len(new_locs_df)
-                enb_loc_df = pd.concat([enb_loc_df, new_locs_df], ignore_index=True)
-
+            # Step 2: TD split + parse + join PipeConfigs
             enb_configs = pipe_configs_df.loc[
                 pipe_configs_df["ParentPipe"] == cfg.PARENT_PIPE,
                 ["GFPipeID", "PipeCode", "PipeName"],
             ]
-            intermediate = await asyncio.to_thread(
-                self._munge_sg,
-                pl.from_pandas(raw_df),
-                pl.from_pandas(enb_loc_df),
-                pl.from_pandas(enb_configs),
+            munged = await asyncio.to_thread(
+                self._munge_sg, pl.from_pandas(raw_df), pl.from_pandas(enb_configs)
             )
-            await asyncio.to_thread(intermediate.select(GOLD_SCHEMA).write_parquet, output_path)
+
+            # Step 3: Load SG LocMetaData — entries with empty Loc (GF-prefix LocIDs)
+            loc_path = self._paths.config_files / "LocConfigs.parquet"
+            loc_df = await asyncio.to_thread(pd.read_parquet, loc_path)
+            if "Loc" in loc_df.columns and "PartitionKey" in loc_df.columns:
+                sg_loc_df = loc_df[
+                    (loc_df["PartitionKey"] == cfg.PARENT_PIPE)
+                    & (loc_df["Loc"].isna() | (loc_df["Loc"].astype(str).str.strip() == ""))
+                ].copy()
+            else:
+                sg_loc_df = pd.DataFrame()
+
+            # Step 4: Assign LocID/GFLocID — existing from LocMetaData, new generated alphabetically
+            munged, new_locs_df = await asyncio.to_thread(
+                self._assign_sg_loc_ids, munged, sg_loc_df
+            )
+
+            # Step 5: Push new locations to LocConfigs Azure Table
+            if not new_locs_df.empty:
+                self.new_sg_locations = len(new_locs_df)
+                to_upsert = new_locs_df.reindex(columns=META_COLS).copy()
+                to_upsert["PartitionKey"] = cfg.PARENT_PIPE
+                to_upsert["RowKey"] = to_upsert["GFLocID"]
+                await asyncio.to_thread(update_Loc_configs, to_upsert)
+                await asyncio.to_thread(dump_Loc_configs, self._paths.config_files, True)
+                logger.info(f"SG {len(new_locs_df)} new locations pushed to LocConfigs")
+
+            await asyncio.to_thread(munged.select(GOLD_SCHEMA).write_parquet, output_path)
         except Exception as e:
             logger.error(f"processSG failed: {e}")
         return []
 
     def _concat_sg_csvs(self, raw_dir: Path) -> pd.DataFrame:
-        """Read all SG raw CSVs (skip header row), return combined DataFrame."""
+        """Read all SG raw CSVs — parse gas date and cycle from first line."""
         frames: list[pd.DataFrame] = []
         for fp in sorted(raw_dir.iterdir()):
             if fp.suffix != ".csv":
                 continue
+            pipe_code = fp.name.split("_", 1)[0].strip()
             try:
-                pipe_code, _, eff_gas_day, cycle_desc = fp.name.split("_", 3)
-                cycle_desc = cycle_desc[:-4]
-                df = pd.read_csv(fp, skiprows=1, usecols=cfg.SG_RAW_COLUMNS)
+                first_line = fp.open().readline().strip()
+                if not first_line:
+                    continue
+                gdate_part, cycle_part = first_line.split("  Cycle: ")
+                gas_date = datetime.strptime(gdate_part.split("Gas Date: ")[1].strip(), "%Y-%m-%d")
+                cycle = cycle_part.strip()
+                df = pd.read_csv(fp, header=1, usecols=cfg.SG_RAW_COLUMNS)
                 if not df.empty:
-                    frames.append(
-                        df.assign(
-                            PipeCode=pipe_code,
-                            EffGasDate=eff_gas_day,
-                            CycleDesc=cycle_desc,
-                        )
-                    )
+                    frames.append(df.assign(
+                        PipeCode=pipe_code,
+                        EffGasDate=gas_date.strftime("%Y%m%d"),
+                        CycleDesc=cycle,
+                    ))
             except Exception as e:
                 logger.error(f"SG CSV read failed: {fp.name} — {e}")
         return pd.concat(frames, ignore_index=True) if frames else pd.DataFrame()
 
-    def _discover_new_sg_locs(
-        self,
-        raw_df: pd.DataFrame,
-        loc_df: pd.DataFrame,
-        pipe_configs_df: pd.DataFrame,
-    ) -> pd.DataFrame:
-        """Find SG station names not in LocMetaData, assign GF-prefix LocIDs."""
-        records: list[dict] = []
+    def _munge_sg(self, raw: pl.DataFrame, enb_configs: pl.DataFrame) -> pl.DataFrame:
+        """SG transform: TD1/TD2 split → parse → join PipeConfigs → gold schema (no LocID yet)."""
+        _sel = ["PipeCode", "Station Name", "OpCap", "FlowInd", "Nom", "EffGasDate", "CycleDesc"]
 
-        for pipe_code in raw_df["PipeCode"].unique():
-            gf_pipe_id = pipe_configs_df.loc[
-                (pipe_configs_df["ParentPipe"] == cfg.PARENT_PIPE)
-                & (pipe_configs_df["PipeCode"] == pipe_code),
-                "GFPipeID",
-            ].squeeze()
-            if pd.isna(gf_pipe_id):
-                continue
-            gf_pipe_id = int(gf_pipe_id)
-
-            known = set(
-                loc_df.loc[
-                    loc_df.get("GFPipeID", pd.Series(dtype=float)).apply(
-                        lambda x: int(x) if pd.notna(x) else -1
-                    ) == gf_pipe_id,
-                    "LocName",
-                ]
-                if "LocName" in loc_df.columns and "GFPipeID" in loc_df.columns
-                else []
-            )
-            seen = set(raw_df.loc[raw_df["PipeCode"] == pipe_code, "Station Name"].dropna())
-            new_stations = seen - known
-
-            start_seq = len(known) + 1
-            for seq, station_name in enumerate(sorted(new_stations), start=start_seq):
-                loc_id = f"GF{seq:0>5}"
-                gf_loc_id = f"{gf_pipe_id:0>3}{loc_id}"
-                records.append({
-                    "PartitionKey": cfg.PARENT_PIPE,
-                    "RowKey": gf_loc_id,
-                    "GFPipeID": gf_pipe_id,
-                    "GFLocID": gf_loc_id,
-                    "LocID": loc_id,
-                    "Loc": None,
-                    "LocName": station_name,
-                    "PipeCode": pipe_code,
-                    "RowType": "SG",
-                    "UpdatedTime": datetime.now().strftime("%Y%m%d"),
-                })
-
-        return pd.DataFrame(records) if records else pd.DataFrame()
-
-    def _munge_sg(
-        self,
-        raw: pl.DataFrame,
-        loc_configs: pl.DataFrame,
-        enb_configs: pl.DataFrame,
-    ) -> pl.DataFrame:
-        """SG transform: TD1/TD2 split → join LocMetaData for LocID → gold schema."""
         lz = (
             raw.lazy()
             .filter(
@@ -443,78 +390,60 @@ class EnbridgeSilverMunger(BaseSilverMunger):
                 )
                 .alias("FlowInd"),
             )
-            .select(["PipeCode", "Station Name", "OpCap", "FlowInd", "Nom", "EffGasDate", "CycleDesc"])
+            .select(_sel)
         )
         # Cap1 + Nom<0 → Nom=0, TD1
         lazy_list.append(
             df_td2.filter(pl.col("Nom") < 0)
             .with_columns(pl.col("Cap").alias("OpCap"), pl.lit(float(0)).alias("Nom"), pl.lit("TD1").alias("FlowInd"))
-            .select(["PipeCode", "Station Name", "OpCap", "FlowInd", "Nom", "EffGasDate", "CycleDesc"])
+            .select(_sel)
         )
         # Cap2 + Nom<0 → Nom unchanged, TD2
         lazy_list.append(
             df_td2.filter(pl.col("Nom") < 0)
             .with_columns(pl.col("Cap2").alias("OpCap"), pl.lit("TD2").alias("FlowInd"))
-            .select(["PipeCode", "Station Name", "OpCap", "FlowInd", "Nom", "EffGasDate", "CycleDesc"])
+            .select(_sel)
         )
         # Cap1 + Nom>0 → Nom unchanged, TD1
         lazy_list.append(
             df_td2.filter(pl.col("Nom") > 0)
             .with_columns(pl.col("Cap").alias("OpCap"), pl.lit("TD1").alias("FlowInd"))
-            .select(["PipeCode", "Station Name", "OpCap", "FlowInd", "Nom", "EffGasDate", "CycleDesc"])
+            .select(_sel)
         )
         # Cap2 + Nom>0 → Nom=0, TD2
         lazy_list.append(
             df_td2.filter(pl.col("Nom") > 0)
             .with_columns(pl.col("Cap2").alias("OpCap"), pl.lit(float(0)).alias("Nom"), pl.lit("TD2").alias("FlowInd"))
-            .select(["PipeCode", "Station Name", "OpCap", "FlowInd", "Nom", "EffGasDate", "CycleDesc"])
+            .select(_sel)
         )
         # Cap1 + Nom==0 → TD1
         lazy_list.append(
             df_td2.filter(pl.col("Nom") == 0)
             .with_columns(pl.col("Cap").alias("OpCap"), pl.lit("TD1").alias("FlowInd"))
-            .select(["PipeCode", "Station Name", "OpCap", "FlowInd", "Nom", "EffGasDate", "CycleDesc"])
+            .select(_sel)
         )
         # Cap2 + Nom==0 → TD2
         lazy_list.append(
             df_td2.filter(pl.col("Nom") == 0)
             .with_columns(pl.col("Cap2").alias("OpCap"), pl.lit("TD2").alias("FlowInd"))
-            .select(["PipeCode", "Station Name", "OpCap", "FlowInd", "Nom", "EffGasDate", "CycleDesc"])
+            .select(_sel)
         )
 
-        df = (
+        return (
             pl.concat(lazy_list, how="vertical")
             .with_columns(
                 pl.col("OpCap").map_batches(batch_absolute, return_dtype=pl.Float64),
                 pl.col("Nom").map_batches(batch_absolute, return_dtype=pl.Float64),
                 pl.col("EffGasDate")
-                .map_batches(
-                    lambda s: batch_date_parse(s, cfg.SG_DATE_FORMAT),
-                    return_dtype=pl.Date,
-                )
+                .map_batches(batch_date_parse(cfg.SG_DATE_FORMAT), return_dtype=pl.Date)
                 .alias("GasDay"),
-                pl.col("FlowInd").map_batches(
-                    lambda s: batch_fi_mapper(s, cfg.SG_FLOW_MAP),
-                    return_dtype=pl.String,
-                )
+                pl.col("FlowInd")
+                .map_batches(batch_fi_mapper(cfg.SG_FLOW_MAP), return_dtype=pl.String)
                 .alias("FlowDirection"),
             )
-            # Join pipe configs for GFPipeID + PipeName
             .join(enb_configs.lazy(), on="PipeCode", how="inner")
-            # Join LocMetaData by (GFPipeID, Station Name) → get LocID, GFLocID
-            .join(
-                loc_configs.lazy()
-                .with_columns(pl.col("GFPipeID").cast(pl.Int64))
-                .rename({"LocName": "Station Name"})
-                .select(["GFPipeID", "Station Name", "LocID", "GFLocID"]),
-                on=["GFPipeID", "Station Name"],
-                how="inner",
-            )
             .with_columns(
-                pl.col("GFPipeID").cast(pl.Int64),
-                pl.col("GasDay")
-                .map_batches(batch_ymonth_parse, return_dtype=pl.Int64)
-                .alias("GasMonth"),
+                pl.col("GasDay").map_batches(batch_ymonth_parse, return_dtype=pl.Int64).alias("GasMonth"),
                 pl.lit("SG").alias("Dataset"),
                 pl.col("Station Name").alias("LocName"),
                 pl.lit(None).cast(pl.Float64).alias("DesignCapacity"),
@@ -524,8 +453,101 @@ class EnbridgeSilverMunger(BaseSilverMunger):
                 pl.lit(None).cast(pl.String).alias("IT"),
                 pl.lit(datetime.now()).cast(pl.Datetime).alias("Timestamp"),
             )
+            .collect()
         )
-        return df.collect()
+
+    def _assign_sg_loc_ids(
+        self,
+        munged: pl.DataFrame,
+        sg_loc_df: pd.DataFrame,
+    ) -> tuple[pl.DataFrame, pd.DataFrame]:
+        """Assign LocID/GFLocID to each (GFPipeID, Station Name) in the munged SG df.
+
+        Existing locs → looked up from LocMetaData by (GFPipeID, LocName).
+        New locs → GF + 5-digit sequence, assigned alphabetically per pipe,
+                   continuing from the highest existing sequence for that pipe.
+        Returns (munged df with LocID/GFLocID added, new_locs_df with META_COLS).
+        """
+        required = ("GFPipeID", "LocName", "LocID", "GFLocID")
+        existing_locs: dict[tuple, tuple] = {}  # (GFPipeID, LocName) → (LocID, GFLocID)
+        existing_seqs: dict[str, int] = {}       # GFPipeID → max GF sequence used
+
+        if not sg_loc_df.empty and all(c in sg_loc_df.columns for c in required):
+            for _, row in sg_loc_df.iterrows():
+                gfpipe = str(row["GFPipeID"])
+                locname = row.get("LocName")
+                locid = str(row.get("LocID") or "")
+                gflocid = str(row.get("GFLocID") or "")
+                if locname and locid:
+                    existing_locs[(gfpipe, locname)] = (locid, gflocid)
+                if locid.startswith("GF"):
+                    try:
+                        seq = int(locid[2:])
+                        existing_seqs[gfpipe] = max(existing_seqs.get(gfpipe, 0), seq)
+                    except ValueError:
+                        pass
+
+        # Extract unique (GFPipeID, Station Name, PipeName) from munged
+        pairs = munged.select(["GFPipeID", "Station Name", "PipeName"]).unique().to_pandas()
+
+        new_records: list[dict] = []
+        assignment_rows: list[dict] = []
+
+        # Carry existing assignments into the join table
+        for (gfpipe, station), (locid, gflocid) in existing_locs.items():
+            assignment_rows.append({"GFPipeID": gfpipe, "Station Name": station,
+                                    "LocID": locid, "GFLocID": gflocid})
+
+        # Collect new stations per pipe (sorted alphabetically)
+        new_by_pipe: dict[str, list[tuple]] = {}
+        for _, row in pairs.iterrows():
+            gfpipe = str(row["GFPipeID"])
+            station = row["Station Name"]
+            pipe_name = row["PipeName"]
+            if (gfpipe, station) not in existing_locs:
+                new_by_pipe.setdefault(gfpipe, []).append((station, pipe_name))
+
+        for gfpipe in sorted(new_by_pipe):
+            start_seq = existing_seqs.get(gfpipe, 0) + 1
+            for seq, (station, pipe_name) in enumerate(
+                sorted(new_by_pipe[gfpipe], key=lambda x: x[0]), start=start_seq
+            ):
+                loc_id = f"GF{seq:0>5}"
+                gf_loc_id = f"{gfpipe}{loc_id}"
+                assignment_rows.append({"GFPipeID": gfpipe, "Station Name": station,
+                                        "LocID": loc_id, "GFLocID": gf_loc_id})
+                new_records.append({
+                    "GF_PipeID": gfpipe,
+                    "PipeName": pipe_name,
+                    "GFLocID": gf_loc_id,
+                    "GF_LocID_Tag": "",
+                    "LocID": loc_id,
+                    "Loc": "",
+                    "GF_LocName": "",
+                    "LocName": station,
+                    "GF_FacilityType": "",
+                    "GF_FacilityTypeGroup": "",
+                    "ReportedFacilityType": "",
+                    "LocSegment": "",
+                    "LocZone": "",
+                    "State": "",
+                    "County": "",
+                    "InterconnectingEntity": "",
+                    "UpdatedTime": datetime.now(),
+                })
+
+        # Join assignment back to munged on (GFPipeID, Station Name)
+        assignment_pl = pl.DataFrame(assignment_rows, schema={
+            "GFPipeID": pl.String, "Station Name": pl.String,
+            "LocID": pl.String, "GFLocID": pl.String,
+        }) if assignment_rows else pl.DataFrame(schema={
+            "GFPipeID": pl.String, "Station Name": pl.String,
+            "LocID": pl.String, "GFLocID": pl.String,
+        })
+        munged = munged.join(assignment_pl, on=["GFPipeID", "Station Name"], how="left")
+
+        new_locs_df = pd.DataFrame(new_records) if new_records else pd.DataFrame()
+        return munged, new_locs_df
 
     # ------------------------------------------------------------------
     # NN processing — batch concat, LocID from raw Loc
@@ -568,31 +590,24 @@ class EnbridgeSilverMunger(BaseSilverMunger):
             .filter(~null_check)
             .with_columns(
                 pl.col("Effective_From_DateTime")
-                .map_batches(
-                    lambda s: batch_date_parse(s, cfg.NN_DATE_FORMAT),
-                    return_dtype=pl.Date,
-                )
+                .map_batches(batch_date_parse(cfg.NN_DATE_FORMAT), return_dtype=pl.Date)
                 .alias("GasDay"),
                 # Loc = raw; LocID = 7-digit zero-padded
                 pl.col("Loc_Prop").cast(pl.String).alias("Loc"),
                 pl.col("Loc_Prop")
                 .cast(pl.String)
-                .map_batches(lambda s: padded_string(s, 7), return_dtype=pl.String)
+                .map_batches(padded_string(7), return_dtype=pl.String)
                 .alias("LocID"),
                 pl.col("Loc_Name").cast(pl.String).alias("LocName"),
                 pl.col("Allocated_Qty")
                 .map_batches(batch_float_parse, return_dtype=pl.Float64)
                 .alias("TotalScheduledQuantity"),
                 pl.col("Direction_Of_Flow")
-                .map_batches(
-                    lambda s: batch_fi_mapper(s, cfg.NN_FLOW_MAP),
-                    return_dtype=pl.String,
-                )
+                .map_batches(batch_fi_mapper(cfg.NN_FLOW_MAP), return_dtype=pl.String)
                 .alias("FlowDirection"),
             )
             .join(pl.from_pandas(enb_configs).lazy().collect(), on="PipeCode", how="inner")
             .with_columns(
-                pl.col("GFPipeID").cast(pl.Int64),
                 pl.col("GasDay")
                 .map_batches(batch_ymonth_parse, return_dtype=pl.Int64)
                 .alias("GasMonth"),
@@ -605,10 +620,7 @@ class EnbridgeSilverMunger(BaseSilverMunger):
             )
         )
         return df.with_columns(
-            pl.concat_str(
-                [pl.col("GFPipeID").cast(pl.String).str.zfill(3), pl.col("LocID")],
-                separator="",
-            ).alias("GFLocID")
+            pl.concat_str([pl.col("GFPipeID"), pl.col("LocID")], separator="").alias("GFLocID")
         )
 
     # ------------------------------------------------------------------
@@ -633,18 +645,23 @@ class EnbridgeSilverMunger(BaseSilverMunger):
     async def _sync_point_locations(
         self, silver_df: pl.DataFrame, row_type: RowType
     ) -> None:
-        """Upsert any new GFLocIDs to the LocMetaData Azure Table."""
+        """Find new GFLocIDs and save them to a CSV for review.
+
+        Does NOT write to Azure — files are saved to config_files/pending_locs_*.csv
+        so they can be reviewed and manually uploaded once verified.
+        """
         try:
             loc_df = await asyncio.to_thread(dump_Loc_configs, self._paths.config_files)
-            if loc_df is None or loc_df.empty:
-                existing_ids: set[str] = set()
-            else:
-                existing_ids = set(loc_df.get("GFLocID", pd.Series(dtype=str)).dropna())
+            existing_ids: set[str] = (
+                set(loc_df.get("GFLocID", pd.Series(dtype=str)).dropna())
+                if loc_df is not None and not loc_df.empty
+                else set()
+            )
 
             new_locs = (
                 silver_df.select(["GFPipeID", "GFLocID", "LocID", "Loc", "LocName"])
                 .unique(subset=["GFLocID"])
-                .filter(~pl.col("GFLocID").is_in(list(existing_ids)))
+                .filter(~pl.col("GFLocID").is_in(existing_ids))
             )
 
             if new_locs.is_empty():
@@ -656,24 +673,98 @@ class EnbridgeSilverMunger(BaseSilverMunger):
             elif row_type == RowType.NN:
                 self.new_nn_locations = count
 
-            records = new_locs.to_pandas()
-            records["PartitionKey"] = cfg.PARENT_PIPE
-            records["RowKey"] = records["GFLocID"]
-            records["RowType"] = row_type.value
-            records["UpdatedTime"] = datetime.now().strftime("%Y%m%d")
+            # Base record — rename GFPipeID → GF_PipeID
+            records = new_locs.to_pandas().rename(columns={"GFPipeID": "GF_PipeID"})
 
-            await asyncio.to_thread(update_Loc_configs, records)
-            logger.info(f"{row_type} new locations upserted to LocMetaData: {count}")
+            # PipeName from pipe_configs (GFPipeID is now 3-digit string key)
+            pipe_configs = await asyncio.to_thread(dump_pipe_configs, self._paths.config_files)
+            if pipe_configs is not None:
+                name_map = pipe_configs.set_index("GFPipeID")["PipeName"].to_dict()
+                records["PipeName"] = records["GF_PipeID"].map(name_map)
+            else:
+                records["PipeName"] = ""
+
+            # GF-managed fields — left empty for manual curation
+            for col in ["GF_LocID_Tag", "GF_LocName", "GF_FacilityType", "GF_FacilityTypeGroup"]:
+                records[col] = ""
+
+            # Enrichment columns — empty by default, filled from AllPoints meta if available
+            enrich_cols = ["LocZone", "State", "County", "ReportedFacilityType",
+                           "LocSegment", "InterconnectingEntity"]
+            for col in enrich_cols:
+                records[col] = ""
+
+            meta_df = await asyncio.to_thread(self._build_meta_df, pipe_configs)
+            if meta_df is not None and not meta_df.empty and "GFLocID" in meta_df.columns:
+                available = [c for c in enrich_cols if c in meta_df.columns]
+                if available:
+                    merged = records.merge(
+                        meta_df[["GFLocID"] + available],
+                        on="GFLocID",
+                        how="left",
+                        suffixes=("", "_m"),
+                    )
+                    for col in available:
+                        records[col] = merged[f"{col}_m"].fillna("").values
+
+            records["UpdatedTime"] = datetime.now()
+
+            # Push to LocConfigs Azure Table
+            to_upsert = records.reindex(columns=META_COLS).copy()
+            to_upsert["PartitionKey"] = cfg.PARENT_PIPE
+            to_upsert["RowKey"] = to_upsert["GFLocID"]
+            await asyncio.to_thread(update_Loc_configs, to_upsert)
+            await asyncio.to_thread(dump_Loc_configs, self._paths.config_files, True)
+            logger.info(f"{row_type} {count} new locations pushed to LocConfigs")
 
         except Exception as e:
             logger.error(f"syncPointLocations failed ({row_type}): {e}")
+
+    def _build_meta_df(self, pipe_configs: pd.DataFrame | None) -> pd.DataFrame | None:
+        """Build enrichment DataFrame from AllPoints meta CSVs.
+
+        Reads all *_AllPoints.csv files from meta_raw, strips strings,
+        joins with pipe_configs for GFPipeID, builds LocID/GFLocID,
+        and renames raw columns to the MetaCols schema.
+        """
+        if pipe_configs is None:
+            return None
+
+        frames = []
+        for fp in self._paths.meta_raw.iterdir():
+            if fp.suffix != ".csv":
+                continue
+            try:
+                pipe_code = fp.name.split("_", 1)[0]
+                frames.append(pd.read_csv(fp, dtype=str).assign(PipeCode=pipe_code))
+            except Exception as e:
+                logger.error(f"MetaDf build failed: {fp.name} — {e}")
+
+        if not frames:
+            return None
+
+        df = pd.concat(frames, ignore_index=True)
+        # Strip whitespace from all string columns
+        str_cols = df.select_dtypes(include="object").columns
+        df[str_cols] = df[str_cols].apply(lambda col: col.str.strip())
+
+        if "Loc" not in df.columns:
+            return None
+
+        df = df.merge(pipe_configs[["PipeCode", "GFPipeID"]], on="PipeCode", how="inner")
+        df["LocID"] = df["Loc"].apply(
+            lambda x: str(x).zfill(7) if pd.notna(x) and str(x).strip() else None
+        )
+        df["GFLocID"] = df["GFPipeID"] + df["LocID"].fillna("")
+
+        return df.rename(columns=_META_RAW_RENAME)
 
     # ------------------------------------------------------------------
     # META processing
     # ------------------------------------------------------------------
 
     async def _process_meta(self, raw_dir: Path, pipe_configs_df: pd.DataFrame) -> None:
-        """Read metadata CSVs, find new rows, upsert to Azure Table."""
+        """Read metadata CSVs, find new rows, upsert to Azure Table.- EnbridgeMetadata"""
         from app.core.azure_tables import get_table
 
         def _read_csvs():
@@ -703,9 +794,7 @@ class EnbridgeSilverMunger(BaseSilverMunger):
         def _query_table():
             with get_table(settings.enbridge_metadata_table) as table_client:
                 return pl.DataFrame(
-                    table_client.query_entities(
-                        f"PartitionKey eq '{cfg.PARENT_PIPE}'"
-                    )
+                    table_client.query_entities("")
                 ).select(pl.exclude(["RowKey", "ChangedOn"]))
 
         meta_df = await asyncio.to_thread(_query_table)

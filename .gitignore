@@ -1,11 +1,14 @@
 # Custom folders
 **/notebooks/
-**/archive/
+# **/archive/
 downloads/
 .claude/
 CLAUDE.md
 .env
 OldArchives/
+reports/
+tests/
+
 
 # Python-generated files
 __pycache__/

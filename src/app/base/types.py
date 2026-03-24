@@ -36,7 +36,7 @@ class PipeConfig(BaseModel, frozen=True):
     pipe_code: str = Field(min_length=2, max_length=10)
     parent_pipe: str = Field(min_length=2, max_length=50)
     pipe_name: str = Field(min_length=2)
-    gf_pipe_id: int = Field(ge=100, le=999)
+    gf_pipe_id: str = Field(pattern=r"^\d{3}$")
     oa_code: str | None = None
     sg_code: str | None = None
     st_code: str | None = None

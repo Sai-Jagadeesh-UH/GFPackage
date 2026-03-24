@@ -104,7 +104,7 @@ def dump_pipe_configs(config_dir: Path, force: bool = False) -> pd.DataFrame | N
         )
         try:
             df["GFPipeID"] = df["GFPipeID"].apply(
-                lambda x: x.value if hasattr(x, "value") else x
+                lambda x: str(int(x.value if hasattr(x, "value") else x)).zfill(3)
             )
             df.to_parquet(parquet_path, index=False)
             _cache.put(parquet_path, df)
@@ -149,6 +149,11 @@ def dump_Loc_configs(config_dir: Path, force: bool = False) -> pd.DataFrame | No
 
     for col in df.columns:
         df[col] = df[col].apply(_unwrap)
+
+    if "GFPipeID" in df.columns:
+        df["GFPipeID"] = df["GFPipeID"].apply(
+            lambda x: str(int(x)).zfill(3) if pd.notna(x) else x
+        )
 
     df.to_parquet(parquet_path, index=False)
     _cache.put(parquet_path, df)

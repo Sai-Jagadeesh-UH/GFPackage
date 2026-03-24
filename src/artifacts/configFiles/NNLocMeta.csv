@@ -1,0 +1,849 @@
+GFPipeID,PipeName,GFLocID,GF_LocID_Tag,LocID,Loc,GF_LocName,LocName,GF_FacilityType,GF_FacilityTypeGroup,ReportedFacilityType,LocSegment,LocZone,State,County,InterconnectingEntity,UpdatedTime
+100,"Algonquin Gas Transmission, LLC",1000000815,"",0000815,00815,"","Dighton Power LLC Bristol MA (BRISTOL,MA)","","",END,"","",MA,BRISTOL,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200070238,"",0070238,70238,"","Hughes Eastern - Chickasaw, MS","","",WHD,"",1,MS,CHICKASAW,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000002210,"",0002210,02210,"","LAMBERTVILLE DELIVERY (HUNTERDON, NJ)","","",INT,"","",NJ,HUNTERDON,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073715,"",0073715,73715,"","Lancaster Municipal Gas Company, Fairfield Co., OH","","",LDC,"",2,OH,FAIRFIELD,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200070104,"",0070104,70104,"","Lafayette, TN","","",LDC,"",1,TN,MACON,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200071220,"",0071220,71220,"","PECO Energy - E. Greenville, PA","","",LDC,"",3,PA,MONTGOMERY,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073297,"",0073297,73297,"","Washington Power Generation, LLC","","",END,"",2,OH,WASHINGTON,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200078200,"",0078200,78200,"",AGT MAINLINE (NJ-NY),"","",INT,"",3,NY,ROCKLAND,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200079984,"",0079984,79984,"",NEXUS FUEL-NISOURCE MIDSTREAM SERVCS-DRY RIDGE-GREENE CO,"","","","","","","","",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073811,"",0073811,73811,"",Enterprise Products/Wallace Junction,"","",INT,"",STX,TX,CHAMBERS,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200078201,"",0078201,78201,"",MAHWAH,"","",INT,"",3,NJ,BERGEN,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200079675,"",0079675,79675,"",ZZZ,"","",STA,"",ETX,LA,BIENVILLE,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000240,"",0000240,00240,"","Columbia Hanover (MORRIS,NJ)","","",INT,"","",NJ,MORRIS,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073731,"",0073731,73731,"","Caiman Energy-Ritchie Rd/Burkett Hollow, Blair Co., PA","","",WHD,"",3,PA,BLAIR,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200070579,"",0070579,70579,"","Columbia Gas of  PA.  - Rockwood, PA","","",INT,"",3,PA,SOMERSET,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200072996,"",0072996,72996,"","Edmonton #2 - Metcalfe Co., KY","","",LDC,"",2,KY,METCALFE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073161,"",0073161,73161,"","Middle TN Gas Monroe Co, KY","","",LDC,"",2,KY,MONROE,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000016,"",0000016,00016,"","New England Gas Company Fall River (BRISTOL,MA)","","",LDC,"","",MA,BRISTOL,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200076910,"",0076910,76910,"","Dominion Energy Transmission, Inc - LEBANON, WARREN CO, OH","","",INT,"",2,OH,WARREN,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200070041,"",0070041,70041,"","Columbia Gas - Lebanon, OH","","",INT,"",2,OH,WARREN,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200070517,"",0070517,70517,"","PECO - Alan Wood Steel, PA","","",LDC,"",3,PA,MONTGOMERY,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073892,"",0073892,73892,"",Hilcorp Energy St. Charles Refuge Gathering-Backgate Road-Refugio,"","",WHD,"",STX,TX,REFUGIO,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000056,"",0000056,00056,"","Morris (MORRIS,NJ)","","",LDC,"","",NJ,MORRIS,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200072672,"",0072672,72672,"","Lebanon #2 - Wilson Co., TN","","",END,"",1,TN,WILSON,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200079541,"",0079541,79541,"",STX/WLA ZONE BOUNDARY POINT,"","",STA,"",ZB,TX,JEFFERSON,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073878,"",0073878,73878,"","Goliad Midstream Energy/City of Magnolia,TX-Enderli Street,Montgom","","",END,"",STX,TX,MONTGOMERY,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200071288,"",0071288,71288,"","Gas Util Dist #2 - New Roads, LA","","",LDC,"",ELA,LA,POINTE COUPEE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073704,"",0073704,73704,"","Williams Cantaral - Rt 18, Greene Co., PA.","","",WHD,"",2,PA,GREENE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200071000,"",0071000,71000,"","Gulf South Pipeline Company, LP - West Monroe, LA  (Receipt)","","",INT,"",ELA,LA,OUACHITA,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073196,"",0073196,73196,"","Delta Nat Gas -Madison Co., KY","","",LDC,"",2,KY,MADISON,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073576,"",0073576,73576,"","Texas Gas- Kosciusko, MS","","",INT,"",1,MS,ATTALA,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200079172,"",0079172,79172,"",GATOR EXPRESS ACCOUNTING METER,"","",STA,"",ELA,LA,PLAQUEMINES,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073710,"",0073710,73710,"","Scorpion Oil & Gas, Lincoln Co., Ms","","",WHD,"",ELA,MS,LINCOLN,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200071486,"",0071486,71486,"","GULF SOUTH PIPELINE COMPANY - Opelousas, LA","","",INT,"",ELA,LA,ST LANDRY,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200072863,"",0072863,72863,"","Delmarva Power & Light - New Castle, DE","","",END,"",3,DE,NEW CASTLE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073348,"",0073348,73348,"","TREMONT DELIVERY, ITAWAMBA CO., MS","","",LDC,"",1,MS,ITAWAMBA,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000089,"",0000089,00089,"","National Grid-MEDFORD (MIDDLESEX,MA)","","",LDC,"","",MA,MIDDLESEX,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200071750,"",0071750,71750,"","Columbia Gulf - St. Landry Psh., LA","","",INT,"",WLA,LA,ST LANDRY,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200071208,"",0071208,71208,"","Public Service - Morristown, NJ (Thru 71078)","","",LDC,"",3,NJ,MORRIS,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073507,"",0073507,73507,"","PECO- Skippack Delivery - Montgomery, PA.","","",LDC,"",3,PA,MONTGOMERY,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200070128,"",0070128,70128,"","Public Service - Linden, NJ","","",LDC,"",3,NJ,UNION,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073275,"",0073275,73275,"",Sonerra Resources - Melrose Gathering (Kendrick #1-H) (REC),"","",WHD,"",ETX,TX,NACOGDOCHES,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000624,"",0000624,00624,"","Excelerate Energy LP - Exquisite (ESSEX,MA)","","",LNG,"","",MA,ESSEX,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200070313,"",0070313,70313,"","Columbia, KY","","",LDC,"",2,KY,ADAIR,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000009,"",0000009,00009,"","Putnam (WINDHAM,CT)","","",LDC,"","",CT,WINDHAM,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200072190,"",0072190,72190,"","Kennett - Dunklin Co., MO","","",LDC,"",1,MO,DUNKLIN,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200074568,"",0074568,74568,"",Kinder Morgan LNG Del (73568 Receipt),"","",LNG,"",WLA,LA,EVANGELINE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200070552,"",0070552,70552,"","TE Todhunter - Todhunter, OH","","",END,"",2,OH,BUTLER,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200072603,"",0072603,72603,"","Kinder Morgan Tejas (from TE) upRiver Rd., Nueces Co","","",INT,"",STX,TX,NUECES,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073407,"",0073407,73407,"","Chesapeake Operating Inc-Ankenmen Gathering, Brazoria Co., TX","","",WHD,"",STX,TX,BRAZORIA,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073869,"",0073869,73869,"","EQM Gathering Opco-Denex (Tombstone) Akron Road, Greene Co., PA","","",WHD,"",2,PA,GREENE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200071207,"",0071207,71207,"","Public Service - Basking Ridge, NJ (Thru 71078)-""Bernards""","","",LDC,"",3,NJ,SOMERSET,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073580,"",0073580,73580,"","REX Clarington, Monroe Co., OH","","",INT,"",2,OH,MONROE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073338,"",0073338,73338,"",SantosUSA Corp,"","",WHD,"",STX,TX,MATAGORDA,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073712,"",0073712,73712,"","Energy Corporation of America-Ridge Rd., Greene Co., PA.","","",WHD,"",2,PA,GREENE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073699,"",0073699,73699,"","Dominion Energy Transmission, Inc - Appalchian Gateway, Westmorela","","",INT,"",2,PA,WESTMORELAND,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200079958,"",0079958,79958,"","HANOVER, NJ FUEL ACCOUNTING METER","","",COM,"",3,NJ,MORRIS,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200071170,"",0071170,71170,"","Midwest Nat. Gas - Medora, IN","","",LDC,"",2,IN,JACKSON,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200072571,"",0072571,72571,"","UGI UTIL (Columbia Gas) - Bally, PA","","",LDC,"",3,PA,BERKS,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073867,"",0073867,73867,"","EQM Gathering Opco-Alpha/Pettit Road, Greene Co. PA","","",WHD,"",2,PA,GREENE,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000036,"",0000036,00036,"","West Medway (NORFOLK,MA)","","",LDC,"","",MA,NORFOLK,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200070548,"",0070548,70548,"","Starks Utilities - Starks, LA","","",LDC,"",WLA,LA,CALCASIEU,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073978,"",0073978,73978,"",Lightning Renewables Lemons East LFG Receipt CR 702 Stoddard Co MO,"","",WHD,"",1,MO,STODDARD,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200072604,"",0072604,72604,"","Entergy Louisiana,LLC Beauregard Psh., LA","","",INT,"",WLA,LA,BEAUREGARD,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000058,"",0000058,00058,"","Canton (NORFOLK,MA)","","",LDC,"","",MA,NORFOLK,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200072536,"",0072536,72536,"","Kentucky Energy - Metcalfe, KY","","",LDC,"",2,KY,METCALFE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200070583,"",0070583,70583,"","Midwest Nat. -North Vernon, IN","","",LDC,"",2,IN,JENNINGS,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000080101,"",0080101,80101,"",KLEEN ENERGY LATERAL,"","",STA,"","",CT,MIDDLESEX,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200072587,"",0072587,72587,"","Big Cajun Electric, Coupee Psh., LA","","",END,"",ELA,LA,POINTE COUPEE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073904,"",0073904,73904,"",Southern Natural Gas Kosciusko Reversal,"","",INT,"",1,MS,ATTALA,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073880,"",0073880,73880,"","Greylock Pipeline, LLC Ridge Road North, Greene Co., PA","","",WHD,"",2,PA,GREENE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200079925,"",0079925,79925,"","NEXUS FUEL - CNX RICH HILL, GREEN CO. PA","","","","","","","","",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200079974,"",0079974,79974,"",M1 30 INCH CUSTODY TRANSFER POINT,"","",STA,"",1,MS,ATTALA,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000844,"",0000844,00844,"","Exelon Constellation Energy, Norfolk Co, Ma","","",END,"","",MA,NORFOLK,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000080,"",0000080,00080,"","National Grid-POLAROID (MIDDLESEX,MA)","","",LDC,"","",MA,MIDDLESEX,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000003,"",0000003,00003,"",North Haven (NEW HAVEN),"","",LDC,"","",CT,NEW HAVEN,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200071081,"",0071081,71081,"","Community Gas - Cynthiana, IN","","",LDC,"",2,IN,GIBSON,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200070442,"",0070442,70442,"","Crossville, IL","","",LDC,"",1,IL,WHITE,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000630,"",0000630,00630,"","Suez Neptune LNG -(ESSEX, MA)","","",LNG,"","",MA,ESSEX,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200071046,"",0071046,71046,"","Harrisburg, AR","","",LDC,"",1,AR,JACKSON,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000044,"",0000044,00044,"","Rhode Island Energy-Burrillville (PROVIDENCE,RI)","","",LDC,"","",RI,PROVIDENCE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200079661,"",0079661,79661,"",CHAMBERSBURG CUSTODY TRANSFER POINT,"","",STA,"",3,PA,FRANKLIN,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073608,"",0073608,73608,"",TGG Pipeline - Central Delivery Point,"","",WHD,"",ETX,TX,SAN AUGUSTINE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073110,"",0073110,73110,"","Great Lake Energy - Fayette Co.,PA","","",WHD,"",2,PA,FAYETTE,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000833,"",0000833,00833,"",Kleen Energy,"","",END,"","",CT,MIDDLESEX,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200070486,"",0070486,70486,"","UGI UTIL (Columbia Gas) - Womelsdorf, PA","","",LDC,"",3,PA,BERKS,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200071190,"",0071190,71190,"","Poseyville, IN","","",LDC,"",2,IN,GIBSON,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000093,"",0000093,00093,"","Dartmouth Power (NORFOLK,MA)","","",END,"","",MA,NORFOLK,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200076903,"",0076903,76903,"","ANR, DEL- Glen Karn, OH","","",INT,"",2,OH,DARKE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073818,"",0073818,73818,"","Dewbre Petroleum/McGill Heirs #1-Santa Rose Ranch-Kenedy Co., TX","","",WHD,"",STX,TX,KENEDY,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200071297,"",0071297,71297,"","Weir, Choctaw Co., MS","","",LDC,"",1,MS,CHOCTAW,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073977,"",0073977,73977,"",Vectren Energy (CenterPoint) Lewisburg Delivery - Shields Road - P,"","",LDC,"",2,OH,PREBLE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073165,"",0073165,73165,"","SANCHEZ O'BRIEN-BODDEN FROST, LIVE OAK CO., TX","","",WHD,"",STX,TX,LIVE OAK,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073915,"",0073915,73915,"","EQM Gathering Opco, McClellan Ave., Greene Co., PA","","",WHD,"",2,PA,GREENE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073716,"",0073716,73716,"","Caiman Energy - Kingwood Road, Somerset Co., PA.","","",WHD,"",2,PA,SOMERSET,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",12000T0001,"",00T0001,T0001,"",Farmersville-Derby Delivery - (73269),"","","","","","","","",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000049,"",0000049,00049,"","New England Gas Company Westport (BRISTOL,MA)","","",LDC,"","",MA,BRISTOL,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000005,"",0000005,00005,"","Willimantic (NEW HAVEN, CT)","","",LDC,"","",CT,WINDHAM,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200079656,"",0079656,79656,"","NEXUS FUEL-WILLIAMS OHIO VALLEY MIDSTREAM LLC-GOSNEY HILL RD,MARSH","","","","","","","","",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200079667,"",0079667,79667,"",M2/M3 ILT POINT,"","",STA,"",ZB,PA,WESTMORELAND,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200071426,"",0071426,71426,"","Mantachie Gas Dist -Fulton, MS","","",LDC,"",1,MS,ITAWAMBA,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200079518,"",0079518,79518,"",GSS STORAGE SERVICE POINT-CNG/GSS,"","",STR,"",3,PA,CLINTON,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000071,"",0000071,00071,"","New England Gas Company Swansea (BRISTOL,MA)","","",LDC,"","",MA,BRISTOL,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200079597,"",0079597,79597,"","MARKET ZONE 2 24"" DOWNSTREAM POINT","","",STA,"",2,OH,NO COUNTY NAME,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000057,"",0000057,00057,"","National Grid-WESTON (MIDDLESEX,MA)","","",LDC,"","",MA,MIDDLESEX,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073454,"",0073454,73454,"","Central Gulf-Carpenter #1/Bee Co., TX (REC)","","",WHD,"",STX,TX,BEE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200071814,"",0071814,71814,"","Alcoa-Lavaca Pipeline - Calhoun, TX  (Delivery)","","",INT,"",STX,TX,CALHOUN,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073391,"",0073391,73391,"","Arcadia Operating,LLC- Golden Miner #1 / San Jacinto Co., TX (REC)","","",WHD,"",STX,TX,SAN JACINTO,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000831,"",0000831,00831,"","CMEEC-PIERCE POWER PLANT-(NEW HAVEN,CT)","","",END,"","",CT,NEW HAVEN,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000832,"",0000832,00832,"","Norfolk Meter Station (NORFOLK,MA)","","",LDC,"","",MA,NORFOLK,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073341,"",0073341,73341,"","CIMA Energy LTD - Gath. System / Dewitt Co., TX  (REC)","","",WHD,"",STX,TX,DE WITT,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200072382,"",0072382,72382,"","Houston Pipe Line Co.-Enerfin Lyondell Sys./ Harris Co., TX","","",INT,"",STX,TX,HARRIS,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200079540,"",0079540,79540,"",STX/ETX ZONE BOUNDARY POINT,"","",STA,"",ZB,TX,WALKER,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000028,"",0000028,00028,"","Brookford ST (MIDDLESEX,MA)","","",LDC,"","",MA,MIDDLESEX,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200070478,"",0070478,70478,"","New Harmony, IL","","",LDC,"",1,IL,WHITE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200070100,"",0070100,70100,"","Red Bay, AL","","",LDC,"",1,AL,FRANKLIN,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200074058,"",0074058,74058,"","National Grid Metro NY, Goethals Rd., Staten Island, Richmond Co.,","","",LDC,"",3,NY,RICHMOND,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073423,"",0073423,73423,"",Piedmont Natural Gas - Rutherford,"","",LDC,"",1,TN,RUTHERFORD,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200079555,"",0079555,79555,"",ISS-1 STORAGE SERVICE,"","",STR,"",2,PA,WESTMORELAND,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000022,"",0000022,00022,"","Westwood (NORFOLK, MA)","","",LDC,"","",MA,NORFOLK,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000047,"",0000047,00047,"","Cortlandt (WESTCHESTER,NY)","","",LDC,"","",NY,WESTCHESTER,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073920,"",0073920,73920,"",Transco Williams-Cajun Rd (St.James) Pointe Coupee LA,"","",INT,"",ELA,LA,POINTE COUPEE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200070418,"",0070418,70418,"","Gloster, MS","","",LDC,"",ELA,MS,AMITE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200079501,"",0079501,79501,"",STX SERVICE POINT,"","",PPT,"",STX,TX,JEFFERSON,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000019,"",0000019,00019,"","Plymouth (PLYMOUTH,MA)","","",LDC,"","",MA,PLYMOUTH,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073649,"",0073649,73649,"",Access Midstream/Carzenava Gathering,"","",WHD,"",ETX,TX,SHELBY,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073141,"",0073141,73141,"","MISSISSIPPI CHEMICAL - Yazoo City, MS","","",END,"",ELA,MS,YAZOO,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073466,"",0073466,73466,"",Alliance Petroleum Corp - Nicholson Field Interconnect - PA. - (73,"","",WHD,"",2,PA,SOMERSET,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200070941,"",0070941,70941,"","Lawrenceburg Gas, IN","","",LDC,"",2,IN,FRANKLIN,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200079512,"",0079512,79512,"",ZONE M2 STORAGE POINT,"","",STR,"",2,PA,WESTMORELAND,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200076840,"",0076840,76840,"",AGT to TE Hanover,"","",INT,"",3,NJ,MORRIS,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200071242,"",0071242,71242,"","Cen Il Pub Serv -Goreville, IL","","",LDC,"",1,IL,JOHNSON,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073263,"",0073263,73263,"","Duke Energy Vermillion II, LLC","","",STA,"",2,IN,VERMILLION,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200072405,"",0072405,72405,"","PECO Energy - Hatfield, PA","","",LDC,"",3,PA,MONTGOMERY,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073096,"",0073096,73096,"","Interstate Energy Company (I.E.C.) - Bucks Co., PA","","",INT,"",3,PA,BUCKS,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073409,"",0073409,73409,"","Fossil Resources - Brown #1H / Nacogdoches Co., TX","","",WHD,"",ETX,TX,NACOGDOCHES,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200072654,"",0072654,72654,"","BlueStone Natural Resources, LLC- Bonne Terre Field, McMullen Co.,","","",WHD,"",STX,TX,MC MULLEN,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200070939,"",0070939,70939,"","Indiana Gas - French Lick, IN","","",LDC,"",2,IN,ORANGE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200072080,"",0072080,72080,"","Great Lakes Energy Partners.- #1 Tex. Gulf-Centre Co., PA","","",WHD,"",3,PA,CENTRE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073907,"",0073907,73907,"","EQT- Braden Run II, Greene Co., PA.","","",WHD,"",2,PA,GREENE,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000004,"",0000004,00004,"","Rhode Island Energy -DEY ST. (PROVIDENCE,RI)","","",LDC,"","",RI,PROVIDENCE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200074528,"",0074528,74528,"",DTM Leap Cameron Extension Al Cormier Road Beauregard Parish LA,"","",WHD,"",WLA,LA,BEAUREGARD,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200072451,"",0072451,72451,"","Wilmar Pipeline, Inc.  - #1 Duncan Slough, Matagorda Co., TX","","",WHD,"",STX,TX,MATAGORDA,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200072594,"",0072594,72594,"","MHT -Energy Mktg. -Monroe, MS","","",WHD,"",1,MS,MONROE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200079070,"",0079070,79070,"",ANR FAMERSVILLE LATERAL INTERCONNECT,"","","","","","","","",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200072903,"",0072903,72903,"",ANR - Glen Karn - (72903),"","",INT,"",2,OH,DARKE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073713,"",0073713,73713,"","EQT - Jefferson, Greene Co., PA.","","",WHD,"",2,PA,GREENE,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000041,"",0000041,00041,"","Peekskill (WESTCHESTER,NY)","","",LDC,"","",NY,WESTCHESTER,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000810,"",0000810,00810,"","Middletown, (MIDDLESEX,CT)","","",END,"","",CT,MIDDLESEX,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073171,"",0073171,73171,"","East Cape Girardeau, IL","","",LDC,"",1,IL,ALEXANDER,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200070573,"",0070573,70573,"","Batesville, IN","","",LDC,"",2,IN,RIPLEY,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073247,"",0073247,73247,"","COLUMBIA UTILITIES - ADAIR CO., KY","","",LDC,"",2,KY,ADAIR,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200070034,"",0070034,70034,"","Philadelphia Gas Works - Levick St., PA","","",LDC,"",3,PA,MONTGOMERY,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200070309,"",0070309,70309,"","UGI CENTRAL - Pottsville Gas - Berks Co., PA","","",LDC,"",3,PA,BERKS,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073564,"",0073564,73564,"","Tanos Exploration II,LLC/Parmer Gathering","","",WHD,"",ETX,TX,NACOGDOCHES,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073113,"",0073113,73113,"","Enterprise Texas Pipeline LLC - Hidalgo County, TX","","",INT,"",STX,TX,HIDALGO,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073225,"",0073225,73225,"","Nat'l Gas  -Perry Co., OH","","",LDC,"",2,OH,PERRY,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073896,"",0073896,73896,"","Eastman Chemical/TXO-Callahan Rd., Harrison Co., TX","","",END,"",ETX,TX,HARRISON,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000099855,"",0099855,99855,"",SALEM LATERAL CUSTODY TRANSFER POINT,"","",STA,"","",MA,ESSEX,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200072908,"",0072908,72908,"","Duke Energy Ohio Inc. Springboro, Franklin, OH","","",LDC,"",2,OH,FRANKLIN,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200074537,"",0074537,74537,"",AH Medora LFG Rec.,"","",GTH,"",2,IN,JACKSON,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000821,"",0000821,00821,"","Pinehills Meter - (PLYMOUTH,MA)","","",LDC,"","",MA,PLYMOUTH,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073734,"",0073734,73734,"","Mark West - Majorsville, Marshall Co., WVA","","",WHD,"",2,WV,MARSHALL,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200070051,"",0070051,70051,"","PEOPLES NAT - Somerset, PA","","",LDC,"",2,PA,SOMERSET,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073159,"",0073159,73159,"","Lafayette #2 - Macon Co., TN","","",LDC,"",1,TN,MACON,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000043,"",0000043,00043,"","Ashland (MIDDLESEX,MA)","","",LDC,"","",MA,MIDDLESEX,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200079517,"",0079517,79517,"",KOSCIUSKO DISCHARGE PATH POINT,"","",STA,"",1,MS,ATTALA,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073881,"",0073881,73881,"","Texas Gas - Lebanon Lateral, Warren  Co., OH","","",INT,"",2,OH,WARREN,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200079664,"",0079664,79664,"","ETX/M1 24""  ILT POINT","","",STA,"",ZB,AR,PULASKI,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000079,"",0000079,00079,"","SOUTHBURY (NEW HAVEN,CT)","","",LDC,"","",CT,NEW HAVEN,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000002630,"",0002630,02630,"","Neptune LNG -(ESSEX, MA)","","",LNG,"","",MA,ESSEX,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200072798,"",0072798,72798,"","Hamilton, OH","","",LDC,"",2,OH,BUTLER,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200070364,"",0070364,70364,"","Magnum Producing, LP - May, TX","","",WHD,"",STX,TX,KLEBERG,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200076890,"",0076890,76890,"","Louisiana Intrastate Gas - Iberville Psh.,LA - REC","","",INT,"",ELA,LA,IBERVILLE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073882,"",0073882,73882,"",Sempra/Cameron -Gulf Market,"","",INT,"",WLA,LA,BEAUREGARD,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200071473,"",0071473,71473,"","Mississippi Gas - LeBlanc, LA","","",LDC,"",WLA,LA,ALLEN,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000841,"",0000841,00841,"","Norwich Public Utilities-Oakland Heights, New London, CT","","",LDC,"","",CT,NEW LONDON,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000037,"",0000037,00037,"","South Attleboro (BRISTOL, MA)","","",LDC,"","",MA,BRISTOL,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000080100,"",0080100,80100,"",KLEEN ENERGY LATERAL MAINLINE,"","",STA,"","",CT,MIDDLESEX,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200071963,"",0071963,71963,"","Scorpion Oil&Gas, LLC-#1 Faulkner - Pontotoc, MS","","",WHD,"",1,MS,PONTOTOC,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073887,"",0073887,73887,"","Alegacy/CNG Industrial Campus-Bus US 290-Waller Co.,TX","","",END,"",STX,TX,WALLER,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073639,"",0073639,73639,"",Southwestern Energy/Jebel Gathering,"","",WHD,"",ETX,TX,SAN AUGUSTINE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200071512,"",0071512,71512,"","Cen Il Pub Serv -Broughton, IL","","",LDC,"",1,IL,HAMILTON,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073733,"",0073733,73733,"","CNX - McQuay III - Cone Gathering, Greene Co., PA.","","",WHD,"",2,PA,GREENE,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000082,"",0000082,00082,"","Stonington (NEW LONDON,CT)","","",LDC,"","",CT,NEW LONDON,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200079663,"",0079663,79663,"","ELA/M1 (30"") ILT POINT","","",STA,"",ZB,MS,ATTALA,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073233,"",0073233,73233,"",Duke Energy Indiana,"","",END,"",2,OH,BUTLER,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200076609,"",0076609,76609,"","Williams Energy LLC - Lafourche Psh., LA-REC","","",WHD,"",ELA,LA,LAFOURCHE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200070065,"",0070065,70065,"","Texas Gas Transmission - Lisbon, LA  (Delivery)","","",INT,"",ETX,LA,CLAIBORNE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073686,"",0073686,73686,"",ETX-Enbridge/Zider - Shelby,"","",INT,"",ETX,TX,SHELBY,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200079263,"",0079263,79263,"",DENA VERMILLION PLANT DELIVERY POINT,"","",END,"",2,IN,VERMILLION,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200072525,"",0072525,72525,"","Howell Oil & Gas, Inc. - Gooch-Gant Fields CP, Harrison Co.,TX","","",WHD,"",ETX,TX,HARRISON,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073105,"",0073105,73105,"","Dayton Pwr & Lt - Clinton, OH CenterPoint Energy","","",LDC,"",2,OH,CLINTON,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200071256,"",0071256,71256,"","Liberty, KY","","",LDC,"",2,KY,CASEY,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200072910,"",0072910,72910,"","CW-DTI (I-O) & LEBANON, OH","","",INT,"",2,OH,WARREN,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073871,"",0073871,73871,"","Dominion Energy Transmission, Inc - TL 558/WV Rt. 2, MARSHALL CO.,","","",INT,"",2,WV,MARSHALL,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200070419,"",0070419,70419,"","Meadville, MS","","",LDC,"",ELA,MS,FRANKLIN,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200079980,"",0079980,79980,"",UNIONTOWN NORTH,"","",STA,"",2,PA,FAYETTE,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000803,"",0000803,00803,"","FORE RIVER (NORFOLK,MA)","","",END,"","",MA,NORFOLK,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200074536,"",0074536,74536,"",AH Medora LFG Del.,"","",END,"",2,IN,JACKSON,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073136,"",0073136,73136,"","PECO Energy - MONTGOMERY CO., PA (Center Point)","","",LDC,"",3,PA,MONTGOMERY,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000220,"",0000220,00220,"","Centerville-Transco (MORRIS,NJ)","","",INT,"","",NJ,MORRIS,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073640,"",0073640,73640,"",XTO Energy/Barfield Ward Gathering,"","",WHD,"",ETX,TX,NACOGDOCHES,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200070878,"",0070878,70878,"",LONG ISL. LIGHTING-(THRU70058),"","",LDC,"",3,NY,RICHMOND,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200079513,"",0079513,79513,"",ZONE M3 STORAGE POINT,"","",STR,"",3,PA,JUNIATA,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200070101,"",0070101,70101,"",Lawrenceburg Gas - TN,"","",LDC,"",1,TN,LAWRENCE,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000013,"",0000013,00013,"","Rhode Island Energy- Portsmouth (NEWPORT,RI)","","",LDC,"","",RI,NEWPORT,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200076087,"",0076087,76087,"","Algonquin - Lambertville, NJ (Receipt)","","",INT,"",3,NJ,HUNTERDON,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200079968,"",0079968,79968,"",ELA CUSTODY TRANSFER POINT,"","",STA,"",ELA,MS,ATTALA,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200070215,"",0070215,70215,"","Texas Gas Transmission LLC - Lebanon, OH","","",INT,"",2,OH,WARREN,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200074902,"",0074902,74902,"","CMS - Gas City - Grant Co., IN","","",INT,"",2,IN,GRANT,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200079503,"",0079503,79503,"",WLA SERVICE POINT,"","",PPT,"",WLA,LA,CALCASIEU,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073609,"",0073609,73609,"","Williams - LMM Davis (Valley View Rd Interconnect)  Greene Co., PA","","",WHD,"",2,PA,GREENE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073979,"",0073979,73979,"",New Generation Gas Gathering (Momentum - NG3) - Al Cormier Road -,"","",GTH,"",WLA,LA,BEAUREGARD,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200072848,"",0072848,72848,"","Ozark Gas - Greene Co., AR","","",INT,"",1,AR,GREENE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200079926,"",0079926,79926,"","NEXUS FUEL - CLARKS MILL ROAD-JEFFERSON CO., OH","","","","","","","","",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200079544,"",0079544,79544,"",ETX/M1 ZONE BOUNDARY POINT,"","",STA,"",ZB,AR,PULASKI,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000839,"",0000839,00839,"","Assonet, Bristol Co, MA","","",LDC,"","",MA,BRISTOL,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200071497,"",0071497,71497,"","GULF SOUTH PIPELINE COMPANY, LLC - Canton, MS","","",INT,"",ELA,MS,MADISON,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200071293,"",0071293,71293,"","Loretto, TN","","",LDC,"",1,TN,LAWRENCE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073070,"",0073070,73070,"","Centana Gathering Co. MP 225,LA","","",WHD,"",ELA,LA,MAIN PASS,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073456,"",0073456,73456,"","XTO Energy - Anico #4 - Polk Co., TX (REC)","","",WHD,"",ETX,TX,POLK,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200072664,"",0072664,72664,"","Itawamba Gas -Itawamba Co., MS","","",LDC,"",1,MS,ITAWAMBA,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200071423,"",0071423,71423,"","New Jersey Natural - Montville, NJ","","",LDC,"",3,NJ,MORRIS,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000078,"",0000078,00078,"","CROMWELL (MIDDLESEX,CT)","","",LDC,"","",CT,MIDDLESEX,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200070299,"",0070299,70299,"","Florence, AL","","",LDC,"",1,AL,LAUDERDALE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073037,"",0073037,73037,"","Mississippi Valley - Clay Co., MS","","",LDC,"",1,MS,CLAY,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200079054,"",0079054,79054,"",STX TRANSFER POINT (PTR),"","",STA,"",STX,TX,LAVACA,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200071075,"",0071075,71075,"","Elizabethtown Gas Company - Perth Amboy, NJ","","",LDC,"",3,NJ,MIDDLESEX,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200071528,"",0071528,71528,"","UGI UTIL (Columbia Gas) - Lancaster, PA","","",INT,"",3,PA,LANCASTER,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200070030,"",0070030,70030,"","Philadelphia Gas Works - Point Breeze,PA","","",LDC,"",3,PA,PHILADELPHIA,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000801,"",0000801,00801,"",Milford Power,"","",END,"","",MA,NORFOLK,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000230,"",0000230,00230,"","Marathon (MIDDLESEX,MA)","","",STR,"","",MA,MIDDLESEX,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073560,"",0073560,73560,"",Gulf South Hinds/Raymond,"","",INT,"",ELA,MS,HINDS,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200076580,"",0076580,76580,"","Southcross Mississippi Pipeline, LP- Hinds, MS - DEL (B/D 76580)","","",INT,"",ELA,MS,HINDS,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200071993,"",0071993,71993,"","Cin Gas & Elec -Butler Co., OH","","",LDC,"",2,OH,BUTLER,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200072367,"",0072367,72367,"","Miss. Valley Gas - Hinds Co., MS","","",INT,"",ELA,MS,HINDS,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200070090,"",0070090,70090,"","Somerset Gas - Casey Co., KY","","",LDC,"",2,KY,CASEY,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200071219,"",0071219,71219,"",Columbia Gas of Pa. - York co. Pa.,"","",INT,"",3,PA,YORK,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073325,"",0073325,73325,"",ROLLING HILLS GENERATING LLC - (73325),"","",END,"",2,OH,VINTON,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200070069,"",0070069,70069,"","UGI Utilities, Inc. (Columbia Gas)  - Columbia, PA","","",LDC,"",3,PA,LANCASTER,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200079542,"",0079542,79542,"",WLA/ELA ZONE BOUNDARY POINT,"","",STA,"",ZB,LA,EVANGELINE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200071438,"",0071438,71438,"","UGI CENTRAL - Dauphin Co. Gas - Annville, PA","","",LDC,"",3,PA,LEBANON,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200079983,"",0079983,79983,"","NEXUS FUEL-OHIO/BOLTZ RIDGE ROAD, MONROE CO., OH","","","","","","","","",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073251,"",0073251,73251,"",Attala Generating Company  LLC (DEL),"","",END,"",ELA,MS,ATTALA,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200070192,"",0070192,70192,"","Smith (Harvey Broyle)#2 Murphy-Bryceland, Bienville Psh., LA","","",WHD,"",ETX,LA,BIENVILLE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200079592,"",0079592,79592,"",ETX DOWNSTREAM POINT,"","",STA,"",ETX,AR,NO COUNTY NAME,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073718,"",0073718,73718,"","Columbia-Marietta, Lancaster Co., PA","","",INT,"",3,PA,LANCASTER,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200072990,"",0072990,72990,"","MVG - Madison Co., MS","","",LDC,"",ELA,MS,MADISON,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200070398,"",0070398,70398,"","Bernie, MO","","",LDC,"",1,MO,STODDARD,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200074201,"",0074201,74201,"","Access Midstream Clarks Mill Road-Jefferson Co., OH","","",WHD,"",2,OH,JEFFERSON,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073465,"",0073465,73465,"","Greylock Pipeline, LLC, Jefferson IC  PA","","",WHD,"",2,PA,GREENE,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000822,"",0000822,00822,"","Phelps Dodge (NEW LONDON,CT)","","",END,"","",CT,NEW LONDON,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073216,"",0073216,73216,"","Town of Shannon - Monroe Co., MS","","",LDC,"",1,MS,MONROE,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000099200,"",0099200,99200,"",NJ-NY MAINLINE,"","",INT,"","",NY,ROCKLAND,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073694,"",0073694,73694,"",Sweeny Plant-Conoco Pipeline,"","",END,"",STX,TX,BRAZORIA,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073628,"",0073628,73628,"","Acadian/False River - Baton Rouge, LA","","",INT,"",ELA,LA,WEST BATON ROUGE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200079593,"",0079593,79593,"",WLA DOWNSTREAM POINT,"","",STA,"",WLA,LA,NO COUNTY NAME,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073910,"",0073910,73910,"",Phillips 66 Bayway,"","",END,"",3,NJ,UNION,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200070056,"",0070056,70056,"",Columbia Gas of  PA. -  (Uniontown),"","",INT,"",2,PA,FAYETTE,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000066,"",0000066,00066,"","Dover (NORFOLK,MA)","","",LDC,"","",MA,NORFOLK,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073876,"",0073876,73876,"","Elliott Oil&Gas/Steindorf #1-FM 799-Bee Co.,TX","","",WHD,"",STX,TX,BEE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073023,"",0073023,73023,"","UGI UTIL - Mt. Pleasant, Berks Co. , PA","","",LDC,"",3,PA,BERKS,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200070323,"",0070323,70323,"","PEOPLES NAT - Claysburg, PA","","",LDC,"",3,PA,BLAIR,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200070468,"",0070468,70468,"","Columbia Gas - Corwin, OH","","",INT,"",2,OH,WARREN,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073925,"",0073925,73925,"","CNX Rich Hill, Green Co. PA","","",WHD,"",2,PA,GREENE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073569,"",0073569,73569,"",Midcontinent Express,"","",INT,"",ELA,MS,HINDS,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000020,"",0000020,00020,"","Milford (WORCESTER,MA)","","",LDC,"","",MA,WORCESTER,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000015,"",0000015,00015,"","Freetown (BRISTOL,MA)","","",LDC,"","",MA,BRISTOL,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200072999,"",0072999,72999,"","American Explorer - Shore Oil #1 - Lafourche Psh., La","","",WHD,"",ELA,LA,LAFOURCHE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073809,"",0073809,73809,"","Monroe Pipeline, Reeds Road, Monroe Co, OH","","",WHD,"",2,OH,MONROE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073200,"",0073200,73200,"",Columbia Gas - Franklin Co. PA (Delivery),"","",INT,"",3,PA,FRANKLIN,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073106,"",0073106,73106,"",Federal Bureau of Prison - Yazoo Co. MS,"","",END,"",ELA,MS,YAZOO,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073239,"",0073239,73239,"","Talen Energy Marketing, LLC - (Ironwood) Lebanon Co., PA.","","",END,"",3,PA,LEBANON,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200072499,"",0072499,72499,"","Noram - Bald Knob - White, AR","","",INT,"",1,AR,WHITE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200072892,"",0072892,72892,"","Enterprise Texas Pipeline, LLC - Panola County, TX (REC)","","",INT,"",ETX,TX,PANOLA,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073191,"",0073191,73191,"","St Francis Pwr Plt -Dunkin, MO","","",END,"",1,MO,DUNKLIN,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073728,"",0073728,73728,"","EQT Morris III, Greene Co., PA","","",WHD,"",2,PA,GREENE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073914,"",0073914,73914,"","DTM Rockland, Forgedale Rd, Berks Co, PA (Birdsboro)","","",END,"",3,PA,BERKS,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000099827,"",0099827,99827,"",BURRILLVILLE IN-LINE TRANSFER POINT,"","",STA,"","",RI,PROVIDENCE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200072942,"",0072942,72942,"","Columbia Gas (N.W.L. Corp.) - Fayette Co., PA","","",INT,"",2,PA,FAYETTE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073970,"",0073970,73970,"","Farmersville Interconnect,  Montgomery Co., OH","","",INT,"",2,OH,MONTGOMERY,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200079598,"",0079598,79598,"","MARKET ZONE 2 30"" DOWNSTREAM POINT","","",STA,"",2,PA,NO COUNTY NAME,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200079998,"",0079998,79998,"",HEAD OF STRATTON RIDGE EXTENSION - EXTENSION,"","",STA,"",WLA,LA,VERMILION-SOUTH,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073152,"",0073152,73152,"",COL GAS-WAYNESBURG - (73152),"","",INT,"",2,PA,GREENE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073556,"",0073556,73556,"","Golden Pass Pipeline - Calcasieu Parish,  LA","","",INT,"",WLA,LA,CALCASIEU,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200070430,"",0070430,70430,"","Pulaski, TN","","",LDC,"",1,TN,LAWRENCE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073461,"",0073461,73461,"","Universal Natural Gas/Interconnect - Montgomery Co., TX (DEL)","","",INT,"",STX,TX,MONTGOMERY,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200072614,"",0072614,72614,"","Transok - Ouachita Psh., LA","","",INT,"",ELA,LA,OUACHITA,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000024,"",0000024,00024,"","Brockton (PLYMOUTH,MA)","","",LDC,"","",MA,PLYMOUTH,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073870,"",0073870,73870,"","Dominion East Ohio-Switzerland, Monroe Co., OH","","",INT,"",2,OH,MONROE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073276,"",0073276,73276,"","Renuergy Minerals  Luker #2 Goliad Co., TX (Rec)","","",WHD,"",STX,TX,GOLIAD,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200074526,"",0074526,74526,"",Permian Highway Pipeline/Sheridan Interconnect - CR 255-Colorado C,"","",INT,"",STX,TX,COLORADO,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200070107,"",0070107,70107,"",Summit Utilities Arkansas Inc Cabot AR,"","",LDC,"",1,AR,LONOKE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073568,"",0073568,73568,"",Kinder Morgan LNG Receipt,"","",LNG,"",WLA,LA,EVANGELINE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073226,"",0073226,73226,"","Jonesboro City, Water & Light - Greene, AR","","",END,"",1,AR,GREENE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073549,"",0073549,73549,"","Noble Energy-Oliver Creek-Shelby Co., TX","","",WHD,"",ETX,TX,SHELBY,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073900,"",0073900,73900,"","Town of Centreville, Wilkinson Co., MS","","",END,"",ELA,MS,WILKINSON,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200071028,"",0071028,71028,"","Col Gas (DPL) -Bowersville, OH","","",INT,"",2,OH,CLINTON,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200079988,"",0079988,79988,"","NEXUS FUEL-REX CLARINGTON, MONROE CO., OH","","","","","","","","",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000094,"",0000094,00094,"","Bellingham(NORFOLK,MA)","","",END,"","",MA,NORFOLK,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200071655,"",0071655,71655,"","Dominion Energy Transmission, Inc - South Oakford - Oakford Storag","","",STR,"",2,PA,WESTMORELAND,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073062,"",0073062,73062,"","Elizabethtown Gas Company - Union Co., NJ","","",LDC,"",3,NJ,UNION,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200070020,"",0070020,70020,"","Equitrans - Waynesburg, PA","","",INT,"",2,PA,GREENE,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000035,"",0000035,00035,"","Salem Pike (NORWICH, CT)","","",LDC,"","",CT,NEW LONDON,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200072890,"",0072890,72890,"","Louisiana Intrastate Gas - Iberville Psh., LA (DEL)","","",INT,"",ELA,LA,IBERVILLE,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000824,"",0000824,00824,"",New England Gas Company Fall River Gas-North Fall River Sta-(BRIST,"","",LDC,"","",MA,BRISTOL,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200072692,"",0072692,72692,"","Associated Natural Gas Inc. - Wilkinson Co., MS","","",WHD,"",ELA,MS,WILKINSON,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073672,"",0073672,73672,"","Energy Transfer/Tiger Pipeline Bienville, LA","","",WHD,"",ETX,LA,BIENVILLE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200072621,"",0072621,72621,"","Williams Field Services  - Duval Co., TX","","",WHD,"",STX,TX,DUVAL,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073282,"",0073282,73282,"","Sonerra Resources - Mountain West, Nacog. Co., TX (REC)","","",WHD,"",ETX,TX,NACOGDOCHES,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200070039,"",0070039,70039,"","United Cities - Harrisburg, IL","","",LDC,"",1,IL,SALINE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073060,"",0073060,73060,"","PGW - Harkness Point - Philadelphia, PA","","",LDC,"",3,PA,PHILADELPHIA,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200070093,"",0070093,70093,"","Jasper, IN","","",LDC,"",2,IN,DUBOIS,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200070336,"",0070336,70336,"","Union Elec. - Bloomfield, MO","","",LDC,"",1,MO,STODDARD,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200072307,"",0072307,72307,"","Jeems Bayou - #1 Calhoun /  Desoto Psh., LA","","",WHD,"",ETX,LA,DE SOTO,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200070308,"",0070308,70308,"","UGI CENTRAL - Lewistown - Juniata Co., PA","","",LDC,"",3,PA,JUNIATA,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000075,"",0000075,00075,"","GLASTONBURY (HARTFORD,CT)","","",LDC,"","",CT,HARTFORD,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200071485,"",0071485,71485,"","GULF SOUTH PIPELINE COMPANY - Gillis, LA","","",INT,"",WLA,LA,BEAUREGARD,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200079546,"",0079546,79546,"","M1/M2 24"" ZONE BOUNDARY POINT","","",STA,"",ZB,IL,WHITE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200071217,"",0071217,71217,"","TE - LBI Instrument Gas - Greensburg, PA","","",PLT,"",2,PA,WESTMORELAND,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073642,"",0073642,73642,"",ENI MC 365 Buy Back Meter,"","",END,"",ELA,OF,SOUTH PASS,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073249,"",0073249,73249,"","Entergy - Lewis Creek / Montgomery County, TX","","",END,"",STX,TX,MONTGOMERY,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200072849,"",0072849,72849,"","ENI Petroleum US LLC - 365 MC, LA","","",WHD,"",ELA,OF,MAIN PASS,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000811,"",0000811,00811,"","North Somers (WESTCHESTER,NY)","","",LDC,"","",NY,WESTCHESTER,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073719,"",0073719,73719,"",T2 Gas Utility LLC/Refugio Interconnect,"","",WHD,"",STX,TX,REFUGIO,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200071745,"",0071745,71745,"","Dominion Energy Transmission, Inc -Chambersburg, PA","","",INT,"",3,PA,FRANKLIN,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200070519,"",0070519,70519,"","UGI UTIL (Columbia Gas) - Dauphin Co., PA","","",LDC,"",3,PA,DAUPHIN,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200070087,"",0070087,70087,"","Algonquin - Lambertville, NJ","","",INT,"",3,NJ,HUNTERDON,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000099847,"",0099847,99847,"",AGT WEST END ACCTG PT,"","",STA,"","",NJ,MORRIS,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073928,"",0073928,73928,"","Adelphia Gateway - Delivery -Bucks County, PA","","",INT,"",3,PA,BUCKS,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000843,"",0000843,00843,"",CPV Towantic Powerplant,"","",END,"","",CT,NEW HAVEN,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000842,"",0000842,00842,"","Rhode Island Energy-Crary Street-Providence, RI","","",LDC,"","",RI,PROVIDENCE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073154,"",0073154,73154,"","Peco Energy Company - Hershey Mills, Chester Co., PA","","",LDC,"",3,PA,CHESTER,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200074218,"",0074218,74218,"","Gulf South Pipeline - Snake Creek Road - Hinds Co., MS","","",INT,"",ELA,MS,HINDS,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200079666,"",0079666,79666,"","M1/M2 24"" ILT POINT","","",STA,"",ZB,IL,WHITE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073349,"",0073349,73349,"","Dynegy Hanging Rock II, LLC","","",END,"",2,OH,SCIOTO,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000202,"",0000202,00202,"","Ramapo (ROCKLAND,NY)","","",INT,"","",NY,ROCKLAND,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200072319,"",0072319,72319,"","Energy XXI GOM, LLC-SP 93","","",WHD,"",ELA,OF,SOUTH PASS,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200070102,"",0070102,70102,"","Unit Cities - Murfreesboro, TN","","",LDC,"",1,TN,RUTHERFORD,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200079615,"",0079615,79615,"","ZONE M1 24"" PAL POINT OF TRANSACTION","","",VIR,"",1,AR,PULASKI,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073590,"",0073590,73590,"",NRG - Cedar Bayou,"","",END,"",STX,TX,CHAMBERS,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200072616,"",0072616,72616,"","Cantium, LLC - MP 30","","",WHD,"",ELA,OF,MAIN PASS,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200072828,"",0072828,72828,"","RBS Gas Util. - Macon Co., TN","","",LDC,"",1,TN,MACON,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000088888,"",0088888,88888,"",00215/01215,"","","","","","","","",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073933,"",0073933,73933,"","Black Bear Transmission AlaTenn Delivery, Colbert County, AL","","",INT,"",1,AL,COLBERT,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200072911,"",0072911,72911,"","Col. Gas (I-O) & Lebanon, OH","","",INT,"",2,OH,WARREN,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000021,"",0000021,00021,"","National Grid- NORWOOD (NORFOLK,MA)","","",LDC,"","",MA,NORFOLK,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200071716,"",0071716,71716,"","Trunkline - Beauregard Psh., LA","","",INT,"",WLA,LA,BEAUREGARD,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000804,"",0000804,00804,"","Hebron (HARTFORD,CT)","","",LDC,"","",CT,HARTFORD,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000055,"",0000055,00055,"","Bernards (SOMERSET,NJ)","","",LDC,"","",NJ,SOMERSET,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073280,"",0073280,73280,"",Duke Energy Kentucky,"","",END,"",2,OH,BUTLER,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073612,"",0073612,73612,"","Buffco Prod./Jo Allison #1-Harrison Co., TX","","",WHD,"",ETX,TX,HARRISON,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200072648,"",0072648,72648,"","So. Ind. Gas & El. -Posey, IN","","",LDC,"",2,IN,POSEY,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073502,"",0073502,73502,"","Buffco Production, Inc - Oak Hill Cotton Valley","","",WHD,"",ETX,TX,HARRISON,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200079514,"",0079514,79514,"",TETCO SYSTEM BALANCE POINT,"","",VIR,"",3,PA,JUNIATA,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073469,"",0073469,73469,"","Discovery-LaRose Station Interconnect, Lafourche Psh., LA","","",PLT,"",ELA,LA,LAFOURCHE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073698,"",0073698,73698,"","Acadian Gas-Haynesville Extension P/L, Pt.Coupee Parish, LA","","",INT,"",ELA,LA,POINTE COUPEE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073975,"",0073975,73975,"","Atmos Energy/Madison - Endris Road, Madison Co., MS","","",LDC,"",ELA,MS,MADISON,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200078214,"",0078214,78214,"",RAMAPO,"","",INT,"",3,NY,ROCKLAND,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073388,"",0073388,73388,"","Montgomery Gas Transmission, Inc. - Montgomery Co., TX (DEL)","","",INT,"",STX,TX,MONTGOMERY,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200079673,"",0079673,79673,"","STX/WLA (30"") ILT POINT","","",STA,"",ZB,TX,JEFFERSON,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200072877,"",0072877,72877,"","Denbury Onshore, LLC","","",END,"",STX,TX,BRAZORIA,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200079996,"",0079996,79996,"",NEXUS SZ ILT POINT,"","","","","","","","",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200074112,"",0074112,74112,"","Nat Gasoline Methanol Plant-Amaco Road-Jefferson Co., TX","","",END,"",STX,TX,JEFFERSON,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200079515,"",0079515,79515,"",SS-1 STORAGE SERVICE,"","",STR,"",2,PA,WESTMORELAND,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000025,"",0000025,00025,"","Hopedale (NORFOLK,MA)","","",LDC,"","",MA,NORFOLK,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200072458,"",0072458,72458,"","Tracy Production Co. - #1 Fulton Fuller, Nacogdoches Co., TX","","",WHD,"",ETX,TX,NACOGDOCHES,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000045,"",0000045,00045,"",Somers  (Westchester),"","",LDC,"","",NY,WESTCHESTER,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073235,"",0073235,73235,"","National Energy & Trad. - W. Feliciana Psh, LA.","","",LDC,"",ELA,LA,WEST FELICIANA,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073329,"",0073329,73329,"","CGT/NiSource-KY - Clark Co., KY","","",INT,"",2,KY,CLARK,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073210,"",0073210,73210,"","Great Lake Energy - Fayette Co., PA.","","",WHD,"",2,PA,FAYETTE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073727,"",0073727,73727,"","Columbia Midstream Big Pine  Westmoreland Co.,  PA","","",WHD,"",3,PA,WESTMORELAND,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073667,"",0073667,73667,"","Hot Spring Power Plant, Hot Spring Co, AR","","",END,"",ETX,AR,HOT SPRING,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200070396,"",0070396,70396,"","United Cities - Franklin, TN","","",LDC,"",1,TN,WILLIAMSON,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200079612,"",0079612,79612,"",ETX PAL POINT OF TRANSACTION,"","",VIR,"",ETX,TX,SAN JACINTO,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200071987,"",0071987,71987,"","UGI UTIL - (Grantville) Hershey, PA","","",LDC,"",3,PA,DAUPHIN,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073269,"",0073269,73269,"",Farmersville-Derby Delivery - (73269),"","","","","","","","",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073810,"",0073810,73810,"","AMP Up Goliad, LLC/Goehring Gathering-FM 584-Goliad Co., TX","","",WHD,"",STX,TX,GOLIAD,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200079967,"",0079967,79967,"",WLA CUSTODY TRANSFER POINT,"","",STA,"",WLA,LA,CALCASIEU,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073610,"",0073610,73610,"","CNX Gas Co. LLC - McQuay, Locust Hill I, Greene Co., PA","","",WHD,"",2,PA,GREENE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200072580,"",0072580,72580,"","Southcross Mississippi Pipeline, LP- Hinds, MS - DEL (B/D 76580)","","",INT,"",ELA,MS,HINDS,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200079044,"",0079044,79044,"","SLIGO GAS PLANT, LA - ACCOUNTING POINT","","",STA,"",ETX,LA,BOSSIER,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200071141,"",0071141,71141,"","Assoc Natural Gas - Bernie, MO","","",LDC,"",1,MO,STODDARD,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200070108,"",0070108,70108,"",Summit Utilities Arkansas Inc Beebe AR,"","",LDC,"",1,AR,WHITE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200074187,"",0074187,74187,"","DEFS - Guadalupe Delivery - Lavaca Co., TX","","",LDC,"",STX,TX,LAVACA,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073976,"",0073976,73976,"","Matterhorn Express Pipeline - Hillboldt Road  Austin Co, TX","","",INT,"",STX,TX,AUSTIN,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073722,"",0073722,73722,"",ConEd-Manhattan Delivery,"","",LDC,"",3,NJ,HUDSON,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073504,"",0073504,73504,"","Walter Oil & Gas-Kasman Gathering -  Matagorda Co., TX","","",WHD,"",STX,TX,MATAGORDA,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200070283,"",0070283,70283,"","TGC Lick Creek - Williamson Co., Il (To TE)","","",INT,"",1,IL,WILLIAMSON,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200070058,"",0070058,70058,"","National Grid Metro NY, Goethals Rd., Staten Island, Richmond Co.,","","",LDC,"",3,NY,RICHMOND,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200071196,"",0071196,71196,"","Public Service - Bound Brook, NJ","","",LDC,"",3,NJ,SOMERSET,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200079565,"",0079565,79565,"",SS/X-28 STORAGE SERVICE POINT,"","",STR,"",2,PA,WESTMORELAND,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200070937,"",0070937,70937,"","Consumers Gas Co. - Omaha, IL","","",LDC,"",1,IL,WHITE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073868,"",0073868,73868,"","Rice Energy-Ohio/Boltz Ridge Road, Monroe Co., OH","","",WHD,"",2,OH,MONROE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200072694,"",0072694,72694,"","NCL Natural Resources, LLC (Eastern States Expl)- Centre Co., PA","","",WHD,"",3,PA,CENTRE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200070129,"",0070129,70129,"",Louis Dreyfus,"","",PLT,"",STX,TX,HARRIS,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073729,"",0073729,73729,"","Centerpoint Energy - Granite Mountain Quarry, Pulaski Co., AR","","",END,"",ETX,AR,PULASKI,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200070110,"",0070110,70110,"","Assoc Nat Gas - Piggott, AR","","",LDC,"",1,AR,CLAY,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073482,"",0073482,73482,"","MAGNUM LP - Chicolete Creek - Lavaca Co., TX (REC)","","",WHD,"",STX,TX,DE WITT,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200079506,"",0079506,79506,"","ZONE M1 30"" SERVICE POINT","","",PPT,"",1,MS,ATTALA,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200072601,"",0072601,72601,"","Enterprise Texas Pipeline LLC - Matagorda County, TX  (REC)","","",INT,"",STX,TX,MATAGORDA,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200071744,"",0071744,71744,"","Dominion Energy Transmission, Inc - Perulack, PA","","",INT,"",3,PA,JUNIATA,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000001,"",0000001,00001,"","Partroy (MORRIS,NJ)","","",LDC,"","",NJ,MORRIS,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200071353,"",0071353,71353,"","Col. Gas - East Middletown, OH","","",INT,"",2,OH,WARREN,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200079927,"",0079927,79927,"","NEXUS FUEL - MCQUAY III - CONE GATHERING, GREENE CO., PA.","","","","","","","","",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200070057,"",0070057,70057,"","Public Service - South Plainfield, NJ","","",LDC,"",3,NJ,MIDDLESEX,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200072855,"",0072855,72855,"","N.J. Natural - Heater Fuel, Jamesburg, NJ","","",LDC,"",3,NJ,MIDDLESEX,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200071671,"",0071671,71671,"","PEOPLES NAT - Rager Mountain, PA","","",INT,"",3,PA,CAMBRIA,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200071209,"",0071209,71209,"","Public Service - Wanaque, NJ","","",LDC,"",3,NJ,PASSAIC,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200079924,"",0079924,79924,"",NEXUS FUEL - ACCES MIDSTREAM HIGHWAY 219,"","","","","","","","",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000048,"",0000048,00048,"","Yorktown (WESTCHESTER,NY)","","",LDC,"","",NY,WESTCHESTER,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073153,"",0073153,73153,"","PECO -- Brookhaven, PA","","",LDC,"",3,PA,DELAWARE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073927,"",0073927,73927,"","Kudo Midstream-Martinsville Gathering-CR 342-Nacogdoches Co., Tx","","",WHD,"",ETX,TX,NACOGDOCHES,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073820,"",0073820,73820,"",Big Cajun II Power Plant-Woodmen Ln,"","",END,"",ELA,LA,POINTE COUPEE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200070949,"",0070949,70949,"","Public Service - Hanover, NJ","","",LDC,"",3,NJ,MORRIS,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200079511,"",0079511,79511,"",ZONE M1 STORAGE POINT,"","",STR,"",1,IL,WHITE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200071043,"",0071043,71043,"","Union Electric - Vanduser, MO","","",LDC,"",1,MO,SCOTT,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073294,"",0073294,73294,"","Dynegy- Ontelaunee, PA","","",END,"",3,PA,BERKS,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073901,"",0073901,73901,"","Gas Utilities District #1 Angola Del., State Hwy 10, W.Feliciana P","","",LDC,"",ELA,LA,WEST FELICIANA,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073214,"",0073214,73214,"","DEFS - Pettus, Bee Co., TX","","",WHD,"",STX,TX,BEE,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000030,"",0000030,00030,"","Guilford (NEW HAVEN,CT)","","",LDC,"","",CT,NEW HAVEN,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200072249,"",0072249,72249,"","Tri-Union Dev. Corp.-#1 Wright /  Goliad County, TX  (REC)","","",WHD,"",STX,TX,GOLIAD,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073170,"",0073170,73170,"","AK Steel - Warren Co., OH","","",END,"",2,OH,WARREN,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200071747,"",0071747,71747,"","CONSOLIDATED GAS TRANSMISSION - UNIONTOWN, PA","","",INT,"",2,PA,FAYETTE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200071424,"",0071424,71424,"","New Roads, LA","","",LDC,"",ELA,LA,POINTE COUPEE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200072337,"",0072337,72337,"","Scorpion Oil&Gas, LLC","","",WHD,"",1,MS,PONTOTOC,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000626,"",0000626,00626,"","Excelerate Energy LP - Exemplar (ESSEX,MA)","","",LNG,"","",MA,ESSEX,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000625,"",0000625,00625,"","Excelerate Energy LP - Expedient (ESSEX,MA)","","",LNG,"","",MA,ESSEX,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000074,"",0000074,00074,"","National Grid-WELLESLEY (NORFOLK,MA)","","",LDC,"","",MA,NORFOLK,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200079041,"",0079041,79041,"","T & F EXPLORATION, LP. ACCT. POINT - REC FOR 72533","","",STA,"",2,PA,SOMERSET,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073253,"",0073253,73253,"","ETC Texas Pipeline, LTD-Henderson #1 / Nacogdoches Co., TX (REC)","","",WHD,"",ETX,TX,NACOGDOCHES,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000829,"",0000829,00829,"","National Grid-SANDWICH (BARNSTABLE,MA)","","",LDC,"","",MA,BARNSTABLE,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000018,"",0000018,00018,"",Bourne Station Relocation (Mainland Bourne),"","",LDC,"","",MA,BARNSTABLE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200079617,"",0079617,79617,"","ZONE M2 24"" PAL POINT OF TRANSACTION","","",VIR,"",2,IN,POSEY,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073650,"",0073650,73650,"","XTO Energy - Mill Run / Stewarton Raod, Fayette, PA.","","",WHD,"",2,PA,FAYETTE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073971,"",0073971,73971,"",Transco Woodbridge Lateral (Pierson),"","",INT,"",3,NJ,MIDDLESEX,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200070018,"",0070018,70018,"","Indiana Gas - Seymour, IN","","",LDC,"",2,IN,JACKSON,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200079992,"",0079992,79992,"","NEXUS FUEL-NEXUS INTERCONNECT TETLP, AT HEAD OF OPEN LATERAL","","","","","","","","",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073919,"",0073919,73919,"","EQT Redband, Strope Rd, Greene Co., PA","","",WHD,"",2,PA,GREENE,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000033,"",0000033,00033,"","Rhode Island Energy - TIVERTON (NEWPORT,RI)","","",LDC,"","",RI,NEWPORT,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000214,"",0000214,00214,"","Ramapo - Millennium (ROCKLAND,NY)","","",INT,"","",NY,ROCKLAND,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200072745,"",0072745,72745,"","PECO Energy - Collegeville, PA.","","",LDC,"",3,PA,MONTGOMERY,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073980,"",0073980,73980,"",Louisiana Energy Gateway (LEG) - Coonie Jackson Road - Beauregard,"","",INT,"",WLA,LA,BEAUREGARD,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200079055,"",0079055,79055,"",ELA TRANSFER POINT (PTR),"","",STA,"",ELA,LA,PLAQUEMINES,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200070095,"",0070095,70095,"","Nat Gas - Caldwell, OH","","",LDC,"",2,OH,NOBLE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073379,"",0073379,73379,"","East Kentucky Power Co-op-Clark Co., KY","","",END,"",2,KY,CLARK,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000099826,"",0099826,99826,"",BROOKFIELD IN-LINE TRANSFER POINT,"","",STA,"","",CT,FAIRFIELD,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073656,"",0073656,73656,"","Williams Ohio Valley Midstream LLC.-Gosney Hill Road, Marshall CO.","","",WHD,"",2,WV,MARSHALL,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200070458,"",0070458,70458,"","PEOPLES NAT - Ebensburg, PA","","",LDC,"",3,PA,CAMBRIA,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200074903,"",0074903,74903,"","PEPL-Gas City Delivery/Route 26, Grant co., IN","","",INT,"",2,IN,GRANT,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073641,"",0073641,73641,"","Noble Energy-Harris Yates-Shelby Co., TX","","",WHD,"",ETX,TX,SHELBY,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073816,"",0073816,73816,"","Regency-Big Run /Twp. Road 964, Monroe Co.OH","","",WHD,"",2,OH,MONROE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073318,"",0073318,73318,"",LIBERTY ELEC-DEL.PA. - (73318),"","",END,"",3,PA,DELAWARE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073875,"",0073875,73875,"","MarkWest-Beallsville/Bolon Ridge Road, Monroe Co., OH","","",WHD,"",2,OH,MONROE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200070315,"",0070315,70315,"","Smyrna, TN","","",LDC,"",1,TN,RUTHERFORD,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073198,"",0073198,73198,"","Tenn. Gas P/L - Casey Co., KY","","",INT,"",2,KY,CASEY,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000069,"",0000069,00069,"","Oxford (NEW HAVEN, CT)","","",LDC,"","",CT,NEW HAVEN,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200071464,"",0071464,71464,"","Public Service - Hillsborough, NJ","","",LDC,"",3,NJ,SOMERSET,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000011,"",0000011,00011,"","Taunton (BRISTOL, MA)","","",LDC,"","",MA,BRISTOL,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073736,"",0073736,73736,"","Williams OVM / Oak Grove, Clay WVA","","",WHD,"",2,WV,MARSHALL,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200071461,"",0071461,71461,"","UGI UTIL (Columbia Gas) - Rich Hill, PA","","",LDC,"",3,PA,BUCKS,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200072206,"",0072206,72206,"","Cypress Gas Pipeline Co.- W. Baton Rouge Psh., LA","","",INT,"",ELA,LA,WEST BATON ROUGE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200072824,"",0072824,72824,"","Mid Louisiana - W. Feleciana Psh., LA","","",INT,"",ELA,LA,WEST FELICIANA,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200071503,"",0071503,71503,"","Henderson Petroleum Corp.-SW Lake Boeuf Lafourche Psh.,LA","","",WHD,"",ELA,LA,LAFOURCHE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073895,"",0073895,73895,"","Dominion Energy Transmission, Inc - Arman Hill (Mullet) / Twp. Roa","","",INT,"",2,OH,MONROE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200071401,"",0071401,71401,"","United Cities - Galatia, IL","","",LDC,"",1,IL,SALINE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073515,"",0073515,73515,"","Palmer Petroleum Inc.-Lumber Gathering - Angelina Co., TX","","",WHD,"",ETX,TX,ANGELINA,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200074203,"",0074203,74203,"","Dominion Energy Transmission, Inc - Clarks Mill Road, Jefferson Co","","",INT,"",2,OH,JEFFERSON,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000631,"",0000631,00631,"","Suez Cape Ann, LNG -(ESSEX, MA)","","",LNG,"","",MA,ESSEX,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200070859,"",0070859,70859,"","Gulf South Pipeline, LP - Huntsville, TX  (Delivery)","","",INT,"",ETX,TX,SAN JACINTO,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200079982,"",0079982,79982,"","NEXUS FUEL TRACKING - MARK WEST - MAJORSVILLE, MARSHALL CO., WVA","","","","","","","","",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200070958,"",0070958,70958,"","Hurst - Siloam, MS","","",WHD,"",1,MS,CLAY,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200071221,"",0071221,71221,"","Mississippi Gas Corp. - Reeves, LA","","",LDC,"",WLA,LA,ALLEN,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200072764,"",0072764,72764,"","NGPL Sweet Lake - Cameron Psh., LA","","",INT,"",WLA,LA,CAMERON,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000064,"",0000064,00064,"","Rhode Island Energy-BARRINGTON (PROVIDENCE,RI)","","",LDC,"","",RI,PROVIDENCE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073899,"",0073899,73899,"",Bayonne Energy Center-NJ Route 440,"","",END,"",3,NJ,HUDSON,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200070457,"",0070457,70457,"","Lawrenceburg, TN","","",LDC,"",1,TN,LAWRENCE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073256,"",0073256,73256,"","FINA - LOVE HILL GATHERING - OKTIBBEHA CO., MS","","",WHD,"",1,MS,OKTIBBEHA,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000029,"",0000029,00029,"","Middleboro (PLYMOUTH,MA)","","",LDC,"","",MA,PLYMOUTH,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200079594,"",0079594,79594,"",ELA DOWNSTREAM POINT,"","",STA,"",ELA,LA,ST LANDRY,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200072827,"",0072827,72827,"","City Of Fulton - Itawamba Co., MS","","",LDC,"",1,MS,ITAWAMBA,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000840,"",0000840,00840,"",AGT to TE Hanover,"","",INT,"","",NJ,MORRIS,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073295,"",0073295,73295,"","HEC PETROLEUM-FULTON FULLER #1, NACOG. CO., TX (REC)","","",WHD,"",ETX,TX,NACOGDOCHES,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200071363,"",0071363,71363,"","Columbia Gas of  PA.  - Pleasant Gap, PA","","",INT,"",3,PA,CENTRE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073618,"",0073618,73618,"",Kinder Morgan Tejas- Barney Davis,"","",END,"",STX,TX,NUECES,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200079672,"",0079672,79672,"","WLA/ELA (30"") ILT POINT","","",STA,"",ZB,LA,EVANGELINE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200079509,"",0079509,79509,"",ZONE M3  SERVICE POINT,"","",PPT,"",3,PA,INDIANA,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000823,"",0000823,00823,"","Sharon Station-(NORFOLK,MA)","","",LDC,"","",MA,NORFOLK,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000068,"",0000068,00068,"","Farmington (HARTFORD,CT)","","",LDC,"","",CT,HARTFORD,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073893,"",0073893,73893,"","Talen - Brunner Island/Jerusalem School Rd, York Co., PA","","",END,"",3,PA,YORK,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200070912,"",0070912,70912,"","Britanco, LLC Wilcox - Tuleta CP, Bee Co., TX","","",WHD,"",STX,TX,BEE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073923,"",0073923,73923,"",Entergy Services/Hinds 2 Delivery-Beasley Rd,"","",END,"",ELA,MS,HINDS,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200079614,"",0079614,79614,"",ELA  PAL POINT OF TRANSACTION,"","",VIR,"",ELA,LA,ST LANDRY,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200071862,"",0071862,71862,"","Britanco, LLC - #1D Goree, Bee Co., TX","","",WHD,"",STX,TX,BEE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073924,"",0073924,73924,"","XCL Midstream Blue Ridge, Marshall County WV","","",WHD,"",2,WV,MARSHALL,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200070079,"",0070079,70079,"","Atmos Energy Corporation- Jim Hill, MO","","",LDC,"",1,MO,DUNKLIN,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200079591,"",0079591,79591,"",STX DOWNSTREAM POINT,"","",STA,"",STX,TX,NO COUNTY NAME,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200079929,"",0079929,79929,"","NEXUS FUEL-KREBS RIDGE ROAD, MONROE CO., OH","","","","","","","","",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200079960,"",0079960,79960,"",SUEZ/CHOCTAW,"","",END,"",1,MS,CHOCTAW,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200072904,"",0072904,72904,"","Vectren Ohio - Glen Karn, OH CenterPoint Energy(PEPL 02831)","","",LDC,"",2,OH,DARKE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073621,"",0073621,73621,"","Williams Mid-Penn Midstream- Clyde- HORSE THIEF RD., Indiana  Co.,","","",WHD,"",3,PA,INDIANA,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200071362,"",0071362,71362,"","Jonesboro, IL","","",LDC,"",1,IL,UNION,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200072566,"",0072566,72566,"","American Midstream  Tenn Intrastate - Colbert Co., AL","","",INT,"",1,AL,COLBERT,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073079,"",0073079,73079,"","Smyrna #3 - Rutherford Co., TN","","",LDC,"",1,TN,RUTHERFORD,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000027,"",0000027,00027,"","National Grid- EVERETT (MIDDLESEX,MA)","","",LDC,"","",MA,MIDDLESEX,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200070449,"",0070449,70449,"","Public Service - Central Works, NJ","","",LDC,"",3,NJ,MIDDLESEX,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073911,"",0073911,73911,"","CPV-Fairview, Jackson Township, PA","","",END,"",3,PA,CAMBRIA,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200070062,"",0070062,70062,"","Nat Gas & Oil - Somerset, OH","","",LDC,"",2,OH,PERRY,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073150,"",0073150,73150,"",Summit Utilities Arkansas Inc Pulaski Co AR,"","",LDC,"",ETX,AR,PULASKI,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000837,"",0000837,00837,"",Salem Harbor Station,"","",END,"","",MA,ESSEX,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000034,"",0000034,00034,"","New England Gas Company No. Attleboro (BRISTOL,MA)","","",LDC,"","",MA,BRISTOL,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200079985,"",0079985,79985,"","NEXUS FUEL-EQT- BRADEN RUN, GREENE CO., PA.","","","","","","","","",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200079507,"",0079507,79507,"","ZONE M2 24"" SERVICE POINT","","",PPT,"",2,OH,NOBLE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073270,"",0073270,73270,"",Farmersville-Tait - (73270),"","","","","","","","",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000830,"",0000830,00830,"","Marathon (MIDDLESEX,MA)","","",LDC,"","",MA,MIDDLESEX,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073355,"",0073355,73355,"","GRAYSON HILL FARMS-METHANE POWER-SALINE CO., IL","","",WHD,"",1,IL,SALINE,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000851,"",0000851,00851,"","Brookfield Delivery (FAIRFIELD,CT)","","",INT,"","",CT,FAIRFIELD,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200072263,"",0072263,72263,"","Public Service - Woodbridge,NJ","","",LDC,"",3,NJ,MIDDLESEX,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073711,"",0073711,73711,"","NTE Middletown Energy Center, Butler CO, OH","","",END,"",2,OH,BUTLER,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000838,"",0000838,00838,"",National Grid - West Roxbury,"","",LDC,"","",MA,SUFFOLK,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073310,"",0073310,73310,"","South Shore P/L (NE&T), Nueces Co., TX","","",LDC,"",STX,TX,NUECES,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073207,"",0073207,73207,"","AECI Plant Sto - Essex Pwr Plt -Stoddard Co, MO","","",END,"",1,MO,STODDARD,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200079524,"",0079524,79524,"","M1 30"" CUSTODY TRANSFER POINT NORTH OF KOSCIUSKO","","",STA,"",1,MS,ATTALA,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073723,"",0073723,73723,"","IMTT-Bayonne, Hudson Co, NJ","","",END,"",3,NJ,HUDSON,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000620,"",0000620,00620,"","Excelerate Energy LP - Excelerate MS - (ESSEX,MA)","","",LNG,"","",MA,ESSEX,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200071463,"",0071463,71463,"","Tamms, IL","","",LDC,"",1,IL,UNION,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200079990,"",0079990,79990,"","NEXUS FUEL-MARKWEST UTICA EMG/TWP RD 240-BERNE, MONROE CO., OH","","","","","","","","",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073539,"",0073539,73539,"","NET LP - Monument Pipeline - Harris County, TX","","",INT,"",STX,TX,HARRIS,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000052,"",0000052,00052,"","National Grid-PONKAPOAG (NORFOLK,MA)","","",LDC,"","",MA,NORFOLK,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000099854,"",0099854,99854,"","HANOVER, NJ FUEL ACCOUNTING METER","","",STA,"","",NJ,MORRIS,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000621,"",0000621,00621,"","Excelerate Energy LP - Excellence MS -(ESSEX, MA)","","",LNG,"","",MA,ESSEX,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000836,"",0000836,00836,"",GenConn Power Plant,"","",END,"","",CT,MIDDLESEX,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200072636,"",0072636,72636,"","PECO Energy - Montgomery Co., PA","","",LDC,"",3,PA,MONTGOMERY,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200071435,"",0071435,71435,"","Cleco Energy - Chireno #1, TX  (Delivery)","","",LDC,"",ETX,TX,NACOGDOCHES,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000063,"",0000063,00063,"","Danbury (FAIRFIELD,CT)","","",LDC,"","",CT,FAIRFIELD,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000006,"",0000006,00006,"","Mohegan Park (NEW LONDON,CT)","","",LDC,"","",CT,NEW LONDON,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000208,"",0000208,00208,"","AGT-WANAQUE INTERCONNECT (PASSAIC,NJ)","","",INT,"","",NJ,PASSAIC,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073491,"",0073491,73491,"","Rovig Mineral-Lake Boeuf Field,LaFourche Parish, LA","","",WHD,"",ELA,LA,LAFOURCHE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073814,"",0073814,73814,"","Graymont - Pleasant Gap / Weaver Hill Road, Centre Co., PA","","",END,"",3,PA,CENTRE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073543,"",0073543,73543,"",Alliance Petroleum Corp - East Wheatfield Interconnect - Cambria C,"","",WHD,"",3,PA,CAMBRIA,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200071469,"",0071469,71469,"","Atmos Energy Corporation - Qulin, MO","","",LDC,"",1,MO,BUTLER,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000087,"",0000087,00087,"","PG&E Manchester St, (PROVIDENCE,RI)","","",LDC,"","",RI,PROVIDENCE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073670,"",0073670,73670,"","Sheridan Holding Company III,LLC/King Williams, Shelby Co., TX","","",WHD,"",ETX,TX,SHELBY,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073283,"",0073283,73283,"","Union Petroleum, LTD (Line 16LL) - Brazoria Co., TX","","",WHD,"",STX,TX,SAN PATRICIO,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000817,"",0000817,00817,"","Dynegy Lake Road (Windham,CT)","","",END,"","",CT,WINDHAM,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000038,"",0000038,00038,"","Charles River RD (NORFOLK,MA)","","",LDC,"","",MA,NORFOLK,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073883,"",0073883,73883,"","Centerpoint Energy/IP Orange Mill-Owens Illinois Rd-Orange Co.,TX","","",INT,"",WLA,TX,ORANGE,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000271,"",0000271,00271,"","Everett Int. (MIDDLESEX,MA)","","",LNG,"","",MA,MIDDLESEX,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200074509,"",0074509,74509,"",AGT Receipt for PSEG Del.,"","",INT,"",3,NJ,PASSAIC,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200079508,"",0079508,79508,"","ZONE M2 30"" SERVICE POINT","","",PPT,"",2,PA,WESTMORELAND,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200071210,"",0071210,71210,"","AGT-WANAQUE INTERCONNECT. (PASSAIC,NJ)","","",INT,"",3,NJ,PASSAIC,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200076671,"",0076671,76671,"","PEOPLES NAT - Rager Mountain, PA (Rec.)","","",WHD,"",3,PA,CAMBRIA,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200070123,"",0070123,70123,"","Miss River Fuel Transmission - Bald Knob, AR (REC)","","",INT,"",1,AR,WHITE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073577,"",0073577,73577,"","Texas Gas/Fayetville, AR.","","",INT,"",1,AR,WHITE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073679,"",0073679,73679,"",XTO Energy. - Elsie Adams #2 - PA.,"","",WHD,"",2,PA,FAYETTE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200079073,"",0079073,79073,"","SHELL OFFSHORE, WD 143, -LAO","","",STA,"",ELA,LA,WEST DELTA-SOUTH,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200071439,"",0071439,71439,"","Indiana Gas Co. - Dubois, IN","","",LDC,"",2,IN,DUBOIS,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200070420,"",0070420,70420,"","Bude, MS","","",LDC,"",ELA,MS,FRANKLIN,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073041,"",0073041,73041,"","Four Square Gas Co., Inc. (Chireno #3) -  Shelby Co., TX","","",LDC,"",ETX,TX,SHELBY,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200070081,"",0070081,70081,"","Columbia Gas - Sabina, OH","","",INT,"",2,OH,FAYETTE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200079167,"",0079167,79167,"",BAL ONLY - BIG,"","","","","","","","",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200071430,"",0071430,71430,"","United Cities -Nolensville, TN","","",LDC,"",1,TN,WILLIAMSON,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200072185,"",0072185,72185,"",Dewbre Petroleum/Allen East A,"","",WHD,"",STX,TX,KLEBERG,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200070322,"",0070322,70322,"","UGI UTIL (Columbia Gas) - Reading, PA","","",LDC,"",3,PA,BERKS,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200071455,"",0071455,71455,"","UGI CENTRAL - Huntingdon Gas - Mapleton, PA","","",LDC,"",3,PA,HUNTINGDON,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073874,"",0073874,73874,"","Eureka Hunter/Krebs Ridge Road, Monroe Co., OH","","",WHD,"",2,OH,MONROE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073168,"",0073168,73168,"","Willamette Industries -  Bienville Parish, LA","","",END,"",ETX,LA,BIENVILLE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073131,"",0073131,73131,"","Delta Nat Gas - Madison Co, KY","","",END,"",2,KY,MADISON,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200079997,"",0079997,79997,"",NEXUS FUEL TRACKING- DTI-ARMAN HILL,"","","","","","","","",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200079545,"",0079545,79545,"","M1/M2 30"" ZONE BOUNDARY POINT","","",STA,"",ZB,TN,CLAY,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200070316,"",0070316,70316,"","Hartsville Gas - Trousdale, TN","","",LDC,"",1,TN,TROUSDALE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073304,"",0073304,73304,"","Alleghney Energy, Chambersburg-Franklin Co., PA (Del)","","",END,"",3,PA,FRANKLIN,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200070521,"",0070521,70521,"","Duke Energy Ohio, Inc. Dicks Creek","","",LDC,"",2,OH,BUTLER,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200071076,"",0071076,71076,"","New Jersey Natural - Hanover, NJ","","",LDC,"",3,NJ,MORRIS,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200071436,"",0071436,71436,"","Cleco Energy - Chireno #2, TX  (Delivery)","","",LDC,"",ETX,TX,NACOGDOCHES,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200070119,"",0070119,70119,"","Chambersburg, PA","","",LDC,"",3,PA,FRANKLIN,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000059,"",0000059,00059,"","MONTVILLE (NEW LONDON,CT)","","",LDC,"","",CT,NEW LONDON,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200070249,"",0070249,70249,"","Transco - Skippack, PA - REC","","",INT,"",3,PA,MONTGOMERY,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200070877,"",0070877,70877,"",CONSOL. EDISON - (THRU 70058),"","",LDC,"",3,NY,RICHMOND,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000032,"",0000032,00032,"","National Grid-WALTHAM (MIDDLESEX,MA)","","",LDC,"","",MA,MIDDLESEX,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073902,"",0073902,73902,"",Gas Utilities District #1 Spillman Delivery State Hwy 421;W.Felici,"","",LDC,"",ELA,LA,WEST FELICIANA,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200074200,"",0074200,74200,"","Momentum Kensington / Highway 644, Columbiana Co., OH","","",WHD,"",2,OH,COLUMBIANA,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200079504,"",0079504,79504,"",ELA SERVICE POINT,"","",PPT,"",ELA,MS,ATTALA,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073212,"",0073212,73212,"","PECO - EAGLE, CHESTER CO., PA. (del)","","",LDC,"",3,PA,CHESTER,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200070582,"",0070582,70582,"","Midwest Nat. - Brownstown, IN","","",LDC,"",2,IN,JACKSON,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200079595,"",0079595,79595,"","MARKET ZONE 1 24"" DOWNSTREAM POINT","","",STA,"",1,IL,ANDERSON,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073912,"",0073912,73912,"","BIG Angleton Delivery, Brazoria Co., TX","","",INT,"",STX,TX,BRAZORIA,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000826,"",0000826,00826,"","Mystic (MIDDLESEX,MA)","","",LDC,"","",MA,MIDDLESEX,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200079991,"",0079991,79991,"","NEXUS FUEL-NEXUS INTERCONNECT WITH TETLP, MONROE CO., OH","","","","","","","","",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073546,"",0073546,73546,"","Sheridan Holding Company III,LLC-Shelby Gathering-Shelby Co., TX","","",WHD,"",ETX,TX,SHELBY,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200079561,"",0079561,79561,"",SS/X-28 STORAGE POINT (MAINLINE),"","",STR,"",2,PA,WESTMORELAND,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073600,"",0073600,73600,"",Fortune Resources LLC/TARANTULA GATHERING,"","",WHD,"",ETX,TX,SHELBY,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000012,"",0000012,00012,"","Rhode Island Energy - WARREN (BRISTOL,RI)","","",LDC,"","",RI,BRISTOL,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000072,"",0000072,00072,"","Portland (MIDDLESEX,CT)","","",LDC,"","",CT,MIDDLESEX,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000001215,"",0001215,01215,"","Salem Essex Co., MA North (ESSEX,MA)","","",INT,"","",MA,ESSEX,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073107,"",0073107,73107,"","Horton Hwy Dist #2 - Maury, TN","","",LDC,"",1,TN,MAURY,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073449,"",0073449,73449,"","Atlas America-Fayette, CO., PA - (73449)","","",WHD,"",2,PA,FAYETTE,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000814,"",0000814,00814,"","ANP BELLINGHAM ENERGY COMPANY (NORFOLK,MA)","","",END,"","",MA,NORFOLK,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073617,"",0073617,73617,"",Kinder Morgan Tejas- Nueces Bay,"","",LDC,"",STX,TX,SAN PATRICIO,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200070089,"",0070089,70089,"","Consumers Gas Co. - Carmi, IL","","",LDC,"",1,IL,WHITE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073350,"",0073350,73350,"",CANTON MUNICIPAL UTILITIES,"","",LDC,"",ELA,MS,MADISON,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000081,"",0000081,00081,"","National Grid-POTTER St. (NORFOLK,MA)","","",LDC,"","",MA,NORFOLK,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200070036,"",0070036,70036,"","PECO Energy - West Conshohocken, PA","","",LDC,"",3,PA,MONTGOMERY,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073812,"",0073812,73812,"","Markwest Utica Seneca  Monroe Co., OH","","",WHD,"",2,OH,MONROE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200070011,"",0070011,70011,"","Columbia Gas of  PA.  - Eagle, PA","","",INT,"",3,PA,CHESTER,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200074128,"",0074128,74128,"","MR 128 UPGRADE (PUBLIC SERVICE - LINDEN, NJ) DEL","","",LDC,"",3,NJ,UNION,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073417,"",0073417,73417,"","Copano Processing - Houston Central / Colorado Co., TX (REC)","","",PLT,"",STX,TX,COLORADO,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200072874,"",0072874,72874,"","St. Joseph - Lawrence Co., TN","","",LDC,"",1,TN,LAWRENCE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200071366,"",0071366,71366,"","Osgood, IN","","",LDC,"",2,IN,RIPLEY,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073157,"",0073157,73157,"","UGI CENTRAL - Penn Fuel - McConnellsburg, Fulton Co., PA","","",LDC,"",3,PA,FULTON,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200074219,"",0074219,74219,"",Acadian Gas Pipeline System,"","",INT,"",WLA,LA,BEAUREGARD,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200070584,"",0070584,70584,"","Elizabethtown Gas Company - Ringoes, NJ","","",LDC,"",3,NJ,HUNTERDON,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200070984,"",0070984,70984,"","Columbia Gas - New Holland, OH","","",INT,"",2,OH,FAYETTE,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000251,"",0000251,00251,"","Brookfield (FAIRFIELD,CT)","","",INT,"","",CT,FAIRFIELD,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073424,"",0073424,73424,"","Great Lakes Energy - Layman Gathering/Westmoreland, PA.","","",WHD,"",2,PA,WESTMORELAND,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000099857,"",0099857,99857,"",EAST BRAINTREE CUSTODY TRANSFER POINT,"","",STA,"","",MA,NORFOLK,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000827,"",0000827,00827,"","National Grid-WEYMOUTH (NORFOLK,MA)","","",LDC,"","",MA,NORFOLK,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200072856,"",0072856,72856,"","Onalaska Water & Gas Corporation - Polk County, TX","","",LDC,"",ETX,TX,POLK,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000805,"",0000805,00805,"","Franklin (NEW LONDON,CT)","","",LDC,"","",CT,NEW LONDON,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073339,"",0073339,73339,"","Entergy Mississippi, LLC-Choctaw Co., MS","","",END,"",1,MS,CHOCTAW,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200070429,"",0070429,70429,"","Tompkinsville, KY","","",LDC,"",2,KY,MONROE,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000215,"",0000215,00215,"","Salem Essex Co., MA (ESSEX,MA)","","",INT,"","",MA,ESSEX,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200079616,"",0079616,79616,"","ZONE M1 30"" PAL POINT OF TRANSACTION","","",VIR,"",1,MS,ATTALA,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000076,"",0000076,00076,"","MANSFIELD (TOLLAND,CT)","","",LDC,"","",CT,TOLLAND,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200072131,"",0072131,72131,"","Marshall Exploration - #1 Resch / Harrison Co., TX  (REC)","","",WHD,"",ETX,TX,HARRISON,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200071142,"",0071142,71142,"","Vernon Faulkner-San Salvador Field - Hidalgo Co., TX  (REC)","","",WHD,"",STX,TX,HIDALGO,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073205,"",0073205,73205,"","Middle Tn Nat Gas -Wilson, TN","","",INT,"",1,TN,WILSON,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000008,"",0000008,00008,"","Rhode Island Energy-WESTERLY (WASHINGTON,RI)","","",LDC,"","",RI,WASHINGTON,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073613,"",0073613,73613,"","Buffco Prod./Southern Egg Ranch-Shelby Co., TX","","",WHD,"",ETX,TX,SHELBY,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073346,"",0073346,73346,"","Fayette Power, LLC  (Fayette Pow)","","",END,"",2,PA,FAYETTE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200070480,"",0070480,70480,"","Horton Highway - Triune, TN","","",LDC,"",1,TN,WILLIAMSON,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200072979,"",0072979,72979,"","PECO - Doylestown, Bucks Co., PA","","",LDC,"",3,PA,BUCKS,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200071020,"",0071020,71020,"","TE Princeton - Princeton, IN","","",END,"",2,IN,GIBSON,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073918,"",0073918,73918,"",Columbia Gas Johnson RD York Co. PA,"","",INT,"",3,PA,YORK,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200070099,"",0070099,70099,"",Belmont  MS,"","",LDC,"",1,MS,FRANKLIN,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200072210,"",0072210,72210,"","New Jersey Natural - Jamesburg, NJ","","",LDC,"",3,NJ,MIDDLESEX,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200070275,"",0070275,70275,"","Elizabethtown Gas Company - Elizabeth, NJ","","",LDC,"",3,NJ,MIDDLESEX,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000001211,"",0001211,01211,"",AGT To TETCO for PSEG Del.,"","",INT,"","",NJ,PASSAIC,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200070033,"",0070033,70033,"","PECO Energy - Cromby Generation, PA","","",LDC,"",3,PA,CHESTER,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073684,"",0073684,73684,"",ETX-Enbridge/Wells Landing - Polk,"","",INT,"",ETX,TX,POLK,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200076025,"",0076025,76025,"","Atmos Energy, TN (B/D 73025)","","",WHD,"",1,TN,WILLIAMSON,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000050,"",0000050,00050,"","Pomfret (WINDHAM,CT)","","",LDC,"","",CT,WINDHAM,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000077,"",0000077,00077,"","DEFCO (NEW HAVEN,CT)","","",LDC,"","",CT,NEW HAVEN,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200079618,"",0079618,79618,"","ZONE M2 30"" PAL POINT OF TRANSACTION","","",VIR,"",2,IN,POSEY,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200070042,"",0070042,70042,"","Union Elec -Cape Girardeau, MO","","",LDC,"",1,MO,SCOTT,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200072950,"",0072950,72950,"","Aptian Gas Corp., K.W. Schreiner #1 - Live Oak Co., TX","","",WHD,"",STX,TX,LIVE OAK,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200071425,"",0071425,71425,"","Morganza, LA","","",LDC,"",ELA,LA,POINTE COUPEE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073076,"",0073076,73076,"","Atmos Energy - Columbia, TN","","",LDC,"",1,TN,MAURY,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200070217,"",0070217,70217,"","GULF SOUTH PIPELINE COMPANY- KOSCIUSKO,  MS","","",INT,"",1,MS,ATTALA,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200070539,"",0070539,70539,"","S.I.G. & Elec -Ft. Branch, IN","","",LDC,"",2,IN,GIBSON,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073721,"",0073721,73721,"","PSEG-Bayonne, Hudson Co., NJ","","",LDC,"",3,NJ,HUDSON,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200079665,"",0079665,79665,"","M1/M2 30"" ILT POINT","","",STA,"",ZB,TN,CLAY,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000085,"",0000085,00085,"","Bristol (HARTFORD,CT)","","",LDC,"","",CT,HARTFORD,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200070297,"",0070297,70297,"",ATMOS ENERGY - ETHEL - ATTALA CO. MS,"","",LDC,"",1,MS,ATTALA,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073195,"",0073195,73195,"","Col. Gas - Montgomery Co., KY","","",INT,"",2,KY,MONTGOMERY,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073894,"",0073894,73894,"","Dominion Energy Transmission, Inc - Taylors Ridge Road","","",INT,"",2,WV,MARSHALL,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000834,"",0000834,00834,"","BELD - Braintree Electric Light  (NORFOLK,MA)","","",END,"","",MA,NORFOLK,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200079611,"",0079611,79611,"",STX PAL POINT OF TRANSACTION,"","",VIR,"",STX,TX,JEFFERSON,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073714,"",0073714,73714,"",DTM Appalachia Gathering  High Noon,"","",WHD,"",2,PA,GREENE,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000053,"",0000053,00053,"","Norwichtown (NEW LONDON,CT)","","",LDC,"","",CT,NEW LONDON,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000211,"",0000211,00211,"","TETCO - Hanover (MORRIS,NJ)","","",INT,"","",NJ,MORRIS,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000087000,"",0087000,87000,"",AGT PAL POINT OF TRANSACTION,"","",VIR,"","",CT,HARTFORD,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000828,"",0000828,00828,"","UConn Mansfield (TOLLAND,CT)","","",LDC,"","",CT,TOLLAND,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200079560,"",0079560,79560,"",SS/X-28 STORAGE POINT,"","",STR,"",3,PA,JUNIATA,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200071706,"",0071706,71706,"","NorAm - Shelby Co., TX  (Receipt)","","",INT,"",ETX,TX,SHELBY,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200072718,"",0072718,72718,"",Smith Oper. (Harvey Broyle M.P. 0.00) - Bienville Psh. La,"","",WHD,"",ETX,LA,BIENVILLE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073705,"",0073705,73705,"","EQT Morris II, Greene Co., PA.","","",WHD,"",2,PA,GREENE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200072187,"",0072187,72187,"","GULF SOUTH PIPELINE COMPANY, LP - Raceland, LA","","",INT,"",ELA,LA,LAFOURCHE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200074217,"",0074217,74217,"","Gulf South-Kosciusko, Attala Co., MS (Bi-Dir Rec 70217)","","",INT,"",1,MS,ATTALA,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200070122,"",0070122,70122,"","Cairo, Public","","",LDC,"",1,IL,UNION,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000210,"",0000210,00210,"","Algonquin - Lambertville, NJ","","",INT,"","",NJ,HUNTERDON,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073573,"",0073573,73573,"",GIBRALTER ENERGY COMPANY/BLACK WARRIOR,"","",WHD,"",1,MS,CLAY,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073732,"",0073732,73732,"","Blue Racer Midstream-Berne, Monroe Co.,OH","","",WHD,"",2,OH,MONROE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200079995,"",0079995,79995,"","NEXUS INTERCONNECT WITH TETLP MAINLINE, MONROE CO., OH","","",STA,"",2,OH,MONROE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200071331,"",0071331,71331,"","Thebes, IL","","",LDC,"",1,IL,ALEXANDER,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073703,"",0073703,73703,"","Williams-Transco, Lower Chanceford-York Co., PA.","","",INT,"",3,PA,YORK,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000205,"",0000205,00205,"","MENDON (NORFOLK,MA)","","",INT,"","",MA,NORFOLK,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200071189,"",0071189,71189,"","UGI CENTRAL - Valley Gas - Martinsburg, PA","","",LDC,"",3,PA,BLAIR,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073659,"",0073659,73659,"","Anadarko-Marsh Creek Trail - Centre, PA","","",WHD,"",3,PA,CENTRE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200072026,"",0072026,72026,"","NGO (Miller) - Butler Co., OH","","",LDC,"",2,OH,BUTLER,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200072597,"",0072597,72597,"",Summit Utilities Arkansas Inc McRae Junct White AR,"","",LDC,"",1,AR,WHITE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073073,"",0073073,73073,"","Shell Offshore , WD 143, - LAO","","",WHD,"",ELA,OF,WEST DELTA,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000060,"",0000060,00060,"","Southington (HARTFORD,CT)","","",LDC,"","",CT,HARTFORD,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073653,"",0073653,73653,"",TEPPCO/Beaumont Vapor Recovery,"","",END,"",STX,TX,JEFFERSON,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200079975,"",0079975,79975,"",UNIONTOWN WEST,"","",STA,"",2,PA,FAYETTE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200079999,"",0079999,79999,"",STRATTON RIDGE,"","",STA,"",STX,TX,BRAZORIA,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200070043,"",0070043,70043,"","Union Electric - Dexter, MO","","",LDC,"",1,MO,STODDARD,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200070096,"",0070096,70096,"","UGI CENTRAL - Shippensburg - Oxford, PA","","",LDC,"",3,PA,FRANKLIN,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200071299,"",0071299,71299,"","East Tenn Gas - Hartsville, TN","","",INT,"",1,TN,TROUSDALE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200072004,"",0072004,72004,"","PECO Energy - Planebrook Chester Co., PA","","",LDC,"",3,PA,CHESTER,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000820,"",0000820,00820,"","Wallingford Energy Interconnect (FAIRFIELD,CT)","","",END,"","",CT,NEW HAVEN,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200070035,"",0070035,70035,"","PECO Energy - Tilghman St. - Chester, PA","","",LDC,"",3,PA,DELAWARE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200070070,"",0070070,70070,"","UGI Utilities, Inc. (Columbia Gas) -Lancaster, PA","","",LDC,"",3,PA,LANCASTER,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200071365,"",0071365,71365,"","Cobden, IL (thru 71362)","","",LDC,"",1,IL,UNION,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",12000T0002,"",00T0002,T0002,"",Farmersville-Tait - (73270),"","","","","","","","",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000813,"",0000813,00813,"","National Grid-ROCHESTER (PLYMOUTH,MA)","","",LDC,"","",MA,PLYMOUTH,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073193,"",0073193,73193,"","Miss Riv Trans - Stoddard, MO","","",INT,"",1,MO,STODDARD,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073505,"",0073505,73505,"",DESF-Angel City Gathering-Goliad Co. TX,"","",WHD,"",STX,TX,GOLIAD,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073410,"",0073410,73410,"","Centerpoint Energy-Gathering System, Shelby Co., TX (REC)","","",INT,"",ETX,TX,SHELBY,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073819,"",0073819,73819,"",Tana Exploration Breton Sound Block 25,"","",WHD,"",ELA,OF,BRETON SOUND,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200071287,"",0071287,71287,"","Gas Util Dist #2 - Lottie, LA","","",LDC,"",ELA,LA,POINTE COUPEE,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000046,"",0000046,00046,"","Yantic (HARTFORD,CT)","","",LDC,"","",CT,NEW LONDON,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073402,"",0073402,73402,"","Great Lakes(Voytek) Energy Interconnect-Fayette Co., PA","","",WHD,"",2,PA,FAYETTE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200070109,"",0070109,70109,"",Summit Utilities Arkansas Light AR,"","",LDC,"",1,AR,GREENE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200070063,"",0070063,70063,"","Huntingburg, IN","","",LDC,"",2,IN,DUBOIS,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200070295,"",0070295,70295,"","Anna, IL","","",LDC,"",1,IL,UNION,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200074215,"",0074215,74215,"","Texas Gas Transmission LLC - Lebanon, OH","","",INT,"",2,OH,WARREN,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200070532,"",0070532,70532,"","Atmos Energy Corporation- Benton, MO","","",LDC,"",1,MO,SCOTT,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000017,"",0000017,00017,"","New Bedford (BRISTOL,MA)","","",LDC,"","",MA,BRISTOL,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200072158,"",0072158,72158,"","Avery Gas - Chicksaw Co., MS","","",WHD,"",1,MS,CHICKASAW,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200074040,"",0074040,74040,"","East Ohio Gas - Clarington, OH","","",LDC,"",2,OH,MONROE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200072568,"",0072568,72568,"","Enable Gas Transmission - West Monroe, LA","","",INT,"",ELA,LA,OUACHITA,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073735,"",0073735,73735,"",Bonanza - Strike Force Midstream,"","",WHD,"",2,OH,MONROE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200071241,"",0071241,71241,"","Utica, MS","","",LDC,"",ELA,MS,COPIAH,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200070266,"",0070266,70266,"","UGI CENTRAL - Huntingdon Gas - Huntingdon, PA","","",LDC,"",3,PA,HUNTINGDON,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073187,"",0073187,73187,"","Elizabethtown Gas Company - Linden, NJ","","",LDC,"",3,NJ,UNION,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200072944,"",0072944,72944,"","Public Service - Jamesburg - Middlesex Co., NJ","","",LDC,"",3,NJ,MIDDLESEX,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073399,"",0073399,73399,"","FFA Petroleum-Kramer Gathering, Jackson Co., TX","","",WHD,"",STX,TX,JACKSON,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000095,"",0000095,00095,"","Ocean St (PROVIDENCE,RI)","","",END,"","",RI,PROVIDENCE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200079052,"",0079052,79052,"",WILCOX PTR AUCTION POINT,"","","","","","","","",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200070092,"",0070092,70092,"","Norris City, IL","","",LDC,"",1,IL,WHITE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200070907,"",0070907,70907,"",Duke Energy Ohio Inc. Millville,"","",LDC,"",2,OH,BUTLER,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200070004,"",0070004,70004,"","Dominion Energy Transmission, Inc - Clarington, OH","","",INT,"",2,OH,MONROE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073127,"",0073127,73127,"",Paulsboro Refinery,"","",END,"",3,PA,PHILADELPHIA,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200070077,"",0070077,70077,"","Columbia Gas - Hooker, OH","","",INT,"",2,OH,FAIRFIELD,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200079543,"",0079543,79543,"",ELA/M1 ZONE BOUNDARY POINT,"","",STA,"",ZB,MS,ATTALA,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073708,"",0073708,73708,"","Williams - LMM / Davis II, Greene Co., PA.","","",WHD,"",2,PA,GREENE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200070633,"",0070633,70633,"","B&T Oil Co., Yoward C.P. - Bee Co., TX","","",WHD,"",STX,TX,BEE,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000099856,"",0099856,99856,"",MAHWAH IN-LINE TRANSFER POINT,"","",STA,"","",NJ,BERGEN,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000061,"",0000061,00061,"","Woodland RD (NORFOLK,MA)","","",LDC,"","",MA,NORFOLK,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200079154,"",0079154,79154,"",DOWNSTREAM LINDEN BALANCING POINT,"","",STA,"",3,NJ,UNION,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000023,"",0000023,00023,"","National Grid- EAST BRAINTREE (NORFOLK,MA)","","",LDC,"","",MA,NORFOLK,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200074529,"",0074529,74529,"","TransCameron Extension Oak Grove-Cameron Parish, LA","","",INT,"",WLA,LA,CAMERON,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200079993,"",0079993,79993,"","NEXUS INTERCONNECT WITH TETLP,OPEN LATERAL,AT HEAD OF OPEN LATERAL","","",STA,"",2,OH,JEFFERSON,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073180,"",0073180,73180,"","Bluestone - Hidalgo Co., TX","","",WHD,"",STX,TX,HIDALGO,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073147,"",0073147,73147,"","Centana Intrastate Pipeline Co. - Orange Co., TX","","",INT,"",WLA,TX,ORANGE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200072926,"",0072926,72926,"","Kent. Util. - Garrard Co., KY","","",END,"",2,KY,GARRARD,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200070421,"",0070421,70421,"","Flora, MS","","",LDC,"",ELA,MS,HINDS,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073677,"",0073677,73677,"","Eastern Shore Natural Gas Honeybrook - Lancaster County, PA","","",INT,"",3,PA,LANCASTER,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200071144,"",0071144,71144,"","UGI CENTRAL - Twin Gas - Bedford, PA","","",LDC,"",3,PA,BEDFORD,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000835,"",0000835,00835,"","WEST DANBURY (FAIRFIELD,CT)","","",LDC,"","",CT,FAIRFIELD,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200072967,"",0072967,72967,"","Atmos Energy -Monroe, MS","","",LDC,"",1,MS,MONROE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073620,"",0073620,73620,"","Williams - LMM Clark Rd.,  PA.","","",WHD,"",2,PA,FAYETTE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200070940,"",0070940,70940,"","Indiana Gas Co. - Westport, IN","","",LDC,"",2,IN,DECATUR,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200072936,"",0072936,72936,"","Chandeleur Pipe Line Co. (Cantium, LLC) - MP 41L","","",WHD,"",ELA,OF,MAIN PASS,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073921,"",0073921,73921,"",Midcoast Vidor Interconnect Mansfield Ferry Road Orange Co TX,"","",INT,"",STX,TX,ORANGE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200070471,"",0070471,70471,"","Dominion Transmission Inc - Woodsfield, OH","","",INT,"",2,OH,MONROE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200070473,"",0070473,70473,"",Texana Midstream Company LP,"","",LDC,"",STX,TX,COLORADO,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200071078,"",0071078,71078,"","Algonquin - Hanover, NJ","","",INT,"",3,NJ,MORRIS,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073604,"",0073604,73604,"","United Texas Oil, LLC","","",WHD,"",STX,TX,GOLIAD,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073257,"",0073257,73257,"","Knox Energy Cooperative Association, Inc.","","",LDC,"",2,OH,PREBLE,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000816,"",0000816,00816,"","Revere Power (PROVIDENCE,RI)","","",END,"","",RI,PROVIDENCE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073972,"",0073972,73972,"",Transco Mainline near Woodbridge (Greenway Sands),"","",INT,"",3,NJ,MIDDLESEX,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200074530,"",0074530,74530,"",Gator Express-Plaquemines,"","",END,"",ELA,LA,PLAQUEMINES,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200072395,"",0072395,72395,"","Entergy Sabine Power Station - Orange Co., TX","","",INT,"",WLA,TX,ORANGE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073411,"",0073411,73411,"","Discovery/Transco Delivery, LaFourche Parish, LA","","",INT,"",ELA,LA,LAFOURCHE,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000812,"",0000812,00812,"","TMPL (BRISTOL,MA)","","",END,"","",MA,BRISTOL,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200079502,"",0079502,79502,"",ETX SERVICE POINT,"","",PPT,"",ETX,TX,SAN JACINTO,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000201,"",0000201,00201,"","Mahwah (BERGEN,NJ)","","",INT,"","",NJ,BERGEN,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200072871,"",0072871,72871,"",Summit Utilities Arkansas Inc Bodcaw AR,"","",INT,"",ETX,AR,NEVADA,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200071240,"",0071240,71240,"","Enfield, IL","","",LDC,"",1,IL,WHITE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200079986,"",0079986,79986,"",NEXUS FUEL-M-3 MIDSTREAM/HIGH NOON,"","","","","","","","",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200071682,"",0071682,71682,"","Philadelphia Gas Works Penrose (Eastwick)-Philadelphia, PA","","",LDC,"",3,PA,PHILADELPHIA,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200079987,"",0079987,79987,"","NEXUS FUEL-REGENCY-BIG RUN /TWP. ROAD 964, MONROE CO.OH","","","","","","","","",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200072972,"",0072972,72972,"",Walter Oil & Gas - WD 106,"","",WHD,"",ELA,OF,WEST DELTA,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200070298,"",0070298,70298,"","Mississippi Valley - McCool, MS","","",LDC,"",1,MS,ATTALA,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073542,"",0073542,73542,"","Blackhawk Energy, LLC -  Entriken Interconnect, PA","","",WHD,"",3,PA,HUNTINGDON,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200072956,"",0072956,72956,"","Mid Tn Gas Dist - Wilson, TN","","",LDC,"",1,TN,WILSON,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073706,"",0073706,73706,"","EQT- Braden Run, Greene Co., PA.","","",WHD,"",2,PA,GREENE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073414,"",0073414,73414,"","Hesco - Denali Gathering / Hidalgo Co., TX (REC)","","",WHD,"",STX,TX,HIDALGO,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200079662,"",0079662,79662,"",DELMONT DISCHARGE CUSTODY TRANSFER POINT,"","",STA,"",3,PA,WESTMORELAND,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200070428,"",0070428,70428,"","Edmonton, KY","","",LDC,"",2,KY,METCALFE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200070061,"",0070061,70061,"","Atmos Energy Corporation - Scott Co, MO","","",LDC,"",1,MO,SCOTT,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200071964,"",0071964,71964,"","Enbridge Pipelines (East Texas) LP -Longview/Gregg Co., TX","","",INT,"",ETX,TX,GREGG,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073298,"",0073298,73298,"","Cottonwood Energy Company, LP - Newton Co., TX","","",END,"",WLA,TX,NEWTON,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073109,"",0073109,73109,"","Red Bay #2, Franklin Co. Al.","","",LDC,"",1,AL,FRANKLIN,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000010,"",0000010,00010,"","Rhode Island Energy - E. Providence (PROVIDENCE,RI)","","",LDC,"","",RI,PROVIDENCE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200079989,"",0079989,79989,"","NEXUS FUEL-BLUE RACER MIDSTREAM-BERNE, MONROE CO.,OH","","","","","","","","",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200079599,"",0079599,79599,"",MARKET ZONE 3 DOWNSTREAM POINT,"","",STA,"",3,PA,ALLEGHENY,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200070244,"",0070244,70244,"","Transco - Linden, NJ - DEL","","",INT,"",3,NJ,UNION,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200070983,"",0070983,70983,"","Knox Energy Cooperative - Powhatan Point, OH","","",INT,"",2,OH,MONROE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073671,"",0073671,73671,"","CNX Gas Co. LLC - McQuay, Locust Hill ll, Greene Co., PA","","",WHD,"",2,PA,GREENE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200079928,"",0079928,79928,"","NEXUS FUEL - BAMBINO, MCCLELLAN AVE., GREENE CO., PA","","","","","","","","",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000051,"",0000051,00051,"",Sagamore Station Relocation (Mainland Sagamore),"","",LDC,"","",MA,BARNSTABLE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073242,"",0073242,73242,"","Coastal Oil & Gas - Pawlik #1, Live Oak Co., Tx","","",WHD,"",STX,TX,LIVE OAK,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000806,"",0000806,00806,"",Canal Generating,"","",END,"","",MA,BARNSTABLE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200079668,"",0079668,79668,"","EQUITABLE - CRAYNE, PA CUSTODY TRANSFER POINT","","",STA,"",2,PA,GREENE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073334,"",0073334,73334,"","WATERFORD PLANT - WASHINGTON CO., OH","","",END,"",2,OH,WASHINGTON,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200079505,"",0079505,79505,"","ZONE M1 24"" SERVICE POINT","","",PPT,"",1,AR,PULASKI,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200071616,"",0071616,71616,"","Col. Gas - Fairfield Co., OH","","",INT,"",2,OH,FAIRFIELD,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200070524,"",0070524,70524,"","Atmos Energy - Amory, MS","","",LDC,"",1,MS,MONROE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200072533,"",0072533,72533,"","T & F Exploration, LP., MM - Somerset Co., PA","","",LDC,"",2,PA,SOMERSET,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200079619,"",0079619,79619,"",ZONE M3 PAL POINT OF TRANSACTION,"","",VIR,"",3,PA,INDIANA,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073413,"",0073413,73413,"",TENNESSEE GAS P/L - HANGING ROCK LATERAL,"","",INT,"",2,OH,SCIOTO,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200071200,"",0071200,71200,"","Targa Resources - Venice, LA","","",PLT,"",ELA,LA,PLAQUEMINES,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200070463,"",0070463,70463,"","UGI CENTRAL - Counties Gas Co. - Mifflin Co., PA","","",LDC,"",3,PA,MIFFLIN,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200070953,"",0070953,70953,"","New Jersey Natural - Freehold, NJ","","",LDC,"",3,NJ,MIDDLESEX,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200079994,"",0079994,79994,"","NEXUS INTERCONNECT WITH TETLP, OPEN LATERAL AT KENSINGTON","","","","","","","","",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000039,"",0000039,00039,"","Suffern (ROCKLAND,NY)","","",LDC,"","",NY,ROCKLAND,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073581,"",0073581,73581,"","REX Lebanon (REC), Warren Co., OH","","",INT,"",2,OH,WARREN,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073252,"",0073252,73252,"",Hinds Power Plant,"","",END,"",ELA,MS,HINDS,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073730,"",0073730,73730,"",TGP - Wheelersburg Interconnect,"","",INT,"",2,OH,SCIOTO,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200070066,"",0070066,70066,"","Parkway Generation - Sewaren, NJ","","",END,"",3,NJ,MIDDLESEX,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200071298,"",0071298,71298,"","E.Tennessee Gas - Mt. Pleasant, Giles Co. TN -DEL (B/D 76298)","","",INT,"",1,TN,GILES,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200079613,"",0079613,79613,"",WLA PAL POINT OF TRANSACTION,"","",VIR,"",WLA,LA,CALCASIEU,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200071704,"",0071704,71704,"","Gulf South Pipeline Company, LP - Darnell, LA  (Delivery)","","",INT,"",ELA,LA,WEST CARROLL,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000031,"",0000031,00031,"","Kensington New Haven, CT","","",LDC,"","",CT,HARTFORD,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200079516,"",0079516,79516,"",LEBANON DISCHARGE PATH POINT,"","",STA,"",2,OH,WARREN,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000083,"",0000083,00083,"","Rhode Island Energy-CUMBERLAND (PROVIDENCE,RI)","","",LDC,"","",RI,PROVIDENCE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200070441,"",0070441,70441,"","Grayville, IL","","",LDC,"",1,IL,WHITE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073164,"",0073164,73164,"","DCP Midstream, LP - Goliad Co., TX","","",WHD,"",STX,TX,GOLIAD,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000084,"",0000084,00084,"","Southeast (PUTNAM,NY)","","",LDC,"","",NY,PUTNAM,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200072930,"",0072930,72930,"","PECO Energy - Eddystone, Delaware Co., PA","","",LDC,"",3,PA,DELAWARE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073211,"",0073211,73211,"","WEIR (NEEL-SCHAFFER) - CHOCTAW CO., MS.","","",END,"",1,MS,CHOCTAW,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200079547,"",0079547,79547,"",M2/M3 ZONE BOUNDARY POINT,"","",STA,"",ZB,PA,WESTMORELAND,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200079671,"",0079671,79671,"","STX/ETX (24"") ILT POINT","","",STA,"",ZB,TX,WALKER,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073090,"",0073090,73090,"",Venice-Delivery into Plant,"","",PLT,"",ELA,LA,PLAQUEMINES,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073652,"",0073652,73652,"","Sheridan Holding Company III,LLC-Warr Gathering","","",WHD,"",ETX,TX,SHELBY,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000062,"",0000062,00062,"","Vernon (TOLLAND,CT)","","",LDC,"","",CT,TOLLAND,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200079596,"",0079596,79596,"","MARKET ZONE 1 30"" DOWNSTREAM POINT","","",STA,"",1,TN,ANDERSON,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073673,"",0073673,73673,"","Williams/Shamrock N. Salem Rd, Fayette Co., PA.","","",WHD,"",2,PA,FAYETTE,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073930,"",0073930,73930,"","Planet Operationg/Savoy 1 Hwy 758-St.Landry Parish, LA","","",WHD,"",WLA,LA,ST LANDRY,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073238,"",0073238,73238,"","MISS VALLEY GAS #2 - HINDS CO., MS.","","",INT,"",ELA,MS,HINDS,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200072637,"",0072637,72637,"",Columbia Gas - Pickaway Co. OH,"","",INT,"",2,OH,PICKAWAY,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200079053,"",0079053,79053,"",VENICE PTR AUCTION POINT,"","","","","","","","",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000622,"",0000622,00622,"","Excelerate Energy LP - NE Gateway-Explorer (ESSEX,MA)","","",LNG,"","",MA,ESSEX,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200070397,"",0070397,70397,"","Smyrna, TN","","",LDC,"",1,TN,RUTHERFORD,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073678,"",0073678,73678,"","Dominion Energy Transmission, Inc - Crooked Run, Westmoreland Co.,","","",INT,"",3,PA,WESTMORELAND,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073025,"",0073025,73025,"","Atmos Energy, TN (B/D 76025)","","",LDC,"",1,TN,WILLIAMSON,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000040,"",0000040,00040,"","Stony Point (ROCKLAND,NY)","","",LDC,"","",NY,ROCKLAND,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200074202,"",0074202,74202,"","Access Midstream Highway 219 - Jefferson Co., OH","","",WHD,"",2,OH,JEFFERSON,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073508,"",0073508,73508,"","Atmos Energy/Roxie-Fayette Delivery-Franklin Co., MS","","",LDC,"",ELA,MS,FRANKLIN,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000007,"",0000007,00007,"","Waterford (NEW LONDON,CT)","","",LDC,"","",CT,NEW LONDON,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200070321,"",0070321,70321,"","UGI Utilities, Inc. (Columbia Gas) - Lebanon, PA","","",LDC,"",3,PA,LEBANON,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200072909,"",0072909,72909,"","Dayton Pwr & Lt - Red Lion, OH CenterPoint Energy","","",LDC,"",2,OH,WARREN,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200072248,"",0072248,72248,"","Enterprise Texas Pipeline LLC - Lavaca County, TX  (REC)","","",INT,"",STX,TX,LAVACA,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000819,"",0000819,00819,"","Middletown- Cromwell Fairfield, CT","","",LDC,"","",CT,MIDDLESEX,"",2026-03-23T09:41:40.296409
+100,"Algonquin Gas Transmission, LLC",1000000002,"",0000002,00002,"","Waterbury (NEW HAVEN,CT)","","",LDC,"","",CT,NEW HAVEN,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073526,"",0073526,73526,"",Public Service - Bound Brook - Heater Fuel,"","",LDC,"",3,NJ,SOMERSET,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073306,"",0073306,73306,"",RELIANT PWR PLT - PA - (73306),"","",END,"",3,PA,ADAMS,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200071143,"",0071143,71143,"","UGI CENTRAL - Interboro Gas - Bellville, PA","","",LDC,"",3,PA,MIFFLIN,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200072428,"",0072428,72428,"","Somerset Gas - Casey Co., KY","","",WHD,"",2,KY,CASEY,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200070098,"",0070098,70098,"","Fulton, MS","","",LDC,"",1,MS,ITAWAMBA,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073455,"",0073455,73455,"","McBee Operating Company, LLC-Rippy #1 Nacog. Co., TX (REC)","","",WHD,"",ETX,TX,NACOGDOCHES,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200071402,"",0071402,71402,"","Creal Springs, IL","","",LDC,"",1,IL,WILLIAMSON,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073808,"",0073808,73808,"","Dominion Energy Transmission, Inc - Crayne II, Rt 188 Greene Co.,","","",INT,"",2,PA,WESTMORELAND,"",2026-03-23T09:41:40.296409
+120,"Texas Eastern Transmission, LP",1200073432,"",0073432,73432,"",Houston Pipeline Vidor,"","",INT,"",WLA,TX,ORANGE,"",2026-03-23T09:41:40.296409
