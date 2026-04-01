@@ -32,6 +32,9 @@ class PipelinePaths(BaseModel, frozen=True):
     st_silver: Path
     nn_silver: Path
 
+    # Gold output directory (combined parquet + silver copies for the day)
+    gold_dir: Path
+
     @classmethod
     @lru_cache(maxsize=8)
     def create(cls, root: Path, pipeline_name: str) -> "PipelinePaths":
@@ -62,6 +65,7 @@ class PipelinePaths(BaseModel, frozen=True):
             sg_silver=downloads / "SG",
             st_silver=downloads / "ST",
             nn_silver=downloads / "NN",
+            gold_dir=downloads / "Gold" / today,
         )
 
         # Ensure all directories exist
@@ -72,6 +76,7 @@ class PipelinePaths(BaseModel, frozen=True):
             paths.nn_raw, paths.meta_raw,
             paths.oa_silver, paths.sg_silver,
             paths.st_silver, paths.nn_silver,
+            paths.gold_dir,
         ]:
             d.mkdir(parents=True, exist_ok=True)
 

@@ -9,26 +9,9 @@ scraping, munging, and pushing logic.
 # URLs
 # ---------------------------------------------------------------------------
 
-RTBA_BASE = "https://rtba.enbridge.com/InformationalPosting/Default.aspx"
-INFOPOST_BASE = "https://infopost.enbridge.com/InfoPost"
-METADATA_BASE = "https://linkwc.enbridge.com/Pointdata"
+INFOPOST_URL = "https://infopost.enbridge.com/infopost/"
 
 PARENT_PIPE = "Enbridge"
-
-
-def rtba_url(pipe_code: str, data_type: str = "OA") -> str:
-    """Short-way URL: rtba.enbridge.com."""
-    return f"{RTBA_BASE}?bu={pipe_code}&Type={data_type}"
-
-
-def infopost_home_url(pipe_code: str) -> str:
-    """Long-way entry URL: infopost.enbridge.com."""
-    return f"{INFOPOST_BASE}/{pipe_code}Home.asp?Pipe={pipe_code}"
-
-
-def metadata_url(meta_code: str) -> str:
-    """Direct CSV download URL for metadata point lists."""
-    return f"{METADATA_BASE}/{meta_code}AllPoints.csv"
 
 
 # ---------------------------------------------------------------------------
@@ -47,14 +30,6 @@ SG_MAPS_TEXT = "Operational Capacity Maps"
 # Pipe codes with special handling
 # ---------------------------------------------------------------------------
 
-# MNUS always uses the long-way scrape path
-LONG_WAY_ONLY_CODES: set[str] = {"MNUS"}
-
-# WE not available before this date
-WE_AVAILABILITY_DATE = "2025-10-01"
-
-# TETLP Lease NJ/NY is a known SG segment to skip
-SG_SKIP_SEGMENTS: set[str] = {"TETLP Lease NJ/NY"}
 
 
 # ---------------------------------------------------------------------------
@@ -102,12 +77,6 @@ SG_FLOW_MAP: dict[str, str] = {
     "TD2": "B",
 }
 
-# ---------------------------------------------------------------------------
-# ST (Storage Capacity) column mapping — same format as OA
-# ---------------------------------------------------------------------------
-
-ST_DATE_FORMAT = OA_DATE_FORMAT
-ST_FLOW_MAP: dict[str, str] = OA_FLOW_MAP
 
 # ---------------------------------------------------------------------------
 # NN column mapping
@@ -123,13 +92,14 @@ NN_DATE_FORMAT = "%m/%d/%Y %H:%M"
 NN_FLOW_MAP: dict[str, str] = {
     "D": "D",
     "R": "R",
-    "B": "B",
+    "B": "N",
     "Delivery": "D",
     "Receipt": "R",
     "Storage Injection": "D",
     "Storage Withdrawal": "R",
 }
-
+# N - Neutral flow (bidirectional or unknown)
+# Z - Need SME review
 # ---------------------------------------------------------------------------
 # NN scrape date offset (NN data lags by 4 days)
 # ---------------------------------------------------------------------------
@@ -154,9 +124,6 @@ def oa_bronze_blob_path(eff_date: str, filename: str) -> str:
 def sg_bronze_blob_path(eff_date: str, filename: str) -> str:
     return f"Enbridge/SegmentCapacity/{eff_date[:-2]}/{filename}"
 
-
-def st_bronze_blob_path(eff_date: str, filename: str) -> str:
-    return f"Enbridge/StorageCapacity/{eff_date[:-2]}/{filename}"
 
 
 def nn_bronze_blob_path(eff_date: str, filename: str) -> str:

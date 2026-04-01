@@ -1,7 +1,7 @@
 from .settings import settings
 from .errors import track_fail
 from .paths import PipelinePaths
-from .browser import open_page, fill_date_box, download_and_save
+from .browser import open_page
 from .cloud import get_blob_service_client, upload_blob, push_directory
 from .delta import LakeMerge, DeltaLakeConfig
 from .azure_tables import dump_pipe_configs, dump_Loc_configs, update_Loc_configs, invalidate_config_cache
@@ -20,7 +20,7 @@ __all__ = [
     # paths
     "PipelinePaths",
     # browser
-    "open_page", "fill_date_box", "download_and_save",
+    "open_page",
     # cloud
     "get_blob_service_client", "upload_blob", "push_directory",
     # delta

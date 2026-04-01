@@ -111,9 +111,8 @@ async def scrape_range(
         f"scrapeRange starting for '{pipeline}' "
         f"from {start_date:%Y-%m-%d} to {(end_date or datetime.today()):%Y-%m-%d}"
     )
-    stats = await runner.scrape_historic(
-        start_date=start_date, end_date=end_date
-    )
+    end = end_date or datetime.today()
+    stats = await runner.scrape_range(start_date=start_date, end_date=end)
 
     if report:
         await _write_report([stats], root)

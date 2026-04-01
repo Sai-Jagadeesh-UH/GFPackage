@@ -32,46 +32,24 @@ GOLD_SCHEMA: list[str] = [
 
 
 class PipeConfig(BaseModel, frozen=True):
-    """Configuration for a single pipeline (e.g. AG, TE, MNUS)."""
+    """Identity configuration for a pipeline — sourced from Azure Table Storage."""
     pipe_code: str = Field(min_length=2, max_length=10)
     parent_pipe: str = Field(min_length=2, max_length=50)
     pipe_name: str = Field(min_length=2)
     gf_pipe_id: str = Field(pattern=r"^\d{3}$")
-    oa_code: str | None = None
-    sg_code: str | None = None
-    st_code: str | None = None
-    nn_code: str | None = None
-    meta_code: str | None = None
 
     @field_validator("pipe_code")
     @classmethod
     def pipe_code_uppercase(cls, v: str) -> str:
         return v.upper()
 
-    @computed_field
-    @property
-    def has_oa(self) -> bool:
-        return self.oa_code is not None
 
-    @computed_field
-    @property
-    def has_sg(self) -> bool:
-        return self.sg_code is not None
-
-    @computed_field
-    @property
-    def has_st(self) -> bool:
-        return self.st_code is not None
-
-    @computed_field
-    @property
-    def has_nn(self) -> bool:
-        return self.nn_code is not None
-
-    @computed_field
-    @property
-    def has_meta(self) -> bool:
-        return self.meta_code is not None
+class PipeChange(BaseModel):
+    """A detected change in pipe availability vs stored PipeConfigs."""
+    change_type: str   # "new" | "removed" | "renamed"
+    pipe_code: str
+    live_name: str | None = None    # name from UI (None if removed)
+    config_name: str | None = None  # name from PipeConfigs (None if new)
 
 
 class ScrapeResult(BaseModel):
@@ -110,12 +88,16 @@ class RunStats(BaseModel):
     end_time: datetime | None = None
     results: list[ScrapeResult] = Field(default_factory=list)
     dataset_details: list[DatasetDetail] = Field(default_factory=list)
+    pipe_changes: list[PipeChange] = Field(default_factory=list)
 
     def add(self, result: ScrapeResult) -> None:
         self.results.append(result)
 
     def add_dataset_detail(self, detail: DatasetDetail) -> None:
         self.dataset_details.append(detail)
+
+    def add_pipe_changes(self, changes: list[PipeChange]) -> None:
+        self.pipe_changes.extend(changes)
 
     @computed_field
     @property

@@ -1,7 +1,0 @@
-2026-03-22 13:52:08.000 | WARNING  | app.core.errors:track_fail:11 - Failure tracked: WE|SG|2026/03/22 → /Users/saijagadeeshyadavalli/Coding/Particles/GasFundies/GFScrapePackage/logs/Enbridge_fails.csv
-2026-03-22 13:52:08.001 | ERROR    | app.pipelines.enbridge.scraper:_sg_refresh_dump:529 - WE | SG segment 'Operational Capacity Map' failed: Locator.fill: Timeout 20000ms exceeded.
-Call log:
-  - waiting for locator("#ContentPaneIframe").content_frame.get_by_text("Gas Date: ").locator("xpath=./following-sibling::div").get_by_role("textbox").first
-
-2026-03-22 14:09:26.738 | ERROR    | app.pipelines.enbridge.silver_munger:_process_sg:321 - processSG failed: Could not convert '20260322' with type str: tried to convert to int64
-2026-03-22 18:37:54.087 | ERROR    | app.pipelines.enbridge.silver_munger:_process_sg:325 - processSG failed: 'GFPipeID'

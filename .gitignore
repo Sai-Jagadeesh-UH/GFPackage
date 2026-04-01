@@ -8,7 +8,8 @@ CLAUDE.md
 OldArchives/
 reports/
 tests/
-
+others/
+logs/
 
 # Python-generated files
 __pycache__/

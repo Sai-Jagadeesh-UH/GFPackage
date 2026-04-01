@@ -2,14 +2,14 @@ from abc import ABC, abstractmethod
 from datetime import datetime
 from pathlib import Path
 
-from .types import PipeConfig, ScrapeResult
+from .types import ScrapeResult
 
 
 class BasePipeScraper(ABC):
     """Contract for pipeline data scraping.
 
-    Each pipeline implementation handles its own browser automation,
-    URL construction, and download logic using helpers from core.browser.
+    Implementations discover available pipes and datasets dynamically from
+    the live UI rather than relying on pre-loaded config tables.
     """
 
     @property
@@ -23,26 +23,17 @@ class BasePipeScraper(ABC):
         """Root directory where raw downloads are saved."""
 
     @abstractmethod
-    async def scrape(
+    async def scrape_date(
         self,
-        pipe_config: PipeConfig,
         scrape_date: datetime,
         headless: bool = True,
     ) -> list[ScrapeResult]:
-        """Scrape all available dataset types (OA, SG, ST, NN) for one pipe on one date.
+        """Scrape all available pipes and datasets for a single date.
 
-        Returns a ScrapeResult per dataset type attempted.
+        Discovers pipes and dataset availability live from the UI.
+        Returns one ScrapeResult per (pipe, dataset_type) attempted.
         """
 
     @abstractmethod
-    async def scrape_all(
-        self,
-        pipe_configs: list[PipeConfig],
-        scrape_date: datetime,
-        headless: bool = True,
-    ) -> list[ScrapeResult]:
-        """Scrape all configured pipes for a single date."""
-
-    @abstractmethod
-    async def scrape_metadata(self, pipe_configs: list[PipeConfig]) -> None:
-        """Download metadata files (point lists, etc.) for all pipes."""
+    async def scrape_metadata(self) -> None:
+        """Scrape metadata (location lists) for all pipes via browser."""

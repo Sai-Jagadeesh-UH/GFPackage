@@ -8,7 +8,7 @@ that can be saved locally or attached to email alerts.
 from datetime import datetime
 from pathlib import Path
 
-from app.base.types import DatasetDetail, RunStats, ScrapeResult
+from app.base.types import DatasetDetail, PipeChange, RunStats, ScrapeResult
 from app.core.logging import logger
 
 
@@ -161,6 +161,40 @@ def generate_report(
             </tr>
         </thead>
         <tbody>{missing_rows}
+        </tbody>
+    </table>"""
+
+    # Pipe changes section
+    all_changes: list[PipeChange] = []
+    for s in stats_list:
+        all_changes.extend(s.pipe_changes)
+
+    pipe_changes_section = ""
+    if all_changes:
+        _badge = {"new": "success", "removed": "error", "renamed": "warning"}
+        change_rows = ""
+        for c in all_changes:
+            badge_class = _badge.get(c.change_type, "")
+            change_rows += f"""
+        <tr class="{badge_class}">
+            <td><strong>{c.change_type.upper()}</strong></td>
+            <td>{c.pipe_code}</td>
+            <td>{c.live_name or "—"}</td>
+            <td>{c.config_name or "—"}</td>
+        </tr>"""
+
+        pipe_changes_section = f"""
+    <h2>Pipe Changes ({len(all_changes)})</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Change</th>
+                <th>Pipe Code</th>
+                <th>Live Name</th>
+                <th>Config Name</th>
+            </tr>
+        </thead>
+        <tbody>{change_rows}
         </tbody>
     </table>"""
 
@@ -324,6 +358,8 @@ def generate_report(
     {dataset_section}
 
     {missing_section}
+
+    {pipe_changes_section}
 
     <div class="footer">
         GFScrapePackage Audit Report &mdash; Auto-generated

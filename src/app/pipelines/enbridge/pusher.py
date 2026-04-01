@@ -6,8 +6,11 @@ from core.delta.
 """
 
 import asyncio
+from datetime import datetime
 from functools import partial
 from pathlib import Path
+
+import re
 
 import polars as pl
 
@@ -42,21 +45,23 @@ class EnbridgePusher(BasePusher):
     def bronze_blob_path(self, dataset_type: RowType, file_path: Path) -> str:
         """Construct bronze blob path based on dataset type and filename."""
         name = file_path.name
+        
+        pattern = r'_(\d{8})_'
+        eff_date = re.search(pattern, name).group(1) # type: ignore
+
 
         if dataset_type == RowType.OA:
-            _, _, eff_date, _ = name.split("_", 3)
+            # {pipe_code}_{orig_code}_{type}_{eff_date}_{rest}
+            
             return cfg.oa_bronze_blob_path(eff_date, name)
 
         elif dataset_type == RowType.SG:
-            _, _, eff_date, _ = name.split("_", 3)
+            # {pipe_code}_{seg_id}_{eff_date}_{rest}
             return cfg.sg_bronze_blob_path(eff_date, name)
 
-        elif dataset_type == RowType.ST:
-            _, _, eff_date, _ = name.split("_", 3)
-            return cfg.st_bronze_blob_path(eff_date, name)
 
         elif dataset_type == RowType.NN:
-            _, _, eff_date = name.split("_")
+            # {nn_code}_{type}_{eff_date}_{rest}
             return cfg.nn_bronze_blob_path(eff_date, name)
 
         elif dataset_type == RowType.META:
@@ -68,31 +73,23 @@ class EnbridgePusher(BasePusher):
     def silver_blob_path(self, dataset_type: RowType, file_path: Path) -> str:
         """Construct silver blob path for concatenated silver parquets.
 
-        Silver files are named: {DS}_Enbridge_{mmddyyyy}_{hhmmss}.parquet
+        Silver files are named: {DS}_{DS}_Enbridge_{mmddyyyy}_{hhmmss}_tgt_{mmddyyyy}.parquet
         Blob path: Enbridge/{DatasetFolder}/{YYYYMM}/{filename}
         """
         from datetime import datetime as _dt
 
-        name = file_path.name
+        name = file_path.name[3:]
         folder_map = {
-            RowType.OA: "PointCapacity",
-            RowType.SG: "SegmentCapacity",
-            RowType.ST: "StorageCapacity",
-            RowType.NN: "NoNotice",
+            RowType.OA: "OA",
+            RowType.SG: "SG",
+            RowType.NN: "NN",
         }
         folder = folder_map.get(dataset_type)
         if not folder:
             return f"Enbridge/other/{name}"
 
-        try:
-            # Name format: {DS}_Enbridge_{mmddyyyy}_{hhmmss}.parquet
-            parts = name.split("_")
-            run_dt = _dt.strptime(parts[2], "%m%d%Y")
-            yyyymm = run_dt.strftime("%Y%m")
-        except Exception:
-            yyyymm = "unknown"
 
-        return f"Enbridge/{folder}/{yyyymm}/{name}"
+        return f"Enbridge/{folder}/{name}"
 
     # ------------------------------------------------------------------
     # Push operations
@@ -128,7 +125,8 @@ class EnbridgePusher(BasePusher):
     # ------------------------------------------------------------------
 
     async def push_all(
-        self, silver_munger, pipe_configs_df, stats: RunStats | None = None
+        self, silver_munger, pipe_configs_df, stats: RunStats | None = None,
+        target_day: datetime | None = None,
     ) -> None:
         """Full push pipeline: raw meta → (OA + SG + ST + NN in parallel) → gold → cleanup.
 
@@ -144,24 +142,21 @@ class EnbridgePusher(BasePusher):
         # Push raw metadata
         await self.push_bronze(self._paths.meta_raw, RowType.META)
 
-        # Process and push OA, SG, ST, NN in parallel
+        # Process and push OA, SG, NN in parallel
         async with asyncio.TaskGroup() as group:
             oa_task = group.create_task(
-                self._push_dataset(silver_munger, pipe_configs_df, RowType.OA)
+                self._push_dataset(silver_munger, pipe_configs_df, RowType.OA, target_day)
             )
             sg_task = group.create_task(
-                self._push_dataset(silver_munger, pipe_configs_df, RowType.SG)
-            )
-            st_task = group.create_task(
-                self._push_dataset(silver_munger, pipe_configs_df, RowType.ST)
+                self._push_dataset(silver_munger, pipe_configs_df, RowType.SG, target_day)
             )
             nn_task = group.create_task(
-                self._push_dataset(silver_munger, pipe_configs_df, RowType.NN)
+                self._push_dataset(silver_munger, pipe_configs_df, RowType.NN, target_day)
             )
 
         # Collect dataset details into stats
         if stats is not None:
-            for task in (oa_task, sg_task, st_task, nn_task):
+            for task in (oa_task, sg_task, nn_task):
                 for detail in task.result():
                     stats.add_dataset_detail(detail)
 
@@ -170,16 +165,16 @@ class EnbridgePusher(BasePusher):
         gold_df = await gold_munger.merge({
             RowType.OA: self._paths.silver_dir(RowType.OA),
             RowType.SG: self._paths.silver_dir(RowType.SG),
-            RowType.ST: self._paths.silver_dir(RowType.ST),
             RowType.NN: self._paths.silver_dir(RowType.NN),
-        })
+        }, target_day=target_day)
         await self.push_gold(gold_df)
 
         # Cleanup
         await gold_munger.clean_directories()
 
     async def _push_dataset(
-        self, silver_munger, pipe_configs_df, dataset_type: RowType
+        self, silver_munger, pipe_configs_df, dataset_type: RowType,
+        target_day: datetime | None = None,
     ) -> list[DatasetDetail]:
         """Push bronze → process silver → push silver for one dataset type.
 
@@ -211,7 +206,7 @@ class EnbridgePusher(BasePusher):
 
         # Process silver
         await silver_munger.process(
-            raw_dir, silver_dir, dataset_type, pipe_configs_df
+            raw_dir, silver_dir, dataset_type, pipe_configs_df, target_day=target_day
         )
 
         # Count silver records per pipe from the concatenated parquet(s)
@@ -237,23 +232,10 @@ class EnbridgePusher(BasePusher):
         # Push silver
         await self.push_silver(silver_dir, dataset_type)
 
-        # Determine expected pipes from config
-        enb_df = pipe_configs_df[pipe_configs_df["ParentPipe"] == cfg.PARENT_PIPE]
-        code_col = {
-            RowType.OA: "PointCapCode",
-            RowType.SG: "SegmentCapCode",
-            RowType.ST: "StorageCapCode",
-            RowType.NN: "NoNoticeCode",
-        }.get(dataset_type)
-        expected_pipes: set[str] = set()
-        if code_col and code_col in enb_df.columns:
-            expected_pipes = set(
-                enb_df.loc[enb_df[code_col].notna(), "PipeCode"].str.upper()
-            )
-
         # Build details — silver is one combined file so silver_records are aggregate.
         # Per-pipe entries get raw_records; silver_records summed on first pipe entry.
-        all_pipes = expected_pipes | set(raw_counts)
+        # expected_pipes comes from what was actually scraped (availability cache drives scraping).
+        all_pipes = set(raw_counts)
         details: list[DatasetDetail] = []
         new_locs_map = {
             RowType.OA: getattr(silver_munger, "new_oa_locations", 0),
@@ -264,7 +246,7 @@ class EnbridgePusher(BasePusher):
         total_silver = silver_counts.get("_all", 0)
         silver_file_urls = silver_blob_files.get("_all", [])
         for i, pipe_code in enumerate(sorted(all_pipes)):
-            is_missing = pipe_code in expected_pipes and pipe_code not in raw_counts
+            is_missing = pipe_code not in raw_counts
             details.append(DatasetDetail(
                 dataset_type=dataset_type,
                 pipe_code=pipe_code,

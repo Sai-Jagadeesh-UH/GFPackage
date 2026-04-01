@@ -27,7 +27,7 @@ from .runner import (
 
 def main() -> None:
     """CLI entrypoint — runs scrapeToday for Enbridge by default."""
-    asyncio.run(scrapeToday(headless=True))
+    asyncio.run(scrapeToday(headless=False))
 
 
 __all__ = [

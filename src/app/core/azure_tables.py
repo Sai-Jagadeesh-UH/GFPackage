@@ -3,6 +3,7 @@ from datetime import datetime
 from pathlib import Path
 
 import pandas as pd
+import polars as pl
 from azure.data.tables import TableServiceClient
 
 from .logging import logger
@@ -14,13 +15,11 @@ def get_table(table_name: str, conn_string: str | None = None):
     """Context manager for an Azure Table client.
 
     Creates the table if it doesn't exist and yields the table client.
+    Raises on connection/table errors so callers can handle them.
     """
     cs = conn_string or settings.prod_storage_constr
-    try:
-        with TableServiceClient.from_connection_string(conn_str=cs) as client:
-            yield client.create_table_if_not_exists(table_name=table_name)
-    except Exception as e:
-        logger.error(f"Table '{table_name}' access failed: {e}")
+    with TableServiceClient.from_connection_string(conn_str=cs) as client:
+        yield client.create_table_if_not_exists(table_name=table_name)
 
 
 class _ConfigCache:
@@ -36,12 +35,15 @@ class _ConfigCache:
         self._mtime: dict[Path, float] = {}
 
     def get(self, path: Path) -> pd.DataFrame | None:
-        """Return cached DataFrame if file hasn't changed, else None."""
+        """Return cached DataFrame if file is from today and hasn't changed, else None."""
         if path not in self._data or not path.exists():
             return None
-        current_mtime = path.stat().st_mtime
-        if current_mtime != self._mtime.get(path):
-            # File changed on disk since we cached — invalidate
+        stat = path.stat()
+        # Stale if file was written before today
+        if datetime.fromtimestamp(stat.st_mtime).date() < datetime.now().date():
+            self.invalidate(path)
+            return None
+        if stat.st_mtime != self._mtime.get(path):
             self.invalidate(path)
             return None
         return self._data[path]
@@ -66,21 +68,29 @@ class _ConfigCache:
 _cache = _ConfigCache()
 
 
+def _is_stale(path: Path) -> bool:
+    """Return True if the file doesn't exist or was last modified before today."""
+    if not path.exists():
+        return True
+    mtime_date = datetime.fromtimestamp(path.stat().st_mtime).date()
+    return mtime_date < datetime.now().date()
+
+
 def dump_pipe_configs(config_dir: Path, force: bool = False) -> pd.DataFrame | None:
     """Download PipeConfigs from Azure Table Storage.
 
-    Cached in-memory with mtime tracking — re-reads from disk only if
-    the parquet file was modified since the last load.
+    Re-downloads if the parquet file is from a previous day (daily staleness
+    check) or if force=True. In-memory cache with mtime tracking avoids
+    repeated disk reads within the same process.
 
-    Writes to config_dir/PipeConfigs.parquet. Skips download if file exists
-    unless force=True.
+    Writes to config_dir/PipeConfigs.parquet.
 
-    Columns: ParentPipe, PipeName, GFPipeID, PipeCode, MetaCode,
-             PointCapCode, SegmentCapCode, StorageCapCode, NoNoticeCode
+    Columns: ParentPipe, PipeName, GFPipeID, PipeCode
+    (dataset availability is tracked separately in the daily availability cache)
     """
     parquet_path = config_dir / "PipeConfigs.parquet"
 
-    if not force:
+    if not force and not _is_stale(parquet_path):
         cached = _cache.get(parquet_path)
         if cached is not None:
             return cached
@@ -89,29 +99,26 @@ def dump_pipe_configs(config_dir: Path, force: bool = False) -> pd.DataFrame | N
             _cache.put(parquet_path, df)
             return df
 
-    # Force download or file doesn't exist
+    # Force, stale, or file doesn't exist — re-download
     _cache.invalidate(parquet_path)
     logger.info("Dumping PipeConfigs from Azure Table Storage")
-    with get_table(settings.pipe_configs_table) as table_client:
-        df = pd.DataFrame(
-            table_client.query_entities(
-                "",
-                select=[
-                    "ParentPipe", "PipeName", "GFPipeID", "PipeCode",
-                    "MetaCode", "PointCapCode", "SegmentCapCode", "StorageCapCode", "NoNoticeCode",
-                ],
+    try:
+        with get_table(settings.pipe_configs_table) as table_client:
+            df = pd.DataFrame(
+                table_client.query_entities(
+                    "",
+                    select=["ParentPipe", "PipeName", "GFPipeID", "PipeCode"],
+                )
             )
+        df["GFPipeID"] = df["GFPipeID"].apply(
+            lambda x: str(int(x.value if hasattr(x, "value") else x)).zfill(3)
         )
-        try:
-            df["GFPipeID"] = df["GFPipeID"].apply(
-                lambda x: str(int(x.value if hasattr(x, "value") else x)).zfill(3)
-            )
-            df.to_parquet(parquet_path, index=False)
-            _cache.put(parquet_path, df)
-            return df
-        except Exception as e:
-            logger.error(f"PipeConfigs dump failed: {e}")
-            return None
+        df.to_parquet(parquet_path, index=False)
+        _cache.put(parquet_path, df)
+        return df
+    except Exception as e:
+        logger.error(f"PipeConfigs dump failed: {e}")
+        return None
 
 
 def dump_Loc_configs(config_dir: Path, force: bool = False) -> pd.DataFrame | None:
@@ -124,7 +131,7 @@ def dump_Loc_configs(config_dir: Path, force: bool = False) -> pd.DataFrame | No
     """
     parquet_path = config_dir / "LocConfigs.parquet"
 
-    if not force:
+    if not force and not _is_stale(parquet_path):
         cached = _cache.get(parquet_path)
         if cached is not None:
             return cached
@@ -133,11 +140,15 @@ def dump_Loc_configs(config_dir: Path, force: bool = False) -> pd.DataFrame | No
             _cache.put(parquet_path, df)
             return df
 
-    # Force download or file doesn't exist
+    # Force, stale, or file doesn't exist — re-download
     _cache.invalidate(parquet_path)
     logger.info("Dumping LocConfigs from Azure Table Storage")
-    with get_table(settings.Loc_configs_table) as table_client:
-        df = pd.DataFrame(table_client.query_entities(""))
+    try:
+        with get_table(settings.Loc_configs_table) as table_client:
+            df = pd.DataFrame(table_client.query_entities(""), dtype=str)
+    except Exception as e:
+        logger.error(f"LocConfigs dump failed: {e}")
+        return None
 
     # Unwrap EdmType wrapper objects and datetime subclasses returned by the Azure SDK
     def _unwrap(x):
@@ -160,22 +171,27 @@ def dump_Loc_configs(config_dir: Path, force: bool = False) -> pd.DataFrame | No
     return df
 
 
-def update_Loc_configs(df: pd.DataFrame) -> None:
+
+def update_Loc_configs(df: pl.DataFrame) -> None:
     """Upsert new rows into the LocConfigs Azure Table.
 
     Batches in groups of 90 (Azure Table transaction limit is 100).
     Invalidates all cached configs since the backing data changed.
     """
-    operations = [("upsert", row) for row in df.to_dict(orient="records")]
+    # Cast all columns to Utf8 so every value is a plain Python str
+    clean = df.with_columns(pl.all().cast(pl.Utf8).fill_null(""))
+    operations = [
+        ("upsert", row)
+        for row in clean.to_dicts()
+    ]
 
     for i in range(0, len(operations), 90):
-        with get_table(settings.Loc_configs_table) as table_client:
-            try:
-                table_client.submit_transaction(
-                    operations[i : min(i + 90, len(operations))] # type: ignore
-                )
-            except Exception as e:
-                logger.error(f"LocConfigs upsert failed: {e}")
+        batch = operations[i : min(i + 90, len(operations))]
+        try:
+            with get_table(settings.Loc_configs_table) as table_client:
+                table_client.submit_transaction(batch)  # type: ignore
+        except Exception as e:
+            logger.error(f"LocConfigs upsert failed: {e}")
 
     # Invalidate all config caches — segment data changed, and any
     # downstream consumers holding references need fresh data
